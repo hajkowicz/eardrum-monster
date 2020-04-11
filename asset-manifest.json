@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/eardrump-monster/static/css/main.5f361e03.chunk.css",
-    "main.js": "/eardrump-monster/static/js/main.5fd489be.chunk.js",
-    "main.js.map": "/eardrump-monster/static/js/main.5fd489be.chunk.js.map",
-    "runtime-main.js": "/eardrump-monster/static/js/runtime-main.dc355136.js",
-    "runtime-main.js.map": "/eardrump-monster/static/js/runtime-main.dc355136.js.map",
-    "static/js/2.c6bcb152.chunk.js": "/eardrump-monster/static/js/2.c6bcb152.chunk.js",
-    "static/js/2.c6bcb152.chunk.js.map": "/eardrump-monster/static/js/2.c6bcb152.chunk.js.map",
-    "index.html": "/eardrump-monster/index.html",
-    "precache-manifest.9b5d71425278c23b3c2b002dcf9cc066.js": "/eardrump-monster/precache-manifest.9b5d71425278c23b3c2b002dcf9cc066.js",
-    "service-worker.js": "/eardrump-monster/service-worker.js",
-    "static/css/main.5f361e03.chunk.css.map": "/eardrump-monster/static/css/main.5f361e03.chunk.css.map",
-    "static/js/2.c6bcb152.chunk.js.LICENSE.txt": "/eardrump-monster/static/js/2.c6bcb152.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/eardrump-monster/static/media/logo.5d5d9eef.svg"
+    "main.css": "/eardrum-monster/static/css/main.5f361e03.chunk.css",
+    "main.js": "/eardrum-monster/static/js/main.3aa5a624.chunk.js",
+    "main.js.map": "/eardrum-monster/static/js/main.3aa5a624.chunk.js.map",
+    "runtime-main.js": "/eardrum-monster/static/js/runtime-main.a4378529.js",
+    "runtime-main.js.map": "/eardrum-monster/static/js/runtime-main.a4378529.js.map",
+    "static/js/2.c6bcb152.chunk.js": "/eardrum-monster/static/js/2.c6bcb152.chunk.js",
+    "static/js/2.c6bcb152.chunk.js.map": "/eardrum-monster/static/js/2.c6bcb152.chunk.js.map",
+    "index.html": "/eardrum-monster/index.html",
+    "precache-manifest.43acbcaeea3371d3fe5edb9564dc5bb0.js": "/eardrum-monster/precache-manifest.43acbcaeea3371d3fe5edb9564dc5bb0.js",
+    "service-worker.js": "/eardrum-monster/service-worker.js",
+    "static/css/main.5f361e03.chunk.css.map": "/eardrum-monster/static/css/main.5f361e03.chunk.css.map",
+    "static/js/2.c6bcb152.chunk.js.LICENSE.txt": "/eardrum-monster/static/js/2.c6bcb152.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/eardrum-monster/static/media/logo.5d5d9eef.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.dc355136.js",
+    "static/js/runtime-main.a4378529.js",
     "static/js/2.c6bcb152.chunk.js",
     "static/css/main.5f361e03.chunk.css",
-    "static/js/main.5fd489be.chunk.js"
+    "static/js/main.3aa5a624.chunk.js"
   ]
 }
