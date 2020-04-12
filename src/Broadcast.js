@@ -21,15 +21,12 @@ function Broadcast({username, spotify}) {
             .then((data) => {
                 spotify.onPlayerStateChanged(data => {
                     if (data.newSong != null) {
-                        console.log(data);
-                        console.log('username', username)
                         const songEvent = {
                             userID: username,
                             timestamp: Math.floor(Date.now() / 100),
-                            position: 0,
+                            position: data.newState.position ?? 0,
                             spotifyURI: data.newSong.uri,
                         };
-                        console.log(songEvent);
                         API.graphql(graphqlOperation(mutations.createSongEvent, {input: songEvent})).then(data => console.log(data));
                     }
                 });

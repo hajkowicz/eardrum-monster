@@ -26,46 +26,18 @@ export default class SpotifyClient {
    * @param state
    */
   handleNewState(state) {
-    if (!state) {
-      return;
-    }
-
-    if (state.paused) {
-      this.pause();
-      // STORE DISPATCH HERE
-    //   store.dispatch(`channel/${channelActionTypes.SET_IS_PLAYING}`, false);
-
-      return;
-    }
-
-    const newUri = SpotifyClient.getUriFromState(state);
-
-    if (newUri == null) {
-      console.error('new uri is null', state);
-      return;
-    }
+    const newUri = state.spotifyURI;
 
     if (this.player) {
       // We're using the web player
       this.fetchState().then(currentState => {
-        if (currentState == null) {
-          this.play(newUri);
-          return;
-        }
-
-        if (SpotifyClient.isAd(currentState)) {
-          return;
-        }
-
         const currentUri = SpotifyClient.getUriFromState(currentState);
-
-        if (currentUri === newUri && currentState.paused === false) {
+        if (currentUri === newUri) {
           if (Math.abs(state.position - currentState.position) > 10000) {
             this.seek(state.position);
           }
           return;
         }
-
         this.play(newUri);
       });
     } else {
@@ -141,13 +113,18 @@ export default class SpotifyClient {
 
   prepareSpotifyClient() {
     return new Promise(resolve => {
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        this.initializePlayer().then(resolve);
-      };
+        if (this.player) {
+            resolve();
+            return;
+        }
 
-      const sdkScript = document.createElement('script');
-      sdkScript.src = 'https://sdk.scdn.co/spotify-player.js';
-      document.body.appendChild(sdkScript);
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            this.initializePlayer().then(resolve);
+        };
+
+        const sdkScript = document.createElement('script');
+        sdkScript.src = 'https://sdk.scdn.co/spotify-player.js';
+        document.body.appendChild(sdkScript);
     });
   }
 

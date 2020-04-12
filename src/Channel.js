@@ -12,7 +12,7 @@ function Channel({username, spotify}) {
     return (<Broadcast username={username} spotify={spotify}/>);
   }
 
-  return (<Listen username={id} spotify={spotify} />);
+  return (<Listen username={username} hostUsername={id} spotify={spotify} />);
 
 }
 
