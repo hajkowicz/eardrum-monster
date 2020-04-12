@@ -270,6 +270,9 @@ export default class SpotifyClient {
         Authorization: `Bearer ${this.accessToken}`,
       },
     }).then(response => {
+      if (!response.ok) {
+          throw(response);
+      }
       return response.json();
     });
   }

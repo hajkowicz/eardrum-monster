@@ -20,6 +20,7 @@ function Header({accessToken, clearAccessToken, username}) {
         <Link className="App-title" to="/"><h1 >EARDRUM MONSTER</h1></Link>
         <img src={logo} className="App-logo" alt="logo" />
         {accessToken != null ?
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
           (<><Link className="App-link" to={`/u/${username}`}>/u/{username}</Link><a className="App-link" href="#" onClick={handleLogout} >Logout</a></>) :
           <a className="App-link" href={authorizeURI}>Login with Spotify</a>
         }
