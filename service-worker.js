@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/eardrum-monster/precache-manifest.ec541840eaf35168e99f387651f19f19.js"
+  "/eardrum-monster/precache-manifest.67600f01dd12b7ac3cfd60eb536c5ee1.js"
 );
 
 self.addEventListener('message', (event) => {
