@@ -156,7 +156,7 @@ export default class SpotifyClient {
       this.player = new window.Spotify.Player({
         name: 'eardrum.monster',
         getOAuthToken: this.fetchOauthToken.bind(this),
-        volume: 0.5,
+        volume: 0.1,
       });
 
       this.player.on('initialization_error', ({ message }) => {
@@ -254,6 +254,7 @@ export default class SpotifyClient {
         console.error('error fetching device id');
       }
       if (response.body.device && response.body.device.id) {
+          console.log('fetched device ID');
         return response.body.device.id;
       }
 
