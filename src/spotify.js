@@ -262,6 +262,18 @@ export default class SpotifyClient {
     });
   }
 
+  fetchUserInfo() {
+    return fetch('https://api.spotify.com/v1/me', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    }).then(response => {
+      return response.json();
+    });
+  }
+
   setDeviceId(id) {
     this.deviceId = id;
   }
