@@ -1,0 +1,15 @@
+{
+    "earmonster": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-eardrum-monster-earmonster-11411-authRole",
+            "UnauthRoleArn": "arn:aws:iam::434007581834:role/amplify-eardrum-monster-earmonster-11411-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::434007581834:role/amplify-eardrum-monster-earmonster-11411-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-eardrum-monster-earmonster-11411-deployment",
+            "UnauthRoleName": "amplify-eardrum-monster-earmonster-11411-unauthRole",
+            "StackName": "amplify-eardrum-monster-earmonster-11411",
+            "StackId": "arn:aws:cloudformation:us-east-1:434007581834:stack/amplify-eardrum-monster-earmonster-11411/9870ebd0-7c95-11ea-8ffc-0a3238f55eb3",
+            "AmplifyAppId": "d2a0iybif7e9cc"
+        }
+    }
+}

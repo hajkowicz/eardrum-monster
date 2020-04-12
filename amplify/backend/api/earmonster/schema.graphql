@@ -1,0 +1,17 @@
+type EMUser @model @key(fields: ["userID"]) {
+  userID: String!
+  songEvent: [SongEvent] @connection(keyName: "byUser", fields: ["userID"])
+}
+
+type SongEvent @model(subscriptions: null) @key(name: "byUser", fields: ["userID"]) {
+  id: ID!
+  spotifyURI: String!
+  timestamp: Int!
+  position: Int!
+  userID: String!
+  user: EMUser @connection(fields: ["userID"])
+}
+
+type Subscription {
+  onCreateSongEvent(userID: String!): SongEvent @aws_subscribe(mutations: ["createSongEvent"])
+}
