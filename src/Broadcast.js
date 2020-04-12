@@ -2,34 +2,51 @@ import React from 'react';
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from './graphql/mutations';
 
-const songEvent = {
-    userID: 'alta',
-    timestamp: 0,
-    position: 0,
-    spotifyURI: 'spotify:track:727LbE4pV6RtLK5FnH1WIe',
-};
 
 function Broadcast({username, spotify}) {
+    // Ensure the user is created on mount
     React.useEffect(() => {
-        if(spotify) {
-
-        spotify.prepareSpotifyClient()
-        .then(() => spotify.fetchState())
-        .then((data) => {
-            console.log('fetched state', data);
-            // spotify.play('spotify:track:727LbE4pV6RtLK5FnH1WIe');
-            API.graphql(graphqlOperation(mutations.createSongEvent, {input: songEvent})).then(data => console.log(data));
-        });
+        if (username) {
+            API.graphql(graphqlOperation(mutations.createUser, {input: {
+                userID: username
+            }})).catch(() => console.error('user creation failed'));
         }
+    }, [username]);
 
-    }, [spotify]);
-    console.log(spotify);
+    // initialize spotify web player
+    React.useEffect(() => {
+        if(spotify && username) {
+            spotify.prepareSpotifyClient()
+            .then(() => setInterval(() => spotify.fetchState().then(d => console.log(d)), 2000))
+            .then((data) => {
+                spotify.onPlayerStateChanged(data => {
+                    if (data.newSong != null) {
+                        console.log(data);
+                        console.log('username', username)
+                        const songEvent = {
+                            userID: username,
+                            timestamp: Math.floor(Date.now() / 100),
+                            position: 0,
+                            spotifyURI: data.newSong.uri,
+                        };
+                        console.log(songEvent);
+                        API.graphql(graphqlOperation(mutations.createSongEvent, {input: songEvent})).then(data => console.log(data));
+                    }
+                });
+            });
+        }
+    }, [spotify, username]);
+
+    if (username == null) {
+        return <div>Login to spotify to set the eardrum monster free</div>
+    }
+
     if (spotify) {
         return (
             <div>broadcasting los master PLUS. </div>
         );
     }
-    return <div>Connecting to spotify</div>;
+    return <div>Initializing spotify web player...</div>;
 }
 
 export default Broadcast;

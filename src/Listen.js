@@ -1,39 +1,27 @@
 import React from 'react';
-import {API, graphqlOperation }  from "aws-amplify";
+import { graphqlOperation }  from "aws-amplify";
 import { Connect } from "aws-amplify-react";
 
 import * as queries from './graphql/queries';
 import * as subscriptions from './graphql/subscriptions';
-import * as mutations from './graphql/mutations';
 
-        const ListView = ({ todos }) => (
-            <div>
-                <h3>All Todos</h3>
-                <ul>
-                    {todos.items.map(todo => <li key={todo.id}>{todo.name} ({todo.id})</li>)}
-                </ul>
-            </div>
-        );
-function Listen({channelID, spotify}) {
-    React.useEffect(() => {
-        setInterval(() => {
-API.graphql(graphqlOperation(mutations.createSongEvent, {input: {
-    userID:"alta",
-    spotifyURI:"abc",
-    position: Math.floor(Math.random() * 100),
-    timestamp:0,
-  }})).then(data => console.log(data));
-        }, 2000);
-    }, [channelID]);
+const ListView = ({ songs }) => (
+    <div>
+        <h3>Recently played</h3>
+        <ul>
+            {songs.items.map(song => <li key={song.id}>{song.spotifyURI}</li>)}
+        </ul>
+    </div>
+);
 
-
+function Listen({username, spotify}) {
   return (
       <>
-      <div>Listening to {channelID}'s channel!</div>
+      <div>Listening to {username}'s channel!</div>
 
     <Connect
-    query={graphqlOperation(queries.listSongEvents, {filter: {userID: {eq: "alta"}} })}
-    subscription={graphqlOperation(subscriptions.onCreateSongEvent, {userID: "alta"})}
+    query={graphqlOperation(queries.listSongEvents, {filter: {userID: {eq: username}} })}
+    subscription={graphqlOperation(subscriptions.onCreateSongEvent, {userID: username})}
     onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
         console.log ( 'sub' , prev, onCreateSongEvent);
         prev.listSongEvents.items.unshift(onCreateSongEvent);
@@ -44,9 +32,10 @@ API.graphql(graphqlOperation(mutations.createSongEvent, {input: {
     }}
 >
     {({ data, loading, error }) => {
+        console.log(data);
         if (error) return (<h3>Error</h3>);
         if (loading || !data ) return (<h3>Loading...</h3>);
-        return (<ListView todos={data.listSongEvents? data.listSongEvents: []} />);
+        return (<ListView songs={data.listSongEvents? data.listSongEvents: []} />);
     }}
  </Connect>
  </>

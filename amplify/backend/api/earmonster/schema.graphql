@@ -1,15 +1,17 @@
-type EMUser @model @key(fields: ["userID"]) {
+type User @model @key(fields: ["userID"]) {
   userID: String!
-  songEvent: [SongEvent] @connection(keyName: "byUser", fields: ["userID"])
+  songEvents: [SongEvent] @connection(keyName: "byUser", fields: ["userID"])
 }
 
-type SongEvent @model(subscriptions: null) @key(name: "byUser", fields: ["userID"]) {
+type SongEvent
+  @model(subscriptions: null)
+  @key(name: "byUser", fields: ["userID", "timestamp"], queryField: "songEventsByUserID") {
   id: ID!
   spotifyURI: String!
-  timestamp: Int!
+  timestamp: AWSTimestamp!
   position: Int!
   userID: String!
-  user: EMUser @connection(fields: ["userID"])
+  user: User @connection(fields: ["userID"])
 }
 
 type Subscription {

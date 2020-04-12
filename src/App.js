@@ -11,17 +11,9 @@ import {
   Route,
 } from "react-router-dom";
 import awsconfig from './aws-exports';
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 
-import * as queries from './graphql/queries';
 Amplify.configure(awsconfig);
-
-// Simple query
-API.graphql(graphqlOperation(queries.getEmUser, {userID: "alta"})).then(data => console.log(data));
-
-// Query using a parameter
-// const oneTodo = await API.graphql(graphqlOperation(queries.getTodo, { id: 'some id' }));
-// console.log(oneTodo);
 
 function App() {
   const storedToken = window.localStorage.getItem('spotifyAccessToken');
@@ -37,6 +29,8 @@ function App() {
       setSpotify(spotifyInst);
       spotifyInst.fetchUserInfo().then(user => {
         setUsername(user.id);
+      }).catch(() => {
+        clearAccessToken();
       });
     }
   }, [accessToken]);

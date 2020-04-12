@@ -12,7 +12,8 @@ function Channel({username, spotify}) {
     return (<Broadcast username={username} spotify={spotify}/>);
   }
 
-  return (<Listen channelID={id} spotify={spotify} />);
+  return (<Listen username={id} spotify={spotify} />);
+
 }
 
 export default Channel;

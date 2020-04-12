@@ -176,7 +176,7 @@ export default class SpotifyClient {
         this.deviceId = id;
         fetch('https://api.spotify.com/v1/me/player', {
           method: 'PUT',
-          body: JSON.stringify({ device_ids: [this.deviceId] }),
+          body: JSON.stringify({ device_ids: [this.deviceId], play: true }),
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${this.accessToken}`,

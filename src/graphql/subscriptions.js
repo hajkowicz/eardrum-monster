@@ -11,18 +11,18 @@ export const onCreateSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        songEvent {
+        songEvents {
           nextToken
         }
       }
     }
   }
 `;
-export const onCreateEmUser = /* GraphQL */ `
-  subscription OnCreateEmUser {
-    onCreateEMUser {
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
       userID
-      songEvent {
+      songEvents {
         items {
           id
           spotifyURI
@@ -35,11 +35,11 @@ export const onCreateEmUser = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateEmUser = /* GraphQL */ `
-  subscription OnUpdateEmUser {
-    onUpdateEMUser {
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
       userID
-      songEvent {
+      songEvents {
         items {
           id
           spotifyURI
@@ -52,11 +52,11 @@ export const onUpdateEmUser = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteEmUser = /* GraphQL */ `
-  subscription OnDeleteEmUser {
-    onDeleteEMUser {
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
       userID
-      songEvent {
+      songEvents {
         items {
           id
           spotifyURI

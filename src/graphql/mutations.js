@@ -1,14 +1,14 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createEmUser = /* GraphQL */ `
-  mutation CreateEmUser(
-    $input: CreateEMUserInput!
-    $condition: ModelEMUserConditionInput
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    createEMUser(input: $input, condition: $condition) {
+    createUser(input: $input, condition: $condition) {
       userID
-      songEvent {
+      songEvents {
         items {
           id
           spotifyURI
@@ -21,14 +21,14 @@ export const createEmUser = /* GraphQL */ `
     }
   }
 `;
-export const updateEmUser = /* GraphQL */ `
-  mutation UpdateEmUser(
-    $input: UpdateEMUserInput!
-    $condition: ModelEMUserConditionInput
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    updateEMUser(input: $input, condition: $condition) {
+    updateUser(input: $input, condition: $condition) {
       userID
-      songEvent {
+      songEvents {
         items {
           id
           spotifyURI
@@ -41,14 +41,14 @@ export const updateEmUser = /* GraphQL */ `
     }
   }
 `;
-export const deleteEmUser = /* GraphQL */ `
-  mutation DeleteEmUser(
-    $input: DeleteEMUserInput!
-    $condition: ModelEMUserConditionInput
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    deleteEMUser(input: $input, condition: $condition) {
+    deleteUser(input: $input, condition: $condition) {
       userID
-      songEvent {
+      songEvents {
         items {
           id
           spotifyURI
@@ -74,7 +74,7 @@ export const createSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        songEvent {
+        songEvents {
           nextToken
         }
       }
@@ -94,7 +94,7 @@ export const updateSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        songEvent {
+        songEvents {
           nextToken
         }
       }
@@ -114,7 +114,7 @@ export const deleteSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        songEvent {
+        songEvents {
           nextToken
         }
       }
