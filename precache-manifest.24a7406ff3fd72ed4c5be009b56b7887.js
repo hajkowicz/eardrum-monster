@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bff943c75a572b95b9474fa3081f5de7",
+    "revision": "32070610420c3e5dbd644645dedb7a54",
     "url": "/eardrum-monster/index.html"
   },
   {
-    "revision": "25699bbf9e1487d4e4b7",
+    "revision": "7198a15bed6be21e5ec8",
     "url": "/eardrum-monster/static/css/main.7222064d.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/eardrum-monster/static/js/2.b99a30d9.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "25699bbf9e1487d4e4b7",
-    "url": "/eardrum-monster/static/js/main.303ba272.chunk.js"
+    "revision": "7198a15bed6be21e5ec8",
+    "url": "/eardrum-monster/static/js/main.c63c9fe0.chunk.js"
   },
   {
     "revision": "25f06bc5488bc785fa15",
