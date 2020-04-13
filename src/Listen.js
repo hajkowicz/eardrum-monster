@@ -12,8 +12,8 @@ const ListView = ({ songs }) => (
   <>
     <h3>Recently played tracks</h3>
     {songs.map((song) => (
-      <div className="Listen-track">
-        <Track key={song.id} track={song.track} />
+      <div key={song.id} className="Listen-track">
+        <Track track={song.track} />
       </div>
     ))}
   </>

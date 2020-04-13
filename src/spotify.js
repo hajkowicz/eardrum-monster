@@ -98,21 +98,7 @@ export default class SpotifyClient {
    * resolves when play/pause/seek or after 60 seconds
    */
   onPlayerStateChanged(callback) {
-    this.player.addListener("player_state_changed", (state) => {
-      let newSong = SpotifyClient.getTrackFromState(state);
-      const newSongUri = SpotifyClient.getUriFromState(state);
-
-      if (newSongUri === this.currentSongUri) {
-        newSong = null;
-      }
-
-      this.currentSongUri = newSongUri;
-
-      callback({
-        newState: state,
-        newSong,
-      });
-    });
+    this.player.addListener("player_state_changed", callback);
   }
 
   prepareSpotifyClient() {
