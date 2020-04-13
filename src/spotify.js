@@ -13,8 +13,8 @@ export default class SpotifyClient {
    */
   fetchState() {
     if (!this.player) {
-      console.error('Player not initialized');
-      return Promise.reject('player not initialized');
+      console.error("Player not initialized");
+      return Promise.reject("player not initialized");
     }
 
     return this.player.getCurrentState();
@@ -30,7 +30,7 @@ export default class SpotifyClient {
 
     if (this.player) {
       // We're using the web player
-      this.fetchState().then(currentState => {
+      this.fetchState().then((currentState) => {
         const currentUri = SpotifyClient.getUriFromState(currentState);
         if (currentUri === newUri) {
           if (Math.abs(state.position - currentState.position) > 10000) {
@@ -73,22 +73,22 @@ export default class SpotifyClient {
     return fetch(
       `https://api.spotify.com/v1/me/player/play?device_id=${this.deviceId}`,
       {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({ uris: [uri] }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${this.accessToken}`,
         },
-      },
-    ).then(response => {
+      }
+    ).then((response) => {
       if (!response.ok) {
-        console.error('error playing uri');
+        console.error("error playing uri");
       }
       // DISPATCH HERE
-    //   return store.dispatch(
-    //     `channel/${channelActionTypes.SET_IS_PLAYING}`,
-    //     true,
-    //   );
+      //   return store.dispatch(
+      //     `channel/${channelActionTypes.SET_IS_PLAYING}`,
+      //     true,
+      //   );
     });
   }
 
@@ -98,7 +98,7 @@ export default class SpotifyClient {
    * resolves when play/pause/seek or after 60 seconds
    */
   onPlayerStateChanged(callback) {
-    this.player.addListener('player_state_changed', state => {
+    this.player.addListener("player_state_changed", (state) => {
       let newSong = SpotifyClient.getTrackFromState(state);
       const newSongUri = SpotifyClient.getUriFromState(state);
 
@@ -116,64 +116,64 @@ export default class SpotifyClient {
   }
 
   prepareSpotifyClient() {
-    return new Promise(resolve => {
-        if (this.player) {
-            resolve();
-            return;
-        }
+    return new Promise((resolve) => {
+      if (this.player) {
+        resolve();
+        return;
+      }
 
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            this.initializePlayer().then(resolve);
-        };
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        this.initializePlayer().then(resolve);
+      };
 
-        const sdkScript = document.createElement('script');
-        sdkScript.src = 'https://sdk.scdn.co/spotify-player.js';
-        document.body.appendChild(sdkScript);
+      const sdkScript = document.createElement("script");
+      sdkScript.src = "https://sdk.scdn.co/spotify-player.js";
+      document.body.appendChild(sdkScript);
     });
   }
 
   initializePlayer() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.player = new window.Spotify.Player({
-        name: 'eardrum.monster',
+        name: "eardrum.monster",
         getOAuthToken: this.fetchOauthToken.bind(this),
         volume: 0.1,
       });
 
-      this.player.on('initialization_error', ({ message }) => {
-        console.error('Failed to initialize', message);
+      this.player.on("initialization_error", ({ message }) => {
+        console.error("Failed to initialize", message);
       });
-      this.player.on('authentication_error', ({ message }) => {
-        console.error('Failed to authenticate', message);
+      this.player.on("authentication_error", ({ message }) => {
+        console.error("Failed to authenticate", message);
       });
-      this.player.on('account_error', ({ message }) => {
-        console.error('Failed to validate Spotify account', message);
+      this.player.on("account_error", ({ message }) => {
+        console.error("Failed to validate Spotify account", message);
       });
-      this.player.on('playback_error', ({ message }) => {
-        console.error('Failed to perform playback', message);
+      this.player.on("playback_error", ({ message }) => {
+        console.error("Failed to perform playback", message);
       });
-      this.player.on('ready', ({ device_id: id }) => {
+      this.player.on("ready", ({ device_id: id }) => {
         // Transfer playback to web player
         this.deviceId = id;
-        fetch('https://api.spotify.com/v1/me/player', {
-          method: 'PUT',
+        fetch("https://api.spotify.com/v1/me/player", {
+          method: "PUT",
           body: JSON.stringify({ device_ids: [this.deviceId], play: true }),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${this.accessToken}`,
           },
-        }).then(response => {
+        }).then((response) => {
           if (response.ok) {
             resolve();
           } else {
-            console.error('unable to transfer playback to web player');
+            console.error("unable to transfer playback to web player");
           }
         });
       });
 
-      this.player.connect().then(success => {
+      this.player.connect().then((success) => {
         if (!success) {
-          console.error('Failed to connect to the web player');
+          console.error("Failed to connect to the web player");
         }
       });
     });
@@ -189,7 +189,7 @@ export default class SpotifyClient {
       callback(this.accessToken);
     } else {
       // TODO: Fetch a new access token from the server
-      console.error('fetchOauthToken called more than once');
+      console.error("fetchOauthToken called more than once");
       callback(this.accessToken);
     }
   }
@@ -217,45 +217,47 @@ export default class SpotifyClient {
    */
   static isAd(state) {
     if (state && state.track_window && state.track_window.current_track) {
-      return state.track_window.current_track.type === 'ad';
+      return state.track_window.current_track.type === "ad";
     }
 
     return false;
   }
 
   fetchCurrentDeviceId() {
-    return fetch('https://api.spotify.com/v1/me/player', {
-      method: 'GET',
+    return fetch("https://api.spotify.com/v1/me/player", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${this.accessToken}`,
       },
-    }).then(response => {
-      if (!response.ok) {
-        console.error('error fetching device id');
-      }
-      if (response.status === 204) {
+    })
+      .then((response) => {
+        if (!response.ok) {
+          console.error("error fetching device id");
+        }
+        if (response.status === 204) {
           return {};
-      }
-      return response.json();
-    }).then(data => {
-      if (data.device && data.device.id) {
-        return data.device.id;
-      }
-      return null;
-    });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.device && data.device.id) {
+          return data.device.id;
+        }
+        return null;
+      });
   }
 
   fetchUserInfo() {
-    return fetch('https://api.spotify.com/v1/me', {
-      method: 'GET',
+    return fetch("https://api.spotify.com/v1/me", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${this.accessToken}`,
       },
-    }).then(response => {
+    }).then((response) => {
       if (!response.ok) {
-          throw(response);
+        throw response;
       }
       return response.json();
     });
