@@ -1,28 +1,52 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { graphqlOperation } from "aws-amplify";
+import { Connect } from "aws-amplify-react";
+import "./Home.css";
+
+import * as queries from "./graphql/queries";
+import * as subscriptions from "./graphql/subscriptions";
+
+const UserList = ({ users }) => (
+  <ul className="Home-userList">
+    {users.map((user) => (
+      <li key={user.userID}>
+        <Link className="Home-link" to={`/u/${user.userID}`}>
+          {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+          👂 /u/{user.userID}
+        </Link>
+      </li>
+    ))}
+  </ul>
+);
 
 function Home({ username }) {
   return (
-    <div>
-      <h2>Currently broadcasting:</h2>
-      <ul>
-        {username != null ? (
-          <li>
-            <Link className="App-link" to={`/u/${username}`}>
-              /u/{username}
-            </Link>
-          </li>
-        ) : null}
-        <li>
-          <Link to="/u/alta">/u/alta</Link>
-        </li>
-        <li>
-          <Link to="/u/hajkowicz">/u/hajkowicz</Link>
-        </li>
-        <li>
-          <Link to="/u/cilo">/u/cilo</Link>
-        </li>
-      </ul>
+    <div className="Home">
+      <Connect
+        query={graphqlOperation(queries.listUsers, {
+          limit: 50,
+        })}
+        subscription={graphqlOperation(subscriptions.onUpdateUser)}
+        onSubscriptionMsg={(prev, { onUserUpdate }) => {
+          // TODO update user list here
+          console.log("onUserUpdate", onUserUpdate);
+          return prev;
+        }}
+      >
+        {({ data, loading, error }) => {
+          if (error) return <h3>Error</h3>;
+          if (loading || !data) return <h3>Loading...</h3>;
+          const users = (data.listUsers && data.listUsers.items) ?? [];
+          return (
+            <>
+              {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+              <h2>😈 MONSTER LIST 😈</h2>
+              <UserList users={users} />
+            </>
+          );
+        }}
+      </Connect>
     </div>
   );
 }

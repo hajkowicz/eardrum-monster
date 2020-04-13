@@ -108,7 +108,7 @@ function Broadcast({ username, spotify }) {
   return (
     <div className="Broadcast">
       <div className="Broadcast-controls">
-        <label for="phToggle">Power hour mode enabled</label>
+        <label for="phToggle">Power hour mode</label>
         <Switch
           className="Broadcast-switch"
           id="phToggle"

@@ -1,0 +1,16 @@
+.Home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Home-userList {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.Home-link {
+  text-decoration: none;
+}
