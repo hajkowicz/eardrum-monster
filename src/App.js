@@ -25,7 +25,6 @@ function App() {
   React.useEffect(() => {
     if (accessToken) {
       const spotifyInst = new SpotifyClient(accessToken);
-      console.log(spotifyInst);
       setSpotify(spotifyInst);
       spotifyInst.fetchUserInfo().then(user => {
         setUsername(user.id);
@@ -36,7 +35,6 @@ function App() {
   }, [accessToken]);
 
   function clearAccessToken() {
-    console.log('clearing');
     window.localStorage.removeItem('spotifyAccessToken');
     window.localStorage.removeItem('spotifyUsername');
     setAccessTokenRaw(null);

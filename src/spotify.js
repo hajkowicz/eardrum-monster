@@ -234,11 +234,14 @@ export default class SpotifyClient {
       if (!response.ok) {
         console.error('error fetching device id');
       }
-      if (response.body.device && response.body.device.id) {
-          console.log('fetched device ID');
-        return response.body.device.id;
+      if (response.status === 204) {
+          return {};
       }
-
+      return response.json();
+    }).then(data => {
+      if (data.device && data.device.id) {
+        return data.device.id;
+      }
       return null;
     });
   }

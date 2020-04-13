@@ -50,7 +50,7 @@ function DevPublisher({hostUsername}) {
         position: 0,
         spotifyURI: tracks[(Math.random() * 100).toString()[0]],
     };
-    API.graphql(graphqlOperation(mutations.createSongEvent, {input: songEvent})).then(data => console.log(data));
+    API.graphql(graphqlOperation(mutations.createSongEvent, {input: songEvent})).then(data => console.log('Publishing: ', data));
 }, 5000);
 
 return () => {
@@ -75,12 +75,12 @@ const devPublisherEnabled = window.location.search.includes('DEV=1');
       {devPublisherEnabled && <DevPublisher hostUsername={hostUsername} />}
 
     <Connect
-    query={graphqlOperation(queries.listSongEvents, {filter: {userID: {eq: hostUsername}} })}
+    query={graphqlOperation(queries.songEventsByUserId, {userID: hostUsername, sortDirection: 'DESC'})}
     subscription={graphqlOperation(subscriptions.onCreateSongEvent, {userID: hostUsername})}
     onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
-        prev.listSongEvents.items.unshift(onCreateSongEvent);
-        if (prev.listSongEvents.items.length > 50) {
-            prev.listSongEvents.items.pop();
+        prev.songEventsByUserID.items.unshift(onCreateSongEvent);
+        if (prev.songEventsByUserID.items.length > 50) {
+            prev.songEventsByUserID.items.pop();
         }
         return prev;
     }}
@@ -88,7 +88,7 @@ const devPublisherEnabled = window.location.search.includes('DEV=1');
     {({ data, loading, error }) => {
         if (error) return (<h3>Error</h3>);
         if (loading || !data ) return (<h3>Loading...</h3>);
-        const songs = (data.listSongEvents && data.listSongEvents.items) ?? [];
+        const songs = (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
         return (
             <>
                 <PlaySong song={songs[0]} spotify={spotify} />
