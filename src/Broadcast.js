@@ -6,10 +6,13 @@ import SpotifyClient from './spotify.js';
 
 
 function Broadcast({username, spotify}) {
-    const [powerHourModeEnabled, setChecked] = React.useState(false);
+    const [phEnabled, setPhEnabled] = React.useState(false);
+    const [phCount, setPhCount] = React.useState(1);
     const [currentSong, setCurrentSong] = React.useState(null);
-    const powerHourModeEnabledRef = React.useRef(powerHourModeEnabled);
-    powerHourModeEnabledRef.current = powerHourModeEnabled;
+    const phEnabledRef = React.useRef(phEnabled);
+    const phCountRef = React.useRef(phCount);
+    phEnabledRef.current = phEnabled;
+    phCountRef.current = phCount;
     // Ensure the user is created on mount
     React.useEffect(() => {
         if (username) {
@@ -33,7 +36,7 @@ function Broadcast({username, spotify}) {
                             position: data.newState.position ?? 0,
                             spotifyURI: data.newSong.uri,
                         };
-                        API.graphql(graphqlOperation(mutations.createSongEvent, {input: songEvent})).then(data => console.log(data));
+                        API.graphql(graphqlOperation(mutations.createSongEvent, {input: songEvent}));
                         setCurrentSong(data.newSong.uri);
                     }
                 });
@@ -42,18 +45,20 @@ function Broadcast({username, spotify}) {
     }, [spotify, username]);
 
     React.useEffect(() => {
-        if(powerHourModeEnabled && spotify) {
+        if(phEnabled && spotify) {
             spotify.nextTrack();
             const timeoutID = setInterval(() => {
-                if(powerHourModeEnabledRef.current) {
+                if(phEnabledRef.current) {
+                    setPhCount(phCountRef.current + 1);
                     spotify.nextTrack();
                 } else {
                     clearInterval(timeoutID);
+                    setPhCount(1);
                 }
-            }, 5000);
+            }, 60000);
         }
 
-    }, [powerHourModeEnabled, powerHourModeEnabledRef, spotify]);
+    }, [phEnabled, phEnabledRef, spotify]);
 
     if (username == null) {
         return <div>Login to spotify to set the eardrum monster free</div>;
@@ -67,8 +72,9 @@ function Broadcast({username, spotify}) {
         <>
       <label>
         <span>Power hour mode enabled</span>
-        <Switch onChange={setChecked} checked={powerHourModeEnabled}/>
+        <Switch onChange={setPhEnabled} checked={phEnabled}/>
       </label>
+      {phEnabled && <h1>{phCount}</h1>}
       <div>broadcasting: {currentSong}</div>
       </>
     );
