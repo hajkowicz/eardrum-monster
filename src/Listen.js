@@ -1,20 +1,22 @@
 import React from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import { Connect } from "aws-amplify-react";
+import Track from "./Track.js";
+import "./Listen.css";
 
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
 import * as mutations from "./graphql/mutations";
 
 const ListView = ({ songs }) => (
-  <div>
-    <h3>Recently played</h3>
-    <ul>
-      {songs.map((song) => (
-        <li key={song.id}>{song.spotifyURI}</li>
-      ))}
-    </ul>
-  </div>
+  <>
+    <h3>Recently played tracks</h3>
+    {songs.map((song) => (
+      <div className="Listen-track">
+        <Track key={song.id} track={song.track} />
+      </div>
+    ))}
+  </>
 );
 
 function PlaySong({ song, spotify }) {
@@ -75,45 +77,50 @@ function DevPublisher({ hostUsername }) {
 function Listen({ username, hostUsername, spotify }) {
   const devPublisherEnabled = window.location.search.includes("DEV=1");
   return (
-    <>
-      {username != null ? (
-        <div>Listening to {hostUsername}'s channel!</div>
-      ) : (
-        <div>Login to spotify to set the eardrum monster free</div>
-      )}
+    <div className="Listen">
+      <div className="Listen-header">
+        {username != null ? (
+          <div>Listening to {hostUsername}'s channel!</div>
+        ) : (
+          <div>Login to spotify to set the eardrum monster free</div>
+        )}
 
-      {devPublisherEnabled && <DevPublisher hostUsername={hostUsername} />}
+        {devPublisherEnabled && <DevPublisher hostUsername={hostUsername} />}
+      </div>
 
-      <Connect
-        query={graphqlOperation(queries.songEventsByUserId, {
-          userID: hostUsername,
-          sortDirection: "DESC",
-        })}
-        subscription={graphqlOperation(subscriptions.onCreateSongEvent, {
-          userID: hostUsername,
-        })}
-        onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
-          prev.songEventsByUserID.items.unshift(onCreateSongEvent);
-          if (prev.songEventsByUserID.items.length > 50) {
-            prev.songEventsByUserID.items.pop();
-          }
-          return prev;
-        }}
-      >
-        {({ data, loading, error }) => {
-          if (error) return <h3>Error</h3>;
-          if (loading || !data) return <h3>Loading...</h3>;
-          const songs =
-            (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
-          return (
-            <>
-              <PlaySong song={songs[0]} spotify={spotify} />
-              <ListView songs={songs} />
-            </>
-          );
-        }}
-      </Connect>
-    </>
+      <div className="Listen-trackList">
+        <Connect
+          query={graphqlOperation(queries.songEventsByUserId, {
+            userID: hostUsername,
+            sortDirection: "DESC",
+            limit: 50,
+          })}
+          subscription={graphqlOperation(subscriptions.onCreateSongEvent, {
+            userID: hostUsername,
+          })}
+          onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
+            prev.songEventsByUserID.items.unshift(onCreateSongEvent);
+            if (prev.songEventsByUserID.items.length > 50) {
+              prev.songEventsByUserID.items.pop();
+            }
+            return prev;
+          }}
+        >
+          {({ data, loading, error }) => {
+            if (error) return <h3>Error</h3>;
+            if (loading || !data) return <h3>Loading...</h3>;
+            const songs =
+              (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
+            return (
+              <>
+                <PlaySong song={songs[0]} spotify={spotify} />
+                <ListView songs={songs} />
+              </>
+            );
+          }}
+        </Connect>
+      </div>
+    </div>
   );
 }
 

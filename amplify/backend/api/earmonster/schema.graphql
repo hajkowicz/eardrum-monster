@@ -1,5 +1,6 @@
 type User @model @key(fields: ["userID"]) {
   userID: String!
+  latestEvent: AWSTimestamp
   songEvents: [SongEvent] @connection(keyName: "byUser", fields: ["userID"])
 }
 
@@ -10,8 +11,19 @@ type SongEvent
   spotifyURI: String!
   timestamp: AWSTimestamp!
   position: Int!
+  track: Track @connection(fields: ["spotifyURI"])
   userID: String!
   user: User @connection(fields: ["userID"])
+}
+
+type Track @model @key(fields: ["uri"]) {
+  uri: String!
+  trackID: String
+  name: String
+  durationMs: Int
+  albumName: String
+  artistName: String
+  albumImg: String
 }
 
 type Subscription {

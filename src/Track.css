@@ -1,0 +1,22 @@
+.Track {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.Track-albumImg {
+  height: 100px;
+  width: 100px;
+}
+
+.Track-details {
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
+  flex-grow: 1;
+}

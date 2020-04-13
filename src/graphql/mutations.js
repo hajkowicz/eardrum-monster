@@ -8,6 +8,7 @@ export const createUser = /* GraphQL */ `
   ) {
     createUser(input: $input, condition: $condition) {
       userID
+      latestEvent
       songEvents {
         items {
           id
@@ -28,6 +29,7 @@ export const updateUser = /* GraphQL */ `
   ) {
     updateUser(input: $input, condition: $condition) {
       userID
+      latestEvent
       songEvents {
         items {
           id
@@ -48,6 +50,7 @@ export const deleteUser = /* GraphQL */ `
   ) {
     deleteUser(input: $input, condition: $condition) {
       userID
+      latestEvent
       songEvents {
         items {
           id
@@ -71,9 +74,19 @@ export const createSongEvent = /* GraphQL */ `
       spotifyURI
       timestamp
       position
+      track {
+        uri
+        trackID
+        name
+        durationMs
+        albumName
+        artistName
+        albumImg
+      }
       userID
       user {
         userID
+        latestEvent
         songEvents {
           nextToken
         }
@@ -91,9 +104,19 @@ export const updateSongEvent = /* GraphQL */ `
       spotifyURI
       timestamp
       position
+      track {
+        uri
+        trackID
+        name
+        durationMs
+        albumName
+        artistName
+        albumImg
+      }
       userID
       user {
         userID
+        latestEvent
         songEvents {
           nextToken
         }
@@ -111,13 +134,71 @@ export const deleteSongEvent = /* GraphQL */ `
       spotifyURI
       timestamp
       position
+      track {
+        uri
+        trackID
+        name
+        durationMs
+        albumName
+        artistName
+        albumImg
+      }
       userID
       user {
         userID
+        latestEvent
         songEvents {
           nextToken
         }
       }
+    }
+  }
+`;
+export const createTrack = /* GraphQL */ `
+  mutation CreateTrack(
+    $input: CreateTrackInput!
+    $condition: ModelTrackConditionInput
+  ) {
+    createTrack(input: $input, condition: $condition) {
+      uri
+      trackID
+      name
+      durationMs
+      albumName
+      artistName
+      albumImg
+    }
+  }
+`;
+export const updateTrack = /* GraphQL */ `
+  mutation UpdateTrack(
+    $input: UpdateTrackInput!
+    $condition: ModelTrackConditionInput
+  ) {
+    updateTrack(input: $input, condition: $condition) {
+      uri
+      trackID
+      name
+      durationMs
+      albumName
+      artistName
+      albumImg
+    }
+  }
+`;
+export const deleteTrack = /* GraphQL */ `
+  mutation DeleteTrack(
+    $input: DeleteTrackInput!
+    $condition: ModelTrackConditionInput
+  ) {
+    deleteTrack(input: $input, condition: $condition) {
+      uri
+      trackID
+      name
+      durationMs
+      albumName
+      artistName
+      albumImg
     }
   }
 `;

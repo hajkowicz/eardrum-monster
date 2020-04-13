@@ -3,11 +3,13 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 import Switch from "react-switch";
 import SpotifyClient from "./spotify.js";
+import Track from "./Track.js";
+import "./Broadcast.css";
 
 function Broadcast({ username, spotify }) {
   const [phEnabled, setPhEnabled] = React.useState(false);
   const [phCount, setPhCount] = React.useState(1);
-  const [currentSong, setCurrentSong] = React.useState(null);
+  const [currentTrack, setCurrentTrack] = React.useState(null);
   const phEnabledRef = React.useRef(phEnabled);
   const phCountRef = React.useRef(phCount);
   phEnabledRef.current = phEnabled;
@@ -29,23 +31,51 @@ function Broadcast({ username, spotify }) {
   React.useEffect(() => {
     if (spotify && username) {
       spotify.prepareSpotifyClient().then(() => {
-        spotify
-          .fetchState()
-          .then((currentState) =>
-            setCurrentSong(SpotifyClient.getUriFromState(currentState))
-          );
+        spotify.fetchState().then((currentState) => {
+          const track = SpotifyClient.getTrackFromState(currentState);
+          if (track == null) {
+            return;
+          }
+          const trackData = {
+            uri: track.uri,
+            trackID: track.id,
+            name: track.name,
+            durationMs: track.duration_ms,
+            albumName: track.album.name,
+            artistName: track.artists[0].name,
+            albumImg: track.album.images[0].url,
+          };
+          setCurrentTrack(SpotifyClient.getUriFromState(trackData));
+        });
         spotify.onPlayerStateChanged((data) => {
+          console.log(data.newState);
           if (data.newSong != null) {
+            const track = SpotifyClient.getTrackFromState(data.newState);
             const songEvent = {
               userID: username,
               timestamp: Math.floor(Date.now() / 100),
               position: data.newState.position ?? 0,
               spotifyURI: data.newSong.uri,
             };
+            const trackData = {
+              uri: track.uri,
+              trackID: track.id,
+              name: track.name,
+              durationMs: track.duration_ms,
+              albumName: track.album.name,
+              artistName: track.artists[0].name,
+              albumImg: track.album.images[0].url,
+            };
             API.graphql(
-              graphqlOperation(mutations.createSongEvent, { input: songEvent })
-            );
-            setCurrentSong(data.newSong.uri);
+              graphqlOperation(mutations.createTrack, { input: trackData })
+            ).then(() => {
+              API.graphql(
+                graphqlOperation(mutations.createSongEvent, {
+                  input: songEvent,
+                })
+              );
+            });
+            setCurrentTrack(trackData);
           }
         });
       });
@@ -76,14 +106,21 @@ function Broadcast({ username, spotify }) {
   }
 
   return (
-    <>
-      <label>
-        <span>Power hour mode enabled</span>
-        <Switch onChange={setPhEnabled} checked={phEnabled} />
-      </label>
+    <div className="Broadcast">
+      <div className="Broadcast-controls">
+        <label for="phToggle">Power hour mode enabled</label>
+        <Switch
+          className="Broadcast-switch"
+          id="phToggle"
+          onChange={setPhEnabled}
+          checked={phEnabled}
+        />
+      </div>
       {phEnabled && <h1>{phCount}</h1>}
-      <div>broadcasting: {currentSong}</div>
-    </>
+      <div className="Broadcast-currentTrack">
+        <Track track={currentTrack} />
+      </div>
+    </div>
   );
 }
 

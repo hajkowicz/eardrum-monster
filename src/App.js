@@ -59,14 +59,16 @@ function App() {
           accessToken={accessToken}
           username={username}
         />
-        <Switch>
-          <Route exact path="/">
-            <Home username={username} />
-          </Route>
-          <Route path="/u/:id">
-            <Channel username={username} spotify={spotify} />
-          </Route>
-        </Switch>
+        <div className="App-content">
+          <Switch>
+            <Route exact path="/">
+              <Home username={username} />
+            </Route>
+            <Route path="/u/:id">
+              <Channel username={username} spotify={spotify} />
+            </Route>
+          </Switch>
+        </div>
       </Router>
     </div>
   );

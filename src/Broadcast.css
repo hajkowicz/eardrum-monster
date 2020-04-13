@@ -1,0 +1,23 @@
+.Broadcast {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Broadcast-controls {
+  margin: auto;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Broadcast-currentTrack {
+  margin: auto;
+  width: 400px;
+}
+
+.Broadcast-switch {
+  margin-left: 10px;
+}

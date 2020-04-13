@@ -8,9 +8,19 @@ export const onCreateSongEvent = /* GraphQL */ `
       spotifyURI
       timestamp
       position
+      track {
+        uri
+        trackID
+        name
+        durationMs
+        albumName
+        artistName
+        albumImg
+      }
       userID
       user {
         userID
+        latestEvent
         songEvents {
           nextToken
         }
@@ -22,6 +32,7 @@ export const onCreateUser = /* GraphQL */ `
   subscription OnCreateUser {
     onCreateUser {
       userID
+      latestEvent
       songEvents {
         items {
           id
@@ -39,6 +50,7 @@ export const onUpdateUser = /* GraphQL */ `
   subscription OnUpdateUser {
     onUpdateUser {
       userID
+      latestEvent
       songEvents {
         items {
           id
@@ -56,6 +68,7 @@ export const onDeleteUser = /* GraphQL */ `
   subscription OnDeleteUser {
     onDeleteUser {
       userID
+      latestEvent
       songEvents {
         items {
           id
@@ -66,6 +79,45 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
+    }
+  }
+`;
+export const onCreateTrack = /* GraphQL */ `
+  subscription OnCreateTrack {
+    onCreateTrack {
+      uri
+      trackID
+      name
+      durationMs
+      albumName
+      artistName
+      albumImg
+    }
+  }
+`;
+export const onUpdateTrack = /* GraphQL */ `
+  subscription OnUpdateTrack {
+    onUpdateTrack {
+      uri
+      trackID
+      name
+      durationMs
+      albumName
+      artistName
+      albumImg
+    }
+  }
+`;
+export const onDeleteTrack = /* GraphQL */ `
+  subscription OnDeleteTrack {
+    onDeleteTrack {
+      uri
+      trackID
+      name
+      durationMs
+      albumName
+      artistName
+      albumImg
     }
   }
 `;
