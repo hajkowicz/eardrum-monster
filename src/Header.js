@@ -23,11 +23,11 @@ function Header({ accessToken, clearAccessToken, username }) {
       </Link>
       <img src={logo} className="App-logo" alt="logo" />
       {accessToken != null ? (
-        // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <>
           <Link className="App-link" to={`/u/${username}`}>
             /u/{username}
           </Link>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a className="App-link" href="#" onClick={handleLogout}>
             Logout
           </a>
