@@ -58,6 +58,10 @@ export default class SpotifyClient {
     return this.player.seek(ms);
   }
 
+  nextTrack() {
+    return this.player.nextTrack();
+  }
+
   /**
    * Play a song given a uri and seek to seconds (optional)
    * We have to call pause() initially because calling play with the same song errors out
