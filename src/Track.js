@@ -3,7 +3,6 @@ import "./Track.css";
 import logo from "./logo.png";
 
 function Track({ track }) {
-  console.log(track);
   return (
     <div className="Track">
       <img

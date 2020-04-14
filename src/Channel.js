@@ -2,15 +2,17 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import Listen from "./Listen.js";
 import Broadcast from "./Broadcast.js";
+import { AuthContext } from "./Auth.js";
 
-function Channel({ username, spotify }) {
+function Channel() {
+  const authInfo = React.useContext(AuthContext);
   const { id } = useParams();
 
-  if (username === id) {
-    return <Broadcast username={username} spotify={spotify} />;
+  if (authInfo?.username === id) {
+    return <Broadcast />;
   }
 
-  return <Listen username={username} hostUsername={id} spotify={spotify} />;
+  return <Listen hostUsername={id} />;
 }
 
 export default Channel;

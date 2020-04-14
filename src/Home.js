@@ -20,17 +20,16 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-function Home({ username }) {
+function Home() {
   return (
     <div className="Home">
       <Connect
         query={graphqlOperation(queries.listUsers, {
-          limit: 50,
+          limit: 20,
         })}
         subscription={graphqlOperation(subscriptions.onUpdateUser)}
         onSubscriptionMsg={(prev, { onUserUpdate }) => {
           // TODO update user list here
-          console.log("onUserUpdate", onUserUpdate);
           return prev;
         }}
       >

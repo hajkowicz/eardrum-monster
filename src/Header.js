@@ -1,19 +1,22 @@
 import React from "react";
 import logo from "./logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "./Auth.js";
 
-function Header({ accessToken, clearAccessToken, username }) {
-  const clientID = "d73f9dfa97c44b57ac7cefcc031c4df9";
-  const scopes =
-    "streaming+user-read-email+user-read-private+user-read-playback-state+user-modify-playback-state+user-read-currently-playing";
+function Header() {
+  const authInfo = React.useContext(AuthContext);
+  const location = useLocation();
+  const clientID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+  const scopes = process.env.REACT_APP_SPOTIFY_SCOPES;
   const redirectURI = encodeURIComponent(
     process.env.REACT_APP_SPOTIFY_REDIRECT_URI
   );
-  const authorizeURI = `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientID}&scope=${scopes}&redirect_uri=${redirectURI}`;
+  const currentPath = encodeURIComponent(location.pathname);
+  const authorizeURI = `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientID}&scope=${scopes}&redirect_uri=${redirectURI}&state=${currentPath}`;
 
   function handleLogout(e) {
     e.preventDefault();
-    clearAccessToken();
+    authInfo.logout();
   }
 
   return (
@@ -22,10 +25,10 @@ function Header({ accessToken, clearAccessToken, username }) {
         <h1>EARDRUM MONSTER</h1>
       </Link>
       <img src={logo} className="App-logo" alt="logo" />
-      {accessToken != null ? (
+      {authInfo != null ? (
         <>
-          <Link className="App-link" to={`/u/${username}`}>
-            /u/{username}
+          <Link className="App-link" to={`/u/${authInfo.username}`}>
+            /u/{authInfo.username}
           </Link>
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a className="App-link" href="#" onClick={handleLogout}>
