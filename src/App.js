@@ -4,7 +4,7 @@ import Header from "./Header.js";
 import Channel from "./Channel.js";
 import Home from "./Home.js";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { AuthProvider } from "./Auth.js";
+import { AuthProvider, AuthRedirect } from "./Auth.js";
 import { SpotifyProvider } from "./SpotifyContext.js";
 
 function App() {
@@ -18,6 +18,9 @@ function App() {
               <Switch>
                 <Route exact path="/">
                   <Home />
+                </Route>
+                <Route path="/auth/">
+                  <AuthRedirect />
                 </Route>
                 <Route path="/u/:id">
                   <Channel />

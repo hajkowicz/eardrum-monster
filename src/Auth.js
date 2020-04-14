@@ -1,16 +1,20 @@
 import React, { createContext } from "react";
 import { useLocalStorage } from "@rehooks/local-storage";
 import SpotifyAPI from "./SpotifyAPI.js";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 
 export const AuthContext = createContext();
 
-function handleAuthRedirect(setAuthInfo, history) {
-  if (window.location.hash) {
+export function AuthRedirect() {
+  return null;
+}
+
+function handleAuthRedirect(setAuthInfo, history, location) {
+  if (location.hash) {
     const params = {};
-    window.location.hash
+    location.hash
       .slice(1)
       .split("&")
       .map((param) => param.split("="))
@@ -18,8 +22,10 @@ function handleAuthRedirect(setAuthInfo, history) {
         params[tup[0]] = tup[1];
       });
     const accessToken = params.access_token;
-    window.location.hash = "";
-
+    if (accessToken == null) {
+      return;
+    }
+    location.hash = "";
     new SpotifyAPI(accessToken).fetchUserInfo().then((user) => {
       setAuthInfo({ accessToken, username: user.id });
       history.push(decodeURIComponent(params.state));
@@ -30,11 +36,12 @@ function handleAuthRedirect(setAuthInfo, history) {
 
 export function AuthProvider({ children }) {
   const [authInfo, setAuthInfo] = useLocalStorage("EMAuthInfo");
+  const location = useLocation();
   const history = useHistory();
 
   React.useEffect(() => {
-    handleAuthRedirect(setAuthInfo, history);
-  }, [setAuthInfo, history]);
+    handleAuthRedirect(setAuthInfo, history, location);
+  }, [setAuthInfo, history, location]);
 
   // Ensure the user is created uponLogin
   React.useEffect(() => {

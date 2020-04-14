@@ -10,19 +10,28 @@ export default function PowerHourControl() {
   const phCallbackRef = React.useRef();
 
   const phCallback = (timeoutID) => {
-    if (phEnabled && spotifyWebPlayer) {
-      setPhCount((c) => c + 1);
+    if (phEnabled) {
       spotifyWebPlayer.nextTrack();
+      setPhCount(phCount + 1);
     } else {
       clearInterval(timeoutID);
-      setPhCount(1);
     }
   };
   phCallbackRef.current = phCallback;
 
+  const handleChange = React.useCallback(
+    (enabled) => {
+      setPhEnabled(enabled);
+      if (enabled) {
+        setPhCount(1);
+        spotifyWebPlayer && spotifyWebPlayer.nextTrack();
+      }
+    },
+    [setPhEnabled, setPhCount, spotifyWebPlayer]
+  );
+
   React.useEffect(() => {
     if (phEnabled && spotifyWebPlayer) {
-      spotifyWebPlayer.nextTrack();
       const timeoutID = setInterval(() => {
         phCallbackRef.current(timeoutID);
       }, 60000);
@@ -39,7 +48,7 @@ export default function PowerHourControl() {
         <Switch
           className="Broadcast-switch"
           id="phToggle"
-          onChange={setPhEnabled}
+          onChange={handleChange}
           checked={phEnabled}
         />
       </div>
