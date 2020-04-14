@@ -29,6 +29,14 @@ function handleAuthRedirect(setAuthInfo, history, location) {
     new SpotifyAPI(accessToken).fetchUserInfo().then((user) => {
       setAuthInfo({ accessToken, username: user.id });
       history.push(decodeURIComponent(params.state));
+      // Ensure the user is created upon login
+      API.graphql(
+        graphqlOperation(mutations.createUser, {
+          input: {
+            userID: user.id,
+          },
+        })
+      ).catch(() => console.error("user creation failed"));
     });
   }
   return null;
@@ -42,19 +50,6 @@ export function AuthProvider({ children }) {
   React.useEffect(() => {
     handleAuthRedirect(setAuthInfo, history, location);
   }, [setAuthInfo, history, location]);
-
-  // Ensure the user is created uponLogin
-  React.useEffect(() => {
-    if (authInfo) {
-      API.graphql(
-        graphqlOperation(mutations.createUser, {
-          input: {
-            userID: authInfo.username,
-          },
-        })
-      ).catch(() => console.error("user creation failed"));
-    }
-  }, [authInfo]);
 
   const authContext = React.useMemo(() => {
     return authInfo != null
