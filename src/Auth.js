@@ -37,13 +37,14 @@ function handleAuthRedirect(setAuthInfo, history, location) {
     }
     location.hash = "";
     new SpotifyAPI(accessToken).fetchUserInfo().then((user) => {
-      setAuthInfo({ accessToken, username: user.id });
+      const spotifyIdentifier = user.display_name.split(" ")[0];
+      setAuthInfo({ accessToken, username: spotifyIdentifier });
       history.push(decodeURIComponent(params.state));
       // Ensure the user is created upon login
       API.graphql(
         graphqlOperation(mutations.createUser, {
           input: {
-            userID: user.id,
+            userID: spotifyIdentifier,
           },
         })
       ).catch(() => console.error("user creation failed"));
