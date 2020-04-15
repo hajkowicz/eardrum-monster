@@ -10,6 +10,7 @@ import Track from "./Track.js";
 import EQBars from "./EQBars.js";
 import { useHistory, useLocation } from "react-router-dom";
 import NoSleep from "nosleep.js";
+import { useLocalStorage } from "@rehooks/local-storage";
 
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
@@ -55,7 +56,10 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
   const history = useHistory();
-  const [isListening, setIsListening] = React.useState(false);
+  const [isListeningUsername, setIsListeningUsername] = useLocalStorage(
+    "EMisListeningUsername"
+  );
+  const isListening = hostUsername === isListeningUsername;
 
   React.useEffect(() => {
     if (isListening) {
@@ -68,17 +72,17 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
 
   React.useEffect(() => {
     if (authInfo && location.search.includes("join=true")) {
-      setIsListening(true);
+      setIsListeningUsername(hostUsername);
       history.replace(location.pathname);
     }
-  }, [authInfo, history, location]);
+  }, [authInfo, history, location, hostUsername, setIsListeningUsername]);
 
   const handleJoin = React.useCallback(
     (e) => {
       e.preventDefault();
-      setIsListening(true);
+      setIsListeningUsername(hostUsername);
     },
-    [setIsListening]
+    [setIsListeningUsername, hostUsername]
   );
 
   if (!isCurrentlyLive) {
