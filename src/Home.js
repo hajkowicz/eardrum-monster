@@ -8,16 +8,16 @@ import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
 
 const UserList = ({ users }) => (
-  <ul className="Home-userList">
+  <div className="Home-userList">
     {users.map((user) => (
-      <li key={user.userID}>
+      <div key={user.userID}>
         <Link className="Home-link" to={`/u/${user.userID}`}>
           {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
           👂 /u/{user.userID}
         </Link>
-      </li>
+      </div>
     ))}
-  </ul>
+  </div>
 );
 
 function Home() {
