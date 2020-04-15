@@ -44,26 +44,36 @@ function Broadcast() {
     return <div>Login to spotify to set the eardrum monster free</div>;
   }
 
-  if (spotifyWebPlayer == null || songHistory == null) {
-    return <div className="Broadcast">Initializing...</div>;
-  }
-
-  return (
-    <div className="Broadcast">
-      <PowerHourControl spotifyWebPlayer={spotifyWebPlayer} />
-      <h1>Connected.</h1>
-      <EQBars className="Broadcast-streaming" />
-      <p>Now Playing:</p>
-      <div className="Broadcast-currentTrack">
-        <BroadcastPublisher
-          currentTrack={currentTrack ?? songHistory[0]?.track}
-          onSongEvent={handleSongEvent}
-        />
-        <Track track={currentTrack ?? songHistory[0]?.track} />
-      </div>
+  const trackList =
+    songHistory == null ? null : (
       <div className="Broadcast-history">
         <TrackList songs={songHistory.slice(1)} />
       </div>
+    );
+
+  const player =
+    spotifyWebPlayer == null || songHistory == null ? (
+      <div>Initializing Spotify web player...</div>
+    ) : (
+      <>
+        <PowerHourControl />
+        <h1>Connected.</h1>
+        <EQBars className="Broadcast-streaming" />
+        <p>Now Playing:</p>
+        <div className="Broadcast-currentTrack">
+          <BroadcastPublisher
+            currentTrack={currentTrack ?? songHistory[0]?.track}
+            onSongEvent={handleSongEvent}
+          />
+          <Track track={currentTrack ?? songHistory[0]?.track} />
+        </div>
+      </>
+    );
+
+  return (
+    <div className="Broadcast">
+      {player}
+      {trackList}
     </div>
   );
 }

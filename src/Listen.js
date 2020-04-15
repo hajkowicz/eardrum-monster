@@ -30,15 +30,7 @@ function StartListening({ children, isListening, onClick }) {
         <EQBars className="Listen-EQ" />
       </div>
       <div className="Listen-startListeningContent">
-        <a
-          className="Listen-play"
-          href={
-            authInfo == null
-              ? getAuthorizeURI(location.pathname + "?join=true")
-              : location.pathname
-          }
-          onClick={authInfo ? onClick : null}
-        >
+        <a className="Listen-play" href={location.pathname} onClick={onClick}>
           {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
           👂
           <span className="Listen-playLink">
@@ -69,23 +61,19 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
     }
   }, [isListening]);
 
-  React.useEffect(() => {
-    if (authInfo && location.search.includes("join=true")) {
-      setIsListeningUsername(hostUsername);
-      history.replace(location.pathname);
-    }
-  }, [authInfo, history, location, hostUsername, setIsListeningUsername]);
-
   const handleJoin = React.useCallback(
     (e) => {
       e.preventDefault();
       setIsListeningUsername(hostUsername);
+      if (authInfo == null) {
+        window.location.href = getAuthorizeURI(location.pathname);
+      }
     },
-    [setIsListeningUsername, hostUsername]
+    [setIsListeningUsername, authInfo, location, hostUsername]
   );
 
   if (!isCurrentlyLive) {
-    return <div>User is offline</div>;
+    return <h1>{hostUsername} is offline</h1>;
   }
 
   return (
@@ -100,6 +88,7 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
 
 function Listen({ hostUsername }) {
   const location = useLocation();
+  const authInfo = React.useContext(AuthContext);
   const devPublisherEnabled = location.search.includes("DEV=1");
 
   return (
@@ -119,6 +108,10 @@ function Listen({ hostUsername }) {
             userID: hostUsername,
           })}
           onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
+            if (prev?.songEventsByUserID?.items == null) {
+              console.error("bad state in listen", prev);
+              return prev;
+            }
             prev.songEventsByUserID.items.unshift(onCreateSongEvent);
             if (prev.songEventsByUserID.items.length > 50) {
               prev.songEventsByUserID.items.pop();
@@ -132,7 +125,7 @@ function Listen({ hostUsername }) {
             const songs =
               (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
             if (songs.length === 0) {
-              return <div>No track history available</div>;
+              return <div>No track history for {hostUsername}</div>;
             }
             const isRecent =
               Math.floor(Date.now() / 1000) - songs[0].timestamp < 600; // 10 minutes in seconds

@@ -57,20 +57,26 @@ export function AuthProvider({ children }) {
   const [authInfo, setAuthInfo] = useLocalStorage("EMAuthInfo");
   const location = useLocation();
   const history = useHistory();
+  const username = authInfo?.username;
+  const accessToken = authInfo?.accessToken;
 
   React.useEffect(() => {
     handleAuthRedirect(setAuthInfo, history, location);
   }, [setAuthInfo, history, location]);
 
   const authContext = React.useMemo(() => {
-    return authInfo != null
+    return accessToken != null && username != null
       ? {
           accessToken: authInfo.accessToken,
           username: authInfo.username,
           logout: () => setAuthInfo(null),
+          retryAuth: () => {
+            setAuthInfo(null);
+            window.location.href = getAuthorizeURI(location.pathname);
+          },
         }
       : null;
-  }, [authInfo, setAuthInfo]);
+  }, [username, accessToken, setAuthInfo]);
 
   return (
     <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>

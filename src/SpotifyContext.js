@@ -20,7 +20,7 @@ export function SpotifyProvider({ children }) {
       SpotifyWebPlayer.createInstance(
         authInfo.accessToken,
         api,
-        authInfo.logout
+        authInfo.retryAuth
       ).then((inst) => {
         setWebPlayer(inst);
       });

@@ -64,7 +64,6 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
       spotifyWebPlayer.addStateChangeListener(changeListener);
 
       // get current state or transfer playback
-      console.log(spotifyWebPlayer.spotifyAPI);
       spotifyWebPlayer.spotifyAPI.fetchCurrentDeviceID().then((id) => {
         if (id === spotifyWebPlayer.getDeviceID()) {
           // Request current state

@@ -46,7 +46,7 @@ export default class SpotifyWebPlayer {
         resolve();
       };
       const sdkScript = document.createElement("script");
-      sdkScript.src = "https://sdk.scdn.co/spotify-player.js";
+      sdkScript.src = process.env.REACT_APP_SPOTIFY_WEB_PLAYER_SDK;
       document.body.appendChild(sdkScript);
     });
   }
