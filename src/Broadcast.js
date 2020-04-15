@@ -8,6 +8,7 @@ import "./Broadcast.css";
 import { AuthContext } from "./Auth.js";
 import BroadcastPublisher from "./BroadcastPublisher.js";
 import PowerHourControl from "./PowerHourControl.js";
+import EQBars from "./EQBars.js";
 
 function Broadcast() {
   const authInfo = React.useContext(AuthContext);
@@ -51,6 +52,7 @@ function Broadcast() {
     <div className="Broadcast">
       <PowerHourControl spotifyWebPlayer={spotifyWebPlayer} />
       <h1>Connected.</h1>
+      <EQBars className="Broadcast-streaming" />
       <p>Now Playing:</p>
       <div className="Broadcast-currentTrack">
         <BroadcastPublisher

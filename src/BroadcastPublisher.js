@@ -21,11 +21,17 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
   const authInfo = React.useContext(AuthContext);
   const spotifyWebPlayer = useSpotifyWebPlayer();
   const handlePlayerStateChangedRef = React.useRef(null);
+  const currentTrackRef = React.useRef(null);
+
+  // Cache currentTrack locally to prevent high frequency duplicate updates
+  if (currentTrackRef.current == null && currentTrack != null) {
+    currentTrackRef.current = currentTrack;
+  }
 
   const handlePlayerStateChanged = (newState) => {
     const newTrack = SpotifyWebPlayer.getTrackFromState(newState);
     // Avoid updating if track is the same
-    if (newTrack == null || newTrack.uri === currentTrack?.uri) {
+    if (newTrack == null || newTrack.uri === currentTrackRef?.current?.uri) {
       return;
     }
     const songEvent = {
@@ -43,6 +49,7 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
       artistName: newTrack.artists[0].name,
       albumImg: newTrack.album.images[0].url,
     };
+    currentTrackRef.current = trackData;
     onSongEvent(trackData, songEvent);
     publishTrack(trackData).then(() => publishSongEvent(songEvent));
   };
@@ -50,16 +57,30 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
 
   React.useEffect(() => {
     if (spotifyWebPlayer) {
-      // Request the initial state
-      spotifyWebPlayer
-        .fetchState()
-        .then((newState) => handlePlayerStateChangedRef.current(newState));
+      const changeListener = (newState) =>
+        handlePlayerStateChangedRef.current(newState);
+
       // Subscribe to future changes
-      spotifyWebPlayer.onPlayerStateChanged((newState) =>
-        handlePlayerStateChangedRef.current(newState)
-      );
-      // Transfer playback to the web player
-      spotifyWebPlayer.transferPlayback();
+      spotifyWebPlayer.addStateChangeListener(changeListener);
+
+      // get current state or transfer playback
+      console.log(spotifyWebPlayer.spotifyAPI);
+      spotifyWebPlayer.spotifyAPI.fetchCurrentDeviceID().then((id) => {
+        if (id === spotifyWebPlayer.getDeviceID()) {
+          // Request current state
+          spotifyWebPlayer.fetchState().then((newState) => {
+            handlePlayerStateChangedRef.current(newState);
+          });
+        } else {
+          // Transfer playback to the web player
+          spotifyWebPlayer.transferPlayback();
+        }
+      });
+
+      // Remove the listener on unMount
+      return () => {
+        spotifyWebPlayer.removeStateChangeListener(changeListener);
+      };
     }
   }, [spotifyWebPlayer, handlePlayerStateChangedRef]);
 

@@ -20,8 +20,12 @@ export default class SpotifyWebPlayer {
     return this.player.nextTrack();
   }
 
-  onPlayerStateChanged(callback) {
+  addStateChangeListener(callback) {
     this.player.addListener("player_state_changed", callback);
+  }
+
+  removeStateChangeListener(callback) {
+    this.player.removeListener("player_state_changed", callback);
   }
 
   getDeviceID() {

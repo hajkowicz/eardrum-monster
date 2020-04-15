@@ -19,3 +19,8 @@
 .Broadcast-switch {
   margin-left: 10px;
 }
+
+.Broadcast-streaming {
+  height: 100px;
+  width: 200px;
+}

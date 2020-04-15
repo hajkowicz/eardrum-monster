@@ -33,7 +33,7 @@ export default class SpotifyAPI {
       });
   }
 
-  fetchCurrentDeviceId() {
+  fetchCurrentDeviceID() {
     return fetch("https://api.spotify.com/v1/me/player", {
       method: "GET",
       headers: {
