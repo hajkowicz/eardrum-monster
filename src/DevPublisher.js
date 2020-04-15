@@ -19,7 +19,7 @@ export default function DevPublisher({ hostUsername }) {
       ];
       const songEvent = {
         userID: hostUsername,
-        timestamp: Math.floor(Date.now() / 100),
+        timestamp: Math.floor(Date.now() / 1000),
         position: 0,
         spotifyURI: tracks[(Math.random() * 100).toString()[0]],
       };
