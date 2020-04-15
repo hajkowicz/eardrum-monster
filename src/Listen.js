@@ -59,13 +59,12 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
   const [isListeningUsername, setIsListeningUsername] = useLocalStorage(
     "EMisListeningUsername"
   );
-  const isListening = hostUsername === isListeningUsername;
+  const isListening = authInfo && hostUsername === isListeningUsername;
 
   React.useEffect(() => {
     if (isListening) {
       const noSleep = new NoSleep();
       noSleep.enable();
-      console.log("enabling");
       return () => noSleep.disable();
     }
   }, [isListening]);

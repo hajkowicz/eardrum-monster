@@ -10,6 +10,12 @@
   width: 400px;
 }
 
+@media only screen and (max-width: 600px) {
+  .Track {
+    max-width: 300px;
+  }
+}
+
 .Track-albumImg {
   height: 100px;
   width: 100px;

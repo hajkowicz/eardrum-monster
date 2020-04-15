@@ -1,12 +1,13 @@
 import React from "react";
 import logo from "./logo.png";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import { AuthContext, getAuthorizeURI } from "./Auth.js";
 
 function Header() {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
   const authorizeURI = getAuthorizeURI(location.pathname);
+  const match = useRouteMatch("/u/" + authInfo?.username);
 
   function handleLogout(e) {
     e.preventDefault();
@@ -21,17 +22,20 @@ function Header() {
       <img src={logo} className="App-logo" alt="logo" />
       {authInfo != null ? (
         <>
-          <Link className="App-link" to={`/u/${authInfo.username}`}>
-            /u/{authInfo.username}
-          </Link>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a className="App-link" href="#" onClick={handleLogout}>
-            Logout
-          </a>
+          {match == null ? (
+            <Link className="App-link" to={`/u/${authInfo.username}`}>
+              Broadcast
+            </Link>
+          ) : (
+            /* eslint-disable-next-line jsx-a11y/anchor-is-valid */
+            <a className="App-link" href="#" onClick={handleLogout}>
+              Logout
+            </a>
+          )}
         </>
       ) : (
         <a className="App-link" href={authorizeURI}>
-          Login with Spotify
+          Login
         </a>
       )}
     </header>

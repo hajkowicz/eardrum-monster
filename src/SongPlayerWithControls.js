@@ -5,8 +5,10 @@ import useSpotifyWebPlayer from "./useSpotifyWebPlayer.js";
 export default function SongPlayerWithControls({ song }) {
   const spotifyAPI = useSpotifyAPI();
   const spotifyWebPlayer = useSpotifyWebPlayer();
-  const [activeDeviceID, setActiveDeviceID] = React.useState(null);
   const [devices, setDevices] = React.useState(null);
+  const [activeDeviceID, setActiveDeviceID] = React.useState(null);
+  const activeDeviceIDRef = React.useRef(null);
+  activeDeviceIDRef.current = activeDeviceID;
 
   const eardrumPlayer = spotifyWebPlayer && {
     id: spotifyWebPlayer.getDeviceID(),
@@ -42,13 +44,15 @@ export default function SongPlayerWithControls({ song }) {
   }, [spotifyAPI, devices, spotifyWebPlayer]);
 
   React.useEffect(() => {
-    activeDeviceID &&
+    activeDeviceIDRef.current &&
       spotifyAPI &&
-      spotifyAPI.play(song.spotifyURI, activeDeviceID);
-  }, [spotifyAPI, activeDeviceID, song]);
+      spotifyAPI.play(song.spotifyURI, activeDeviceIDRef.current);
+  }, [spotifyAPI, song]);
 
   const handleChange = (event) => {
-    setActiveDeviceID(event.target.value);
+    const deviceID = event.target.value;
+    spotifyAPI.transferPlayback(deviceID);
+    setActiveDeviceID(deviceID);
   };
 
   return (
