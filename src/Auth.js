@@ -67,8 +67,8 @@ export function AuthProvider({ children }) {
   const authContext = React.useMemo(() => {
     return accessToken != null && username != null
       ? {
-          accessToken: authInfo.accessToken,
-          username: authInfo.username,
+          accessToken: accessToken,
+          username: username,
           logout: () => setAuthInfo(null),
           retryAuth: () => {
             setAuthInfo(null);
@@ -76,7 +76,7 @@ export function AuthProvider({ children }) {
           },
         }
       : null;
-  }, [username, accessToken, setAuthInfo]);
+  }, [username, accessToken, setAuthInfo, location]);
 
   return (
     <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>

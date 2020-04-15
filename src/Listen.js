@@ -8,7 +8,7 @@ import SongPlayerWithControls from "./SongPlayerWithControls.js";
 import TrackList from "./TrackList.js";
 import Track from "./Track.js";
 import EQBars from "./EQBars.js";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import NoSleep from "nosleep.js";
 import { useLocalStorage } from "@rehooks/local-storage";
 
@@ -47,7 +47,6 @@ function StartListening({ children, isListening, onClick }) {
 function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
-  const history = useHistory();
   const [isListeningUsername, setIsListeningUsername] = useLocalStorage(
     "EMisListeningUsername"
   );
@@ -88,7 +87,6 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
 
 function Listen({ hostUsername }) {
   const location = useLocation();
-  const authInfo = React.useContext(AuthContext);
   const devPublisherEnabled = location.search.includes("DEV=1");
 
   return (
