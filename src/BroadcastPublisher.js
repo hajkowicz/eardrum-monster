@@ -30,7 +30,7 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
     }
     const songEvent = {
       userID: authInfo.username,
-      timestamp: Math.floor(Date.now() / 100),
+      timestamp: Math.floor(Date.now() / 1000),
       position: Math.floor(newState.position ?? 0),
       spotifyURI: newTrack.uri,
     };

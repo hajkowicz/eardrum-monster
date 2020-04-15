@@ -52,12 +52,15 @@ export default function SongPlayerWithControls({ song }) {
   };
 
   return (
-    <select value={activeDeviceID ?? ""} onChange={handleChange}>
-      {deviceList?.map((device) => (
-        <option key={device.id} value={device.id}>
-          {device.name}
-        </option>
-      ))}
-    </select>
+    <div className="Listen-controls">
+      <div>Playing on device:</div>
+      <select value={activeDeviceID ?? ""} onChange={handleChange}>
+        {deviceList?.map((device) => (
+          <option key={device.id} value={device.id}>
+            {device.name}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

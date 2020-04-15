@@ -11,6 +11,16 @@ export function AuthRedirect() {
   return null;
 }
 
+export function getAuthorizeURI(pathname) {
+  const clientID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+  const scopes = process.env.REACT_APP_SPOTIFY_SCOPES;
+  const redirectURI = encodeURIComponent(
+    process.env.REACT_APP_SPOTIFY_REDIRECT_URI
+  );
+  const currentPath = encodeURIComponent(pathname);
+  return `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientID}&scope=${scopes}&redirect_uri=${redirectURI}&state=${currentPath}`;
+}
+
 function handleAuthRedirect(setAuthInfo, history, location) {
   if (location.hash) {
     const params = {};

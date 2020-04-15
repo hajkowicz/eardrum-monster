@@ -1,18 +1,12 @@
 import React from "react";
 import logo from "./logo.png";
 import { Link, useLocation } from "react-router-dom";
-import { AuthContext } from "./Auth.js";
+import { AuthContext, getAuthorizeURI } from "./Auth.js";
 
 function Header() {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
-  const clientID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-  const scopes = process.env.REACT_APP_SPOTIFY_SCOPES;
-  const redirectURI = encodeURIComponent(
-    process.env.REACT_APP_SPOTIFY_REDIRECT_URI
-  );
-  const currentPath = encodeURIComponent(location.pathname);
-  const authorizeURI = `https://accounts.spotify.com/authorize?response_type=token&client_id=${clientID}&scope=${scopes}&redirect_uri=${redirectURI}&state=${currentPath}`;
+  const authorizeURI = getAuthorizeURI(location.pathname);
 
   function handleLogout(e) {
     e.preventDefault();
