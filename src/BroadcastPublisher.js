@@ -59,26 +59,31 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
     if (spotifyWebPlayer) {
       const changeListener = (newState) =>
         handlePlayerStateChangedRef.current(newState);
-
+      const initFunc = {
+        current: (id) => {
+          if (id === spotifyWebPlayer.getDeviceID()) {
+            // Request current state
+            spotifyWebPlayer.fetchState().then((newState) => {
+              handlePlayerStateChangedRef.current(newState);
+            });
+          } else {
+            // Transfer playback to the web player
+            spotifyWebPlayer.transferPlayback();
+          }
+        },
+      };
       // Subscribe to future changes
       spotifyWebPlayer.addStateChangeListener(changeListener);
 
       // get current state or transfer playback
       spotifyWebPlayer.spotifyAPI.fetchCurrentDeviceID().then((id) => {
-        if (id === spotifyWebPlayer.getDeviceID()) {
-          // Request current state
-          spotifyWebPlayer.fetchState().then((newState) => {
-            handlePlayerStateChangedRef.current(newState);
-          });
-        } else {
-          // Transfer playback to the web player
-          spotifyWebPlayer.transferPlayback();
-        }
+        initFunc.current(id);
       });
 
       // Remove the listener on unMount
       return () => {
         spotifyWebPlayer.removeStateChangeListener(changeListener);
+        initFunc.current = () => {};
       };
     }
   }, [spotifyWebPlayer, handlePlayerStateChangedRef]);

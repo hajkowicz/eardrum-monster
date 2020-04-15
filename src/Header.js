@@ -35,7 +35,7 @@ function Header() {
         </>
       ) : (
         <a className="App-link" href={authorizeURI}>
-          Login
+          Broadcast
         </a>
       )}
     </header>

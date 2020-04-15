@@ -72,11 +72,11 @@ export function AuthProvider({ children }) {
           logout: () => setAuthInfo(null),
           retryAuth: () => {
             setAuthInfo(null);
-            window.location.href = getAuthorizeURI(location.pathname);
+            window.location.href = getAuthorizeURI(window.location.pathname);
           },
         }
       : null;
-  }, [username, accessToken, setAuthInfo, location]);
+  }, [username, accessToken, setAuthInfo]);
 
   return (
     <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
