@@ -25,7 +25,7 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
   const handlePlayerStateChanged = (newState) => {
     const newTrack = SpotifyWebPlayer.getTrackFromState(newState);
     // Avoid updating if track is the same
-    if (newTrack == null || newTrack.uri === currentTrack.uri) {
+    if (newTrack == null || newTrack.uri === currentTrack?.uri) {
       return;
     }
     const songEvent = {
