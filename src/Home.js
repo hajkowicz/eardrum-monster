@@ -10,12 +10,10 @@ import * as subscriptions from "./graphql/subscriptions";
 const UserList = ({ users }) => (
   <div className="Home-userList">
     {users.map((user) => (
-      <div key={user.userID}>
-        <Link className="Home-link" to={`/u/${user.userID}`}>
-          {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-          👂 /u/{user.userID}
-        </Link>
-      </div>
+      <Link key={user.userID} className="Home-link" to={`/u/${user.userID}`}>
+        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+        👂 /u/{user.userID}
+      </Link>
     ))}
   </div>
 );
@@ -25,7 +23,7 @@ function Home() {
     <div className="Home">
       <Connect
         query={graphqlOperation(queries.listUsers, {
-          limit: 20,
+          limit: 50,
         })}
         subscription={graphqlOperation(subscriptions.onUpdateUser)}
         onSubscriptionMsg={(prev, { onUserUpdate }) => {
@@ -40,7 +38,7 @@ function Home() {
           return (
             <>
               {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-              <h2>😈 MONSTER LIST 😈</h2>
+              <h2 className="Home-title">😈 MONSTER LIST 😈</h2>
               <UserList users={users} />
             </>
           );

@@ -13,4 +13,12 @@
 
 .Home-link {
   text-decoration: none;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  display: block;
+  color: #282c34;
+}
+
+.Home-title {
+  color: #282c34;
 }
