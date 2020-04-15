@@ -8,6 +8,7 @@ export default function SongPlayerWithControls({ song }) {
   const [devices, setDevices] = React.useState(null);
   const [activeDeviceID, setActiveDeviceID] = React.useState(null);
   const activeDeviceIDRef = React.useRef(null);
+  const [isReady, setIsReady] = React.useState(false);
   activeDeviceIDRef.current = activeDeviceID;
 
   const eardrumPlayer = spotifyWebPlayer && {
@@ -40,14 +41,16 @@ export default function SongPlayerWithControls({ song }) {
       } else if (spotifyWebPlayer) {
         setActiveDeviceID(spotifyWebPlayer.getDeviceID());
       }
+      setIsReady(true);
     }
   }, [spotifyAPI, devices, spotifyWebPlayer]);
 
   React.useEffect(() => {
     activeDeviceIDRef.current &&
+      isReady &&
       spotifyAPI &&
       spotifyAPI.play(song.spotifyURI, activeDeviceIDRef.current);
-  }, [spotifyAPI, song]);
+  }, [spotifyAPI, song, isReady]);
 
   const handleChange = (event) => {
     const deviceID = event.target.value;
