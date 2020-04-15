@@ -62,8 +62,10 @@
 
 .Listen-play {
   font-size: 2em;
+  text-decoration: none;
 }
 
 .Listen-playLink {
   color: #282c34;
+  text-decoration: underline;
 }
