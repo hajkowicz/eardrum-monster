@@ -54,10 +54,10 @@ function Broadcast() {
       <p>Now Playing:</p>
       <div className="Broadcast-currentTrack">
         <BroadcastPublisher
-          currentTrack={currentTrack ?? songHistory[0].track}
+          currentTrack={currentTrack ?? songHistory[0]?.track}
           onSongEvent={handleSongEvent}
         />
-        <Track track={currentTrack ?? songHistory[0].track} />
+        <Track track={currentTrack ?? songHistory[0]?.track} />
       </div>
       <div className="Broadcast-history">
         <TrackList songs={songHistory.slice(1)} />
