@@ -19,6 +19,7 @@ const UserList = ({ users }) => (
 );
 
 function Home() {
+  /* eslint-disable jsx-a11y/accessible-emoji */
   return (
     <div className="Home">
       <div className="Home-content">
