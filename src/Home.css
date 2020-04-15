@@ -1,8 +1,14 @@
 .Home {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: top;
+}
+
+@media only screen and (max-width: 600px) {
+  .Home {
+    flex-direction: column;
+  }
 }
 
 .Home-userList {
@@ -21,4 +27,17 @@
 
 .Home-title {
   color: #282c34;
+}
+
+.Home-content {
+  margin-left: 1em;
+  margin-right: 1em;
+  flex-basis: 60%;
+  margin-bottom: 20px;
+}
+
+.Home-list {
+  margin-left: 1em;
+  margin-right: 1em;
+  flex-basis: 40%;
 }
