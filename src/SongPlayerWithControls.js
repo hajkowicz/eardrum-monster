@@ -37,11 +37,11 @@ export default function SongPlayerWithControls({ song }) {
       const activeDevice = devices.find((device) => device.is_active === true);
       if (activeDevice) {
         setActiveDeviceID(activeDevice.id);
-        return;
+        setIsReady(true);
       } else if (spotifyWebPlayer) {
         setActiveDeviceID(spotifyWebPlayer.getDeviceID());
+        setIsReady(true);
       }
-      setIsReady(true);
     }
   }, [spotifyAPI, devices, spotifyWebPlayer]);
 
