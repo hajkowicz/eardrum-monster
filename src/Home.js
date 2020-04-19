@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { graphqlOperation } from "aws-amplify";
 import { Connect } from "aws-amplify-react";
 import "./Home.css";
-
+import { AuthContext } from "./Auth.js";
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
 
@@ -19,6 +19,7 @@ const UserList = ({ users }) => (
 );
 
 function Home() {
+  const authInfo = React.useContext(AuthContext);
   /* eslint-disable jsx-a11y/accessible-emoji */
   return (
     <div className="Home">
@@ -29,8 +30,19 @@ function Home() {
           </em>
         </div>
         <h1>How do I use it?</h1>
-        <div>1. Click "Broadcast" at the top ☝️</div>
-        <div>2. Share the URL with your friends️</div>
+        {authInfo != null ? (
+          <>
+            <div>1. Click "Broadcast" at the top ☝️</div>
+            <div>2. Share the URL with your friends️</div>
+          </>
+        ) : (
+          <>
+            <div>1. Click "Login" at the top ☝️</div>
+            <div>2. Click "Broadcast" at the top ☝️</div>
+            <div>3. Share the URL with your friends️</div>
+          </>
+        )}
+
         <h1>Its great for:</h1>
         <div>
           ✅ Streamers who want to let their viewers sync up their music with
