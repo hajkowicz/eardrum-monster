@@ -15,7 +15,7 @@ export function SpotifyProvider({ children }) {
       setWebPlayer(null);
       setSpotifyAPI(null);
     } else {
-      const api = new SpotifyAPI(authInfo.accessToken, authInfo.logout);
+      const api = new SpotifyAPI(authInfo.accessToken, authInfo.retryAuth);
       setSpotifyAPI(api);
       SpotifyWebPlayer.createInstance(
         authInfo.accessToken,

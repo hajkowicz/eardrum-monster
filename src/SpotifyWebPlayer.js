@@ -51,10 +51,11 @@ export default class SpotifyWebPlayer {
     });
   }
 
-  static initializePlayer(accessToken, onUnauthorized) {
+  static initializePlayer(spotifyAPI, accessToken, onUnauthorized) {
     // Update accessToken singleton so existing players can access it;
     SpotifyWebPlayer.__accessToken = accessToken;
     SpotifyWebPlayer.__onUnauthorized = onUnauthorized;
+    SpotifyWebPlayer.__spotifyAPI = spotifyAPI;
 
     return new Promise((resolve) => {
       if (window.EMglobalPlayerInstance) {
@@ -64,7 +65,10 @@ export default class SpotifyWebPlayer {
 
       const player = new window.Spotify.Player({
         name: "eardrum.monster",
-        getOAuthToken: (cb) => cb(SpotifyWebPlayer.__accessToken),
+        getOAuthToken: (cb) => {
+          cb(SpotifyWebPlayer.__accessToken);
+          SpotifyWebPlayer.__spotifyAPI.fetchUserInfo();
+        },
         volume: 0.1,
       });
 
@@ -76,7 +80,7 @@ export default class SpotifyWebPlayer {
         SpotifyWebPlayer.__onUnauthorized();
       });
       player.on("account_error", ({ message }) => {
-        console.error("Failed to validate Spotify account", message);
+        console.error("Spotify premium required", message);
       });
       player.on("playback_error", ({ message }) => {
         console.error("Failed to perform playback", message);
@@ -98,7 +102,11 @@ export default class SpotifyWebPlayer {
   static createInstance(accessToken, spotifyAPI, onUnauthorized) {
     return SpotifyWebPlayer.inject()
       .then(() =>
-        SpotifyWebPlayer.initializePlayer(accessToken, onUnauthorized)
+        SpotifyWebPlayer.initializePlayer(
+          spotifyAPI,
+          accessToken,
+          onUnauthorized
+        )
       )
       .then((player) => new SpotifyWebPlayer(player, spotifyAPI));
   }
