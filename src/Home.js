@@ -12,7 +12,6 @@ const UserList = ({ users }) => (
   <div className="Home-userList">
     {users.map((user) => (
       <Link key={user.userID} className="Home-link" to={`/u/${user.userID}`}>
-        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
         <EQBars
           className={"Home-userOnlineIcon2" + (user.isOnline ? "" : " hidden")}
         />{" "}
@@ -21,6 +20,7 @@ const UserList = ({ users }) => (
           className="Home-userOnlineIcon"
           style={{ opacity: user.isOnline ? 1 : 0 }}
         >
+          {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
           👂
         </span>
       </Link>
@@ -34,8 +34,8 @@ function Home() {
   return (
     <div className="Home">
       <div className="Home-list">
-        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
         <h2 className="Home-title">
+          {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
           😈{"\u00a0"}MONSTER{"\u00a0"}LIST{"\u00a0"}😈
         </h2>
         <Connect
