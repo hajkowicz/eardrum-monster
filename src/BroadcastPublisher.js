@@ -39,6 +39,7 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
       timestamp: Math.floor(Date.now() / 1000),
       position: Math.floor(newState.position ?? 0),
       spotifyURI: newTrack.uri,
+      type: "NEW_SONG",
     };
     const trackData = {
       uri: newTrack.uri,

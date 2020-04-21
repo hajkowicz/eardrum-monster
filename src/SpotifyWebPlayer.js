@@ -114,8 +114,4 @@ export default class SpotifyWebPlayer {
   static getTrackFromState(state) {
     return state?.track_window?.current_track;
   }
-
-  static isAd(state) {
-    return state?.track_window?.current_track?.type === "ad";
-  }
 }

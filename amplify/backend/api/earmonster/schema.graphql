@@ -1,4 +1,7 @@
-type User @model @key(fields: ["userID"]) {
+type User
+  @model
+  @key(fields: ["userID"])
+{
   userID: String!
   latestEvent: AWSTimestamp
   songEvents: [SongEvent] @connection(keyName: "byUser", fields: ["userID"])
@@ -6,7 +9,8 @@ type User @model @key(fields: ["userID"]) {
 
 type SongEvent
   @model(subscriptions: null)
-  @key(name: "byUser", fields: ["userID", "timestamp"], queryField: "songEventsByUserID") {
+  @key(name: "byUser", fields: ["userID", "timestamp"], queryField: "songEventsByUserID")
+  @key(name: "byType", fields: ["type", "timestamp"], queryField: "songEventsByType") {
   id: ID!
   spotifyURI: String!
   timestamp: AWSTimestamp!
@@ -14,6 +18,7 @@ type SongEvent
   track: Track @connection(fields: ["spotifyURI"])
   userID: String!
   user: User @connection(fields: ["userID"])
+  type: String!
 }
 
 type Track @model @key(fields: ["uri"]) {

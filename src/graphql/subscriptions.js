@@ -25,6 +25,7 @@ export const onCreateSongEvent = /* GraphQL */ `
           nextToken
         }
       }
+      type
     }
   }
 `;
@@ -40,6 +41,7 @@ export const onCreateUser = /* GraphQL */ `
           timestamp
           position
           userID
+          type
         }
         nextToken
       }
@@ -58,6 +60,7 @@ export const onUpdateUser = /* GraphQL */ `
           timestamp
           position
           userID
+          type
         }
         nextToken
       }
@@ -76,6 +79,7 @@ export const onDeleteUser = /* GraphQL */ `
           timestamp
           position
           userID
+          type
         }
         nextToken
       }

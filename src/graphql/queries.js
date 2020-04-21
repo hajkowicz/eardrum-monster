@@ -13,6 +13,7 @@ export const getUser = /* GraphQL */ `
           timestamp
           position
           userID
+          type
         }
         nextToken
       }
@@ -69,6 +70,7 @@ export const getSongEvent = /* GraphQL */ `
           nextToken
         }
       }
+      type
     }
   }
 `;
@@ -98,6 +100,7 @@ export const listSongEvents = /* GraphQL */ `
           userID
           latestEvent
         }
+        type
       }
       nextToken
     }
@@ -180,6 +183,49 @@ export const songEventsByUserId = /* GraphQL */ `
           userID
           latestEvent
         }
+        type
+      }
+      nextToken
+    }
+  }
+`;
+export const songEventsByType = /* GraphQL */ `
+  query SongEventsByType(
+    $type: String
+    $timestamp: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelSongEventFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    songEventsByType(
+      type: $type
+      timestamp: $timestamp
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        spotifyURI
+        timestamp
+        position
+        track {
+          uri
+          trackID
+          name
+          durationMs
+          albumName
+          artistName
+          albumImg
+        }
+        userID
+        user {
+          userID
+          latestEvent
+        }
+        type
       }
       nextToken
     }

@@ -23,6 +23,50 @@ function Home() {
   /* eslint-disable jsx-a11y/accessible-emoji */
   return (
     <div className="Home">
+      <div className="Home-list">
+        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+        <h2 className="Home-title">
+          😈{"\u00a0"}MONSTER{"\u00a0"}LIST{"\u00a0"}😈
+        </h2>
+        <Connect
+          query={graphqlOperation(queries.songEventsByType, {
+            type: "NEW_SONG",
+            sortDirection: "DESC",
+            limit: 100,
+          })}
+          subscription={graphqlOperation(subscriptions.onCreateSongEvent)}
+          onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
+            if (prev?.songEventsByUserID?.items == null) {
+              console.error("bad state in home", prev);
+              return prev;
+            }
+            prev.songEventsByUserID.items.unshift(onCreateSongEvent);
+            return prev;
+          }}
+        >
+          {({ data, loading, error }) => {
+            if (error) return <h3>Error</h3>;
+            if (loading || !data) return <h3>Loading...</h3>;
+            console.log(data);
+            const songs =
+              (data.songEventsByType && data.songEventsByType.items) ?? [];
+            const seen = new Set();
+            const onlineUsers = songs.filter((songEvent) => {
+              if (!seen.has(songEvent.userID)) {
+                seen.add(songEvent.userID);
+                return true;
+              } else {
+                return false;
+              }
+            });
+            if (onlineUsers.length === 0) {
+              return <div>No recent users</div>;
+            }
+            console.log(seen);
+            return <UserList users={onlineUsers} />;
+          }}
+        </Connect>
+      </div>
       <div className="Home-content">
         <div>
           <em>
@@ -67,27 +111,6 @@ function Home() {
           coming well beyond the traditional 60 minutes so you can attempt to
           join the century club as many times as you want!
         </div>
-      </div>
-      <div className="Home-list">
-        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-        <h2 className="Home-title">😈 MONSTER LIST 😈</h2>
-        <Connect
-          query={graphqlOperation(queries.listUsers, {
-            limit: 50,
-          })}
-          subscription={graphqlOperation(subscriptions.onUpdateUser)}
-          onSubscriptionMsg={(prev, { onUserUpdate }) => {
-            // TODO update user list here
-            return prev;
-          }}
-        >
-          {({ data, loading, error }) => {
-            if (error) return <h3>Error</h3>;
-            if (loading || !data) return <h3>Loading...</h3>;
-            const users = (data.listUsers && data.listUsers.items) ?? [];
-            return <UserList users={users} />;
-          }}
-        </Connect>
       </div>
     </div>
   );

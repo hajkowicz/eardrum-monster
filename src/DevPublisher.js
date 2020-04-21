@@ -22,6 +22,7 @@ export default function DevPublisher({ hostUsername }) {
         timestamp: Math.floor(Date.now() / 1000),
         position: 0,
         spotifyURI: tracks[(Math.random() * 100).toString()[0]],
+        type: "NEW_SONG",
       };
       API.graphql(
         graphqlOperation(mutations.createSongEvent, { input: songEvent })

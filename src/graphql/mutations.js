@@ -16,6 +16,7 @@ export const createUser = /* GraphQL */ `
           timestamp
           position
           userID
+          type
         }
         nextToken
       }
@@ -37,6 +38,7 @@ export const updateUser = /* GraphQL */ `
           timestamp
           position
           userID
+          type
         }
         nextToken
       }
@@ -58,6 +60,7 @@ export const deleteUser = /* GraphQL */ `
           timestamp
           position
           userID
+          type
         }
         nextToken
       }
@@ -91,6 +94,7 @@ export const createSongEvent = /* GraphQL */ `
           nextToken
         }
       }
+      type
     }
   }
 `;
@@ -121,6 +125,7 @@ export const updateSongEvent = /* GraphQL */ `
           nextToken
         }
       }
+      type
     }
   }
 `;
@@ -151,6 +156,7 @@ export const deleteSongEvent = /* GraphQL */ `
           nextToken
         }
       }
+      type
     }
   }
 `;
