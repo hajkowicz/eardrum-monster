@@ -5,7 +5,6 @@ import { Connect } from "aws-amplify-react";
 import "./Home.css";
 import { AuthContext } from "./Auth.js";
 import * as queries from "./graphql/queries";
-import * as subscriptions from "./graphql/subscriptions";
 import EQBars from "./EQBars.js";
 
 const UserList = ({ users }) => (
@@ -44,15 +43,6 @@ function Home() {
             sortDirection: "DESC",
             limit: 100,
           })}
-          subscription={graphqlOperation(subscriptions.onCreateSongEvent)}
-          onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
-            if (prev?.songEventsByUserID?.items == null) {
-              console.error("bad state in home", prev);
-              return prev;
-            }
-            prev.songEventsByUserID.items.unshift(onCreateSongEvent);
-            return prev;
-          }}
         >
           {({ data, loading, error }) => {
             if (error) return <h3>Error</h3>;
