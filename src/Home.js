@@ -57,7 +57,6 @@ function Home() {
           {({ data, loading, error }) => {
             if (error) return <h3>Error</h3>;
             if (loading || !data) return <h3>Loading...</h3>;
-            console.log(data);
             const songs =
               (data.songEventsByType && data.songEventsByType.items) ?? [];
             const seen = new Set();
@@ -79,7 +78,6 @@ function Home() {
             if (onlineUsers.length === 0) {
               return <div>No recent users</div>;
             }
-            console.log(seen);
             return <UserList users={onlineUsers} />;
           }}
         </Connect>
