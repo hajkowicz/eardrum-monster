@@ -126,7 +126,7 @@ function Listen({ hostUsername }) {
               return <div>No track history for {hostUsername}</div>;
             }
             const isRecent =
-              Math.floor(Date.now() / 1000) - songs[0]?.timestamp < 600; // 10 minutes in seconds
+              Math.floor(Date.now() / 1000) - (songs[0]?.timestamp ?? 0) < 600; // 10 minutes in seconds
             return (
               <>
                 <ListenPlayer

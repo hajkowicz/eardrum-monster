@@ -42,3 +42,14 @@
   flex-basis: 40%;
   margin-bottom: 20px;
 }
+
+.Home-userOnlineIcon2 {
+  margin-left: 0.2em;
+  height: 0.75em;
+  width: 1em;
+  display: inline-block;
+}
+
+.Home-userOnlineIcon2.hidden {
+  opacity: 0;
+}

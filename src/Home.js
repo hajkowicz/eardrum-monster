@@ -6,13 +6,23 @@ import "./Home.css";
 import { AuthContext } from "./Auth.js";
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
+import EQBars from "./EQBars.js";
 
 const UserList = ({ users }) => (
   <div className="Home-userList">
     {users.map((user) => (
       <Link key={user.userID} className="Home-link" to={`/u/${user.userID}`}>
         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-        👂 /u/{user.userID}
+        <EQBars
+          className={"Home-userOnlineIcon2" + (user.isOnline ? "" : " hidden")}
+        />{" "}
+        /u/{user.userID}
+        <span
+          className="Home-userOnlineIcon"
+          style={{ opacity: user.isOnline ? 1 : 0 }}
+        >
+          👂
+        </span>
       </Link>
     ))}
   </div>
@@ -51,14 +61,21 @@ function Home() {
             const songs =
               (data.songEventsByType && data.songEventsByType.items) ?? [];
             const seen = new Set();
-            const onlineUsers = songs.filter((songEvent) => {
-              if (!seen.has(songEvent.userID)) {
-                seen.add(songEvent.userID);
-                return true;
-              } else {
-                return false;
-              }
-            });
+            const onlineUsers = songs
+              .filter((songEvent) => {
+                if (!seen.has(songEvent.userID)) {
+                  seen.add(songEvent.userID);
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+              .map((songEvent) => ({
+                isOnline:
+                  Math.floor(Date.now() / 1000) - (songEvent?.timestamp ?? 0) <
+                  songEvent?.track?.durationMs / 1000,
+                ...songEvent.user,
+              }));
             if (onlineUsers.length === 0) {
               return <div>No recent users</div>;
             }
