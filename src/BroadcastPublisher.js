@@ -34,7 +34,7 @@ export default function BroadcastPublisher({ currentSongEvent, onSongEvent }) {
       newTrack?.uri === currentSongEventRef?.current?.spotifyURI;
     const trackInProgress =
       Math.floor(Date.now() / 1000) - currentSongEventRef?.current?.timestamp <
-      currentSongEventRef?.current?.track?.durationMs / 1000;
+      currentSongEventRef?.current?.track?.durationMs / 1000 + 10;
     // Avoid updating if track is the same
     if (newTrack == null || (isSameTrack && trackInProgress)) {
       return;
