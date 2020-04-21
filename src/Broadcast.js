@@ -13,17 +13,13 @@ import EQBars from "./EQBars.js";
 function Broadcast() {
   const authInfo = React.useContext(AuthContext);
   const [songHistory, setSongHistory] = React.useState(null);
-  const [currentTrack, setCurrentTrack] = React.useState(null);
   const spotifyWebPlayer = useSpotifyWebPlayer();
 
   const handleSongEvent = React.useCallback(
-    (track, songEvent) => {
-      setSongHistory((h) =>
-        [{ ...songEvent, track, id: Math.random() }].concat(h)
-      );
-      setCurrentTrack(track);
+    (songEvent) => {
+      setSongHistory((h) => [songEvent].concat(h));
     },
-    [setSongHistory, setCurrentTrack]
+    [setSongHistory]
   );
 
   React.useEffect(() => {
@@ -62,10 +58,10 @@ function Broadcast() {
         <p>Now Playing:</p>
         <div className="Broadcast-currentTrack">
           <BroadcastPublisher
-            currentTrack={currentTrack ?? songHistory[0]?.track}
+            currentSongEvent={songHistory[0]}
             onSongEvent={handleSongEvent}
           />
-          <Track track={currentTrack ?? songHistory[0]?.track} />
+          <Track track={songHistory[0]?.track} />
         </div>
       </>
     );

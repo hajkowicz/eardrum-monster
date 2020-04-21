@@ -17,25 +17,26 @@ function publishTrack(track) {
   return API.graphql(graphqlOperation(mutations.createTrack, { input: track }));
 }
 
-export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
+export default function BroadcastPublisher({ currentSongEvent, onSongEvent }) {
   const authInfo = React.useContext(AuthContext);
   const spotifyWebPlayer = useSpotifyWebPlayer();
   const handlePlayerStateChangedRef = React.useRef(null);
-  const currentTrackRef = React.useRef(null);
+  const currentSongEventRef = React.useRef(null);
 
   // Cache currentTrack locally to prevent high frequency duplicate updates
-  if (currentTrackRef.current == null && currentTrack != null) {
-    currentTrackRef.current = currentTrack;
+  if (currentSongEventRef.current == null && currentSongEvent != null) {
+    currentSongEventRef.current = currentSongEvent;
   }
 
   const handlePlayerStateChanged = (newState) => {
     const newTrack = SpotifyWebPlayer.getTrackFromState(newState);
-    const isSameTrack = newTrack?.uri === currentTrackRef?.current?.uri;
+    const isSameTrack =
+      newTrack?.uri === currentSongEventRef?.current?.spotifyURI;
     const trackInProgress =
-      Math.floor(Date.now() / 1000) - currentTrackRef?.current?.timestamp <
-      currentTrackRef?.current?.durationMs / 1000;
+      Math.floor(Date.now() / 1000) - currentSongEventRef?.current?.timestamp <
+      currentSongEventRef?.current?.track?.durationMs / 1000;
     // Avoid updating if track is the same
-    if (newTrack == null || (isSameTrack && !trackInProgress)) {
+    if (newTrack == null || (isSameTrack && trackInProgress)) {
       return;
     }
     const songEvent = {
@@ -54,8 +55,13 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
       artistName: newTrack.artists[0].name,
       albumImg: newTrack.album.images[0].url,
     };
-    currentTrackRef.current = trackData;
-    onSongEvent(trackData, songEvent);
+    const localSongEvent = {
+      ...songEvent,
+      track: trackData,
+      id: Math.random(),
+    };
+    currentSongEventRef.current = localSongEvent;
+    onSongEvent(localSongEvent);
     publishTrack(trackData).then(() => publishSongEvent(songEvent));
   };
   handlePlayerStateChangedRef.current = handlePlayerStateChanged;
