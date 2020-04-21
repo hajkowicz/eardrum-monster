@@ -30,7 +30,7 @@ export default function BroadcastPublisher({ currentTrack, onSongEvent }) {
 
   const handlePlayerStateChanged = (newState) => {
     const newTrack = SpotifyWebPlayer.getTrackFromState(newState);
-    const isSameTrack = newTrack.uri === currentTrackRef?.current?.uri;
+    const isSameTrack = newTrack?.uri === currentTrackRef?.current?.uri;
     const trackInProgress =
       Math.floor(Date.now() / 1000) - currentTrackRef?.current?.timestamp <
       currentTrackRef?.current?.durationMs / 1000;
