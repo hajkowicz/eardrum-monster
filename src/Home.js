@@ -52,7 +52,7 @@ function Home() {
             const seen = new Set();
             const onlineUsers = songs
               .filter((songEvent) => {
-                if (!seen.has(songEvent.userID)) {
+                if (songEvent.userID != null && !seen.has(songEvent.userID)) {
                   seen.add(songEvent.userID);
                   return true;
                 } else {
