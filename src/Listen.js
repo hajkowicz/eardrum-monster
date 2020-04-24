@@ -125,16 +125,17 @@ function Listen({ hostUsername }) {
             if (songs.length === 0) {
               return <div>No track history for {hostUsername}</div>;
             }
-            const isRecent =
-              Math.floor(Date.now() / 1000) - (songs[0]?.timestamp ?? 0) < 600; // 10 minutes in seconds
+            const isOnline =
+              Math.floor(Date.now() / 1000) - (songs[0]?.timestamp ?? 0) <
+              songs[0]?.track?.durationMs / 1000;
             return (
               <>
                 <ListenPlayer
-                  isCurrentlyLive={isRecent}
+                  isCurrentlyLive={isOnline}
                   songs={songs}
                   hostUsername={hostUsername}
                 />
-                <TrackList songs={isRecent ? songs.slice(1) : songs} />
+                <TrackList songs={isOnline ? songs.slice(1) : songs} />
               </>
             );
           }}
