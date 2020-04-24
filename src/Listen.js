@@ -9,7 +9,6 @@ import TrackList from "./TrackList.js";
 import Track from "./Track.js";
 import EQBars from "./EQBars.js";
 import { useLocation } from "react-router-dom";
-import NoSleep from "nosleep.js";
 import { useLocalStorage } from "@rehooks/local-storage";
 
 import * as queries from "./graphql/queries";
@@ -51,14 +50,15 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
     "EMisListeningUsername"
   );
   const isListening = authInfo && hostUsername === isListeningUsername;
+  const NoSleep = window.NoSleep;
 
   React.useEffect(() => {
-    if (isListening) {
+    if (isListening && NoSleep != null) {
       const noSleep = new NoSleep();
       noSleep.enable();
       return () => noSleep.disable();
     }
-  }, [isListening]);
+  }, [isListening, NoSleep]);
 
   const handleJoin = React.useCallback(
     (e) => {
