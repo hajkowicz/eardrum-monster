@@ -3,7 +3,10 @@
   width: 100%;
   margin: 0 0;
   padding: 0 0 0 0;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 }
 
 .colour-bar {
@@ -11,18 +14,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 5%;
-  background: #999797;
+  height: 100%;
+  transform: translateY(10%);
+  background: #b863ca;
 }
 
 .EQBars-column {
   width: 19%;
-  float: left;
-  margin: 0 1% 0 0;
-  padding: 0;
+  margin: 0 0.5% 0 0.5%;
+  padding: 0 0 0 0;
   height: 100%;
   position: relative;
   list-style-type: none;
+  overflow: hidden;
 }
 
 .EQBars-column:nth-child(1) .colour-bar {
@@ -51,47 +55,36 @@
 
 @keyframes color-bar {
   0% {
-    height: 10%;
-    background: #999797;
+    transform: translateY(10%);
   }
   10% {
-    height: 30%;
-    background: #999797;
+    transform: translateY(30%);
   }
   20% {
-    height: 50%;
-    background: #999797;
+    transform: translateY(50%);
   }
   30% {
-    height: 20%;
-    background: #999797;
+    transform: translateY(20%);
   }
   40% {
-    height: 70%;
-    background: #999797;
+    transform: translateY(70%);
   }
   50% {
-    height: 90%;
-    background: #999797;
+    transform: translateY(90%);
   }
   60% {
-    height: 30%;
-    background: #999797;
+    transform: translateY(30%);
   }
   70% {
-    height: 80%;
-    background: #999797;
+    transform: translateY(80%);
   }
   80% {
-    height: 50%;
-    background: #999797;
+    transform: translateY(50%);
   }
   90% {
-    height: 30%;
-    background: #999797;
+    transform: translateY(30%);
   }
   100% {
-    height: 10%;
-    background: #999797;
+    transform: translateY(10%);
   }
 }
