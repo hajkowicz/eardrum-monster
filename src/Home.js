@@ -65,6 +65,7 @@ function Home() {
                   songEvent?.track?.durationMs / 1000,
                 ...songEvent.user,
               }));
+            console.log(onlineUsers);
             if (onlineUsers.length === 0) {
               return <div>No recent users</div>;
             }

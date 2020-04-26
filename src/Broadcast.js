@@ -6,7 +6,7 @@ import Track from "./Track.js";
 import TrackList from "./TrackList.js";
 import "./Broadcast.css";
 import { AuthContext } from "./Auth.js";
-import BroadcastPublisher from "./BroadcastPublisher.js";
+import BroadcastPublisher from "./BroadcastPublisher";
 import PowerHourControl from "./PowerHourControl.js";
 import EQBars from "./EQBars.js";
 

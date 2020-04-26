@@ -1,4 +1,5 @@
-/* eslint-disable */
+// tslint:disable
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const onCreateSongEvent = /* GraphQL */ `
@@ -22,6 +23,14 @@ export const onCreateSongEvent = /* GraphQL */ `
         userID
         latestEvent
         songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
           nextToken
         }
       }
@@ -40,7 +49,20 @@ export const onCreateUser = /* GraphQL */ `
           spotifyURI
           timestamp
           position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
           userID
+          user {
+            userID
+            latestEvent
+          }
           type
         }
         nextToken
@@ -59,7 +81,20 @@ export const onUpdateUser = /* GraphQL */ `
           spotifyURI
           timestamp
           position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
           userID
+          user {
+            userID
+            latestEvent
+          }
           type
         }
         nextToken
@@ -78,7 +113,20 @@ export const onDeleteUser = /* GraphQL */ `
           spotifyURI
           timestamp
           position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
           userID
+          user {
+            userID
+            latestEvent
+          }
           type
         }
         nextToken

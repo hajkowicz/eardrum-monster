@@ -1,4 +1,5 @@
-/* eslint-disable */
+// tslint:disable
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const getUser = /* GraphQL */ `
@@ -12,7 +13,20 @@ export const getUser = /* GraphQL */ `
           spotifyURI
           timestamp
           position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
           userID
+          user {
+            userID
+            latestEvent
+          }
           type
         }
         nextToken
@@ -39,6 +53,14 @@ export const listUsers = /* GraphQL */ `
         userID
         latestEvent
         songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
           nextToken
         }
       }
@@ -67,6 +89,14 @@ export const getSongEvent = /* GraphQL */ `
         userID
         latestEvent
         songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
           nextToken
         }
       }
@@ -99,6 +129,9 @@ export const listSongEvents = /* GraphQL */ `
         user {
           userID
           latestEvent
+          songEvents {
+            nextToken
+          }
         }
         type
       }
@@ -182,6 +215,9 @@ export const songEventsByUserId = /* GraphQL */ `
         user {
           userID
           latestEvent
+          songEvents {
+            nextToken
+          }
         }
         type
       }
@@ -224,6 +260,9 @@ export const songEventsByType = /* GraphQL */ `
         user {
           userID
           latestEvent
+          songEvents {
+            nextToken
+          }
         }
         type
       }

@@ -1,4 +1,5 @@
-/* eslint-disable */
+// tslint:disable
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const createUser = /* GraphQL */ `
@@ -15,7 +16,20 @@ export const createUser = /* GraphQL */ `
           spotifyURI
           timestamp
           position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
           userID
+          user {
+            userID
+            latestEvent
+          }
           type
         }
         nextToken
@@ -37,7 +51,20 @@ export const updateUser = /* GraphQL */ `
           spotifyURI
           timestamp
           position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
           userID
+          user {
+            userID
+            latestEvent
+          }
           type
         }
         nextToken
@@ -59,7 +86,20 @@ export const deleteUser = /* GraphQL */ `
           spotifyURI
           timestamp
           position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
           userID
+          user {
+            userID
+            latestEvent
+          }
           type
         }
         nextToken
@@ -91,6 +131,14 @@ export const createSongEvent = /* GraphQL */ `
         userID
         latestEvent
         songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
           nextToken
         }
       }
@@ -122,6 +170,14 @@ export const updateSongEvent = /* GraphQL */ `
         userID
         latestEvent
         songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
           nextToken
         }
       }
@@ -153,6 +209,14 @@ export const deleteSongEvent = /* GraphQL */ `
         userID
         latestEvent
         songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
           nextToken
         }
       }
