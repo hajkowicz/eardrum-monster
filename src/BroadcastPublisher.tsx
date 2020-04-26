@@ -1,11 +1,12 @@
 import React from "react";
 import { API, graphqlOperation } from "aws-amplify";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import * as mutations from "./graphql/mutations";
 import useSpotifyWebPlayer from "./useSpotifyWebPlayer";
 import SpotifyWebPlayer from "./SpotifyWebPlayer";
 import useAuth from "./useAuth";
 
-import type { CreateSongEventInput } from "./API";
+import type { CreateSongEventInput, CreateTrackInput } from "./API";
 import type { SongEvent } from "./Types";
 import type { SpotifyWebPlayerState } from "./SpotifyWebPlayerTypes";
 
@@ -22,9 +23,11 @@ function publishSongEvent(songEvent: CreateSongEventInput) {
   );
 }
 
-// function publishTrack(track: Track) {
-//   return API.graphql(graphqlOperation(mutations.createTrack, { input: track }));
-// }
+function publishTrack(track: CreateTrackInput) {
+  return API.graphql(
+    graphqlOperation(mutations.createTrack, { input: track })
+  ) as Promise<GraphQLResult>;
+}
 
 export default function BroadcastPublisher({
   currentSongEvent,
@@ -56,32 +59,41 @@ export default function BroadcastPublisher({
     if (isSameTrack && trackInProgress) {
       return;
     }
+    const track = {
+      uri: newTrack.uri,
+      trackID: newTrack.id,
+      name: newTrack.name,
+      durationMs: newTrack.duration_ms,
+      albumName: newTrack.album.name,
+      artistName: newTrack.artists[0].name,
+      albumImg: newTrack.album.images[0].url,
+    };
     const songEvent = {
       userID: authInfo.username,
       timestamp: Math.floor(Date.now() / 1000),
       position: Math.floor(newState.position ?? 0),
       spotifyURI: newTrack.uri,
       type: "NEW_SONG",
-      track: {
-        uri: newTrack.uri,
-        trackID: newTrack.id,
-        name: newTrack.name,
-        durationMs: newTrack.duration_ms,
-        albumName: newTrack.album.name,
-        artistName: newTrack.artists[0].name,
-        albumImg: newTrack.album.images[0].url,
-      },
     };
     const localSongEvent = {
       ...songEvent,
       __typename: "SongEvent" as "SongEvent",
+      _version: 0,
+      _deleted: null,
+      _lastChangedAt: 0,
       track: {
         __typename: "Track" as "Track",
-        ...songEvent.track,
+        _version: 0,
+        _deleted: null,
+        _lastChangedAt: 0,
+        ...track,
       },
       id: Math.random().toString(),
       user: {
         __typename: "User" as "User",
+        _version: 0,
+        _deleted: null,
+        _lastChangedAt: 0,
         userID: authInfo.username,
         latestEvent: Math.floor(Date.now() / 1000),
         songEvents: null,
@@ -89,7 +101,9 @@ export default function BroadcastPublisher({
     };
     currentSongEventRef.current = localSongEvent;
     onSongEvent(localSongEvent);
-    publishSongEvent(songEvent);
+    publishTrack(track).then(() => {
+      publishSongEvent(songEvent);
+    });
   };
   handlePlayerStateChangedRef.current = handlePlayerStateChanged;
 

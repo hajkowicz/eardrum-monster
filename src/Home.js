@@ -50,6 +50,7 @@ function Home() {
             const songs =
               (data.songEventsByType && data.songEventsByType.items) ?? [];
             const seen = new Set();
+            console.log(songs);
             const onlineUsers = songs
               .filter((songEvent) => {
                 if (songEvent.userID != null && !seen.has(songEvent.userID)) {

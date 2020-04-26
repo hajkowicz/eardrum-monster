@@ -4,6 +4,6 @@ import type {
   CreateUserMutation,
 } from "./API";
 
-export type SongEvent = CreateSongEventMutation["createSongEvent"];
 export type Track = CreateTrackMutation["createTrack"];
 export type User = CreateUserMutation["createUser"];
+export type SongEvent = CreateSongEventMutation["createSongEvent"];

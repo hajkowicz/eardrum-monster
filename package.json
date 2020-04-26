@@ -29,7 +29,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build --env=production",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "gql-codegen": "graphql-codegen --config codegen.yml"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
@@ -52,6 +53,10 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/introspection": "1.13.3",
+    "@graphql-codegen/typescript": "1.13.3",
+    "@graphql-codegen/typescript-operations": "1.13.3",
+    "@graphql-codegen/typescript-react-apollo": "1.13.3",
     "gh-pages": "^2.2.0"
   },
   "husky": {

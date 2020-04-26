@@ -21,7 +21,9 @@ type SongEvent
   type: String!
 }
 
-type Track @model @key(fields: ["uri"]) {
+type Track
+  @model
+  @key(fields: ["uri"]) {
   uri: String!
   trackID: String
   name: String

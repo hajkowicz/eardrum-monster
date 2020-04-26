@@ -3,11 +3,5 @@
     "ElasticsearchWarning": true,
     "StackMapping": {
         "QuerysongEventsByUserIDResolver": "SongEvent2"
-    },
-    "ResolverConfig": {
-        "project": {
-            "ConflictHandler": "AUTOMERGE",
-            "ConflictDetection": "VERSION"
-        }
     }
 }
