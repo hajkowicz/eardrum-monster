@@ -1,5 +1,5 @@
 import React from "react";
-import { graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import { Connect } from "aws-amplify-react";
 import "./Listen.css";
 import DevPublisher from "./DevPublisher.js";
@@ -10,9 +10,12 @@ import Track from "./Track.js";
 import EQBars from "./EQBars.js";
 import { useLocation } from "react-router-dom";
 import { useLocalStorage } from "@rehooks/local-storage";
+import Listeners from "./Listeners";
+import { isOnline } from "./Utils";
 
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
+import * as mutations from "./graphql/mutations";
 
 function StartListening({ children, isListening, onClick }) {
   const location = useLocation();
@@ -43,6 +46,18 @@ function StartListening({ children, isListening, onClick }) {
   );
 }
 
+function publishListenPing(userID, hostUsername) {
+  return API.graphql(
+    graphqlOperation(mutations.updateUser, {
+      input: {
+        userID,
+        latestListenPing: Math.floor(Date.now() / 1000),
+        listeningTo: hostUsername,
+      },
+    })
+  );
+}
+
 function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
@@ -60,6 +75,16 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
     }
   }, [isListening, NoSleep]);
 
+  React.useEffect(() => {
+    if (isListening && authInfo) {
+      publishListenPing(authInfo.username, hostUsername);
+      const intervalID = setInterval(() => {
+        publishListenPing(authInfo.username, hostUsername);
+      }, 10000);
+      return () => clearInterval(intervalID);
+    }
+  }, [isListening, authInfo]);
+
   const handleJoin = React.useCallback(
     (e) => {
       e.preventDefault();
@@ -72,7 +97,7 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
   );
 
   if (!isCurrentlyLive) {
-    return <h1>{hostUsername} is offline</h1>;
+    return <h1>offline</h1>;
   }
 
   return (
@@ -91,56 +116,64 @@ function Listen({ hostUsername }) {
 
   return (
     <div className="Listen">
-      <div className="Listen-header">
-        {devPublisherEnabled && <DevPublisher hostUsername={hostUsername} />}
-      </div>
-
-      <div className="Listen-trackList">
-        <Connect
-          query={graphqlOperation(queries.songEventsByUserId, {
-            userID: hostUsername,
-            sortDirection: "DESC",
-            limit: 50,
-          })}
-          subscription={graphqlOperation(subscriptions.onCreateSongEvent, {
-            userID: hostUsername,
-          })}
-          onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
-            if (prev?.songEventsByUserID?.items == null) {
-              console.error("bad state in listen", prev);
-              return prev;
-            }
-            prev.songEventsByUserID.items.unshift(onCreateSongEvent);
-            if (prev.songEventsByUserID.items.length > 50) {
-              prev.songEventsByUserID.items.pop();
-            }
+      <Connect
+        query={graphqlOperation(queries.songEventsByUserId, {
+          userID: hostUsername,
+          sortDirection: "DESC",
+          limit: 50,
+        })}
+        subscription={graphqlOperation(subscriptions.onCreateSongEvent, {
+          userID: hostUsername,
+        })}
+        onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
+          if (prev?.songEventsByUserID?.items == null) {
+            console.error("bad state in listen", prev);
             return prev;
-          }}
-        >
-          {({ data, loading, error }) => {
-            if (error) return <h3>Error</h3>;
-            if (loading || !data) return <h3>Loading...</h3>;
-            const songs =
-              (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
-            if (songs.length === 0) {
-              return <div>No track history for {hostUsername}</div>;
-            }
-            const isOnline =
-              Math.floor(Date.now() / 1000) - (songs[0]?.timestamp ?? 0) <
-              songs[0]?.track?.durationMs / 1000;
-            return (
-              <>
-                <ListenPlayer
-                  isCurrentlyLive={isOnline}
-                  songs={songs}
-                  hostUsername={hostUsername}
-                />
-                <TrackList songs={isOnline ? songs.slice(1) : songs} />
-              </>
-            );
-          }}
-        </Connect>
-      </div>
+          }
+          prev.songEventsByUserID.items.unshift(onCreateSongEvent);
+          if (prev.songEventsByUserID.items.length > 50) {
+            prev.songEventsByUserID.items.pop();
+          }
+          return prev;
+        }}
+      >
+        {({ data, loading, error }) => {
+          if (error) return <h3>Error</h3>;
+          if (loading || !data) return <h3>Loading...</h3>;
+          const songs =
+            (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
+          if (songs.length === 0) {
+            return <div>No track history for {hostUsername}</div>;
+          }
+          const online = isOnline(songs);
+
+          return (
+            <>
+              {online && (
+                <div className="Listen-listeners">
+                  <Listeners hostID={hostUsername} />
+                </div>
+              )}
+              <div className="Listen-trackList">
+                <div className="Listen-header">
+                  {hostUsername}'s Channel
+                  {devPublisherEnabled && (
+                    <DevPublisher hostUsername={hostUsername} />
+                  )}
+                </div>
+                <>
+                  <ListenPlayer
+                    isCurrentlyLive={online}
+                    songs={songs}
+                    hostUsername={hostUsername}
+                  />
+                  <TrackList songs={online ? songs.slice(1) : songs} />
+                </>
+              </div>
+            </>
+          );
+        }}
+      </Connect>
     </div>
   );
 }

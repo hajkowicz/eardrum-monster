@@ -1,4 +1,4 @@
-export const usersByLatestSongEvent = /* GraphQL */ `
+export const usersByLatestSongEventCustom = /* GraphQL */ `
   query UsersByLatestSongEvent(
     $type: String
     $latestSongEvent: ModelIntKeyConditionInput

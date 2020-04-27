@@ -41,5 +41,5 @@ type Track
 
 type Subscription {
   onCreateSongEvent(userID: String!): SongEvent @aws_subscribe(mutations: ["createSongEvent"])
-  onUpdateUser(listeningTo: String, userID: String): User @aws_subscribe(mutations: ["updateUser"])
+  onUpdateUser(listeningTo: String): User @aws_subscribe(mutations: ["updateUser"])
 }

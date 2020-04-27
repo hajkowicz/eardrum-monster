@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { graphqlOperation } from "aws-amplify";
 import { Connect } from "aws-amplify-react";
 import "./Home.css";
-import { AuthContext } from "./Auth.js";
+// import { AuthContext } from "./Auth.js";
 import * as queries from "./graphql/customQueries";
-import EQBars from "./EQBars.js";
-import useAuth from "./useAuth";
+// import EQBars from "./EQBars.js";
+// import useAuth from "./useAuth";
 import logo from "./logo.png";
+import { isUserOnline, getListenerCount } from "./Utils";
 
 function User({ img, cta, title, subtitle }) {
   return (
@@ -24,11 +25,7 @@ const UserList = ({ users }) => (
   <div className="Home-userList">
     {users.map((user) => {
       const img = user.songEvents?.items[0]?.track?.albumImg;
-      const numListeners = (user?.listeners?.items ?? []).filter((listener) => {
-        const hasRecentPing =
-          Math.floor(Date.now() / 1000) - listener.latestListenPing < 30;
-        return hasRecentPing;
-      }).length;
+      const numListeners = getListenerCount(user);
       return (
         <User
           key={user.userID}
@@ -43,6 +40,7 @@ const UserList = ({ users }) => (
               className="Home-link"
               to={`/u/${user.userID}`}
             >
+              {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
               Join ▶️
             </Link>
           }
@@ -51,10 +49,10 @@ const UserList = ({ users }) => (
     })}
     <User
       img={null}
-      title="Start your own channel"
+      title="Start a channel"
       cta={
         <Link className="Home-link" to={`/broadcast`}>
-          Start hosting
+          My channel
         </Link>
       }
     />
@@ -62,7 +60,6 @@ const UserList = ({ users }) => (
 );
 
 function Home() {
-  const authInfo = React.useContext(AuthContext);
   /* eslint-disable jsx-a11y/accessible-emoji */
   return (
     <div className="Home">
@@ -77,7 +74,7 @@ function Home() {
           😈 Users currently streaming 😈
         </h2>
         <Connect
-          query={graphqlOperation(queries.usersByLatestSongEvent, {
+          query={graphqlOperation(queries.usersByLatestSongEventCustom, {
             type: "USER",
             sortDirection: "DESC",
             limit: 50,
@@ -90,16 +87,11 @@ function Home() {
               (data.usersByLatestSongEvent &&
                 data.usersByLatestSongEvent.items) ??
               [];
-            const onlineUsers = users.filter((user) => {
-              const mostRecentSongEvent = user.songEvents.items[0];
-              if (mostRecentSongEvent == null) {
-                return false;
-              }
-              const isOnline =
-                Math.floor(Date.now() / 1000) - mostRecentSongEvent.timestamp <
-                (mostRecentSongEvent.track?.durationMs ?? 0) / 1000 + 60;
-              return isOnline;
-            });
+            const onlineUsers = users
+              .filter((user) => isUserOnline(user))
+              .sort((a, b) =>
+                getListenerCount(a) > getListenerCount(b) ? -1 : 1
+              );
             return <UserList users={onlineUsers} />;
           }}
         </Connect>

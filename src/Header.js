@@ -24,7 +24,7 @@ function Header() {
         <>
           {match == null ? (
             <Link className="App-link" to={`/u/${authInfo.username}`}>
-              Broadcast
+              My Channel
             </Link>
           ) : (
             /* eslint-disable-next-line jsx-a11y/anchor-is-valid */

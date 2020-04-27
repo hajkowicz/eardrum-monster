@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
 }
 
 @media only screen and (max-width: 600px) {
@@ -28,6 +28,8 @@
 
 .Home-userSubtitle {
   font-style: italic;
+  min-height: 1em;
+  margin: 0.25em;
 }
 
 .Home-userList {

@@ -52,8 +52,8 @@ export const onCreateSongEvent = /* GraphQL */ `
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($listeningTo: String, $userID: String) {
-    onUpdateUser(listeningTo: $listeningTo, userID: $userID) {
+  subscription OnUpdateUser($listeningTo: String) {
+    onUpdateUser(listeningTo: $listeningTo) {
       userID
       latestSongEvent
       latestListenPing

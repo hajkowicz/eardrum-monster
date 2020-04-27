@@ -50,7 +50,6 @@ export default function BroadcastPublisher({
 
   const handlePlayerStateChanged = (newState: SpotifyWebPlayerState) => {
     const newTrack = SpotifyWebPlayer.getTrackFromState(newState);
-    console.log(newState);
     // If there is not a valid track, dont publish
     if (newTrack == null || authInfo == null) {
       return;
