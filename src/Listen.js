@@ -83,7 +83,7 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
       }, 10000);
       return () => clearInterval(intervalID);
     }
-  }, [isListening, authInfo]);
+  }, [isListening, authInfo, hostUsername]);
 
   const handleJoin = React.useCallback(
     (e) => {
