@@ -3,10 +3,12 @@ import { Connect } from "aws-amplify-react";
 import * as subscriptions from "./graphql/subscriptions";
 import * as queries from "./graphql/queries";
 import { graphqlOperation } from "aws-amplify";
-import { getActiveListeners } from "./Utils";
+import { getActiveListeners, isUserListening } from "./Utils";
 import "./Listeners.css";
 
 import type { OnUpdateUserSubscription, UsersByListeningToQuery } from "./API";
+import type { User } from "./Types";
+
 export default function Listeners({ hostID }: { hostID: string }) {
   const [rerender, setRerender] = React.useState(false);
 
@@ -32,7 +34,6 @@ export default function Listeners({ hostID }: { hostID: string }) {
           })}
           subscription={graphqlOperation(subscriptions.onUpdateUser, {
             listeningTo: hostID,
-            userID: "Ccc",
           })}
           // @ts-ignore
           onSubscriptionMsg={(
@@ -48,10 +49,17 @@ export default function Listeners({ hostID }: { hostID: string }) {
             const index = items.findIndex(
               (user) => user && user.userID === onUpdateUser.userID
             );
+            const isListening = isUserListening(onUpdateUser);
+            let wasListening = isUserListening(items[index] as User);
             if (index >= 0) {
               items[index] = onUpdateUser;
             } else {
               items.push(onUpdateUser);
+            }
+            if (isListening && !wasListening) {
+              const audio = new Audio(process.env.PUBLIC_URL + "/notif.wav");
+              audio.volume = 0.2;
+              audio.play();
             }
             return prev;
           }}
@@ -67,6 +75,9 @@ export default function Listeners({ hostID }: { hostID: string }) {
                 {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
                 <div>{hostID} ⭐</div>
                 {onlineUsers.map((user) => {
+                  if (user == null) {
+                    return null;
+                  }
                   return <div key={user.userID}>{user.userID}</div>;
                 })}
               </>

@@ -12,8 +12,20 @@ export function getActiveListeners(users: User[]): User[] {
 }
 
 export function isUserOnline(user: User): boolean {
+  if (user == null) {
+    return false;
+  }
   const latestSongEvent = user.latestSongEvent ?? 0;
   return Math.floor(Date.now() / 1000) - latestSongEvent < 30;
+}
+
+export function isUserListening(user: User): boolean {
+  if (user == null) {
+    return false;
+  }
+  const hasRecentPing =
+    Math.floor(Date.now() / 1000) - (user.latestListenPing ?? 0) < 30;
+  return hasRecentPing;
 }
 
 export function isOnline(songEvents: SongEvent[]): boolean {
@@ -33,9 +45,7 @@ export function getListenerCount(user: User) {
       if (listener == null) {
         return false;
       }
-      const hasRecentPing =
-        Math.floor(Date.now() / 1000) - (listener?.latestListenPing ?? 0) < 30;
-      return hasRecentPing;
+      return isUserListening(listener as User);
     }).length + 1
   );
 }
