@@ -3,6 +3,7 @@ import "./Home.css";
 import ChannelList from "./ChannelList";
 
 function Home() {
+  /* eslint-disable jsx-a11y/accessible-emoji */
   return (
     <div className="Home">
       <div>
