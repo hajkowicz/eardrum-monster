@@ -67,7 +67,12 @@ function Broadcast() {
     ) : (
       <>
         <div className="Broadcast-title">{authInfo.username}'s channel</div>
-        <div className="Broadcast-share">
+        <div className="Broadcast-text">You are the DJ.</div>
+        <div className="Broadcast-text">
+          <div>1. Control your spotify like normal to change the music</div>
+          <div>2. keep this page open</div>
+        </div>
+        <div className="Broadcast-text">
           Share this URL to add listeners:
           <input value={shareURI} disabled size={shareURI.length} />
           <button>
