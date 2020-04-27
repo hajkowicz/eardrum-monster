@@ -70,7 +70,7 @@ function Broadcast() {
         <div className="Broadcast-text">You are the DJ.</div>
         <div className="Broadcast-text">
           <div>1. Control your spotify like normal to change the music</div>
-          <div>2. keep this page open</div>
+          <div>2. keep this page open to continue streaming</div>
         </div>
         <div className="Broadcast-text">
           Share this URL to add listeners:
