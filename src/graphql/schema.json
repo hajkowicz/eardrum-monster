@@ -267,6 +267,152 @@
               "deprecationReason": null
             },
             {
+              "name": "usersByLatestSongEvent",
+              "description": null,
+              "args": [
+                {
+                  "name": "type",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "latestSongEvent",
+                  "description": null,
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ModelIntKeyConditionInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sortDirection",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ModelSortDirection",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "filter",
+                  "description": null,
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ModelUserFilterInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "limit",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "nextToken",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ModelUserConnection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "usersByListeningTo",
+              "description": null,
+              "args": [
+                {
+                  "name": "listeningTo",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "latestListenPing",
+                  "description": null,
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ModelIntKeyConditionInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sortDirection",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ModelSortDirection",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "filter",
+                  "description": null,
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ModelUserFilterInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "limit",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "nextToken",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ModelUserConnection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "songEventsByUserID",
               "description": null,
               "args": [
@@ -440,12 +586,36 @@
               "deprecationReason": null
             },
             {
-              "name": "latestEvent",
+              "name": "latestSongEvent",
               "description": null,
               "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "AWSTimestamp",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "latestListenPing",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "AWSTimestamp",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "listeningTo",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -510,6 +680,85 @@
                 "kind": "OBJECT",
                 "name": "ModelSongEventConnection",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "listeners",
+              "description": null,
+              "args": [
+                {
+                  "name": "latestListenPing",
+                  "description": null,
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ModelIntKeyConditionInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "filter",
+                  "description": null,
+                  "type": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ModelUserFilterInput",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "sortDirection",
+                  "description": null,
+                  "type": {
+                    "kind": "ENUM",
+                    "name": "ModelSortDirection",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "limit",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "nextToken",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ModelUserConnection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "type",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -1653,11 +1902,41 @@
               "defaultValue": null
             },
             {
-              "name": "latestEvent",
+              "name": "latestSongEvent",
               "description": null,
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "ModelIntInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "latestListenPing",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ModelIntInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "listeningTo",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ModelStringInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ModelStringInput",
                 "ofType": null
               },
               "defaultValue": null
@@ -2228,12 +2507,46 @@
               "defaultValue": null
             },
             {
-              "name": "latestEvent",
+              "name": "latestSongEvent",
               "description": null,
               "type": {
                 "kind": "SCALAR",
                 "name": "AWSTimestamp",
                 "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "latestListenPing",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "AWSTimestamp",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "listeningTo",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -2249,11 +2562,41 @@
           "fields": null,
           "inputFields": [
             {
-              "name": "latestEvent",
+              "name": "latestSongEvent",
               "description": null,
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "ModelIntInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "latestListenPing",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ModelIntInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "listeningTo",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ModelStringInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "ModelStringInput",
                 "ofType": null
               },
               "defaultValue": null
@@ -2322,11 +2665,41 @@
               "defaultValue": null
             },
             {
-              "name": "latestEvent",
+              "name": "latestSongEvent",
               "description": null,
               "type": {
                 "kind": "SCALAR",
                 "name": "AWSTimestamp",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "latestListenPing",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "AWSTimestamp",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "listeningTo",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "type",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2984,33 +3357,30 @@
               "deprecationReason": null
             },
             {
-              "name": "onCreateUser",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "onUpdateUser",
               "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "onDeleteUser",
-              "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "listeningTo",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "userID",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
                 "name": "User",
@@ -3058,57 +3428,6 @@
           ],
           "inputFields": null,
           "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
-          "name": "ModelBooleanInput",
-          "description": null,
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "ne",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "eq",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "attributeExists",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "attributeType",
-              "description": null,
-              "type": {
-                "kind": "ENUM",
-                "name": "ModelAttributeTypes",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
         },
@@ -3223,6 +3542,57 @@
           "description": "Built-in Float",
           "fields": null,
           "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "ModelBooleanInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "eq",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "attributeExists",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "attributeType",
+              "description": null,
+              "type": {
+                "kind": "ENUM",
+                "name": "ModelAttributeTypes",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
           "interfaces": null,
           "enumValues": null,
           "possibleTypes": null
@@ -4108,26 +4478,6 @@
           "onField": false
         },
         {
-          "name": "deprecated",
-          "description": null,
-          "locations": ["FIELD_DEFINITION", "ENUM_VALUE"],
-          "args": [
-            {
-              "name": "reason",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": "\"No longer supported\""
-            }
-          ],
-          "onOperation": false,
-          "onFragment": false,
-          "onField": false
-        },
-        {
           "name": "aws_auth",
           "description": "Directs the schema to enforce authorization on a field",
           "locations": ["FIELD_DEFINITION"],
@@ -4202,6 +4552,26 @@
                 }
               },
               "defaultValue": null
+            }
+          ],
+          "onOperation": false,
+          "onFragment": false,
+          "onField": false
+        },
+        {
+          "name": "deprecated",
+          "description": null,
+          "locations": ["FIELD_DEFINITION", "ENUM_VALUE"],
+          "args": [
+            {
+              "name": "reason",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": "\"No longer supported\""
             }
           ],
           "onOperation": false,

@@ -4,11 +4,17 @@
 
 export type CreateUserInput = {
   userID: string;
-  latestEvent?: number | null;
+  latestSongEvent?: number | null;
+  latestListenPing?: number | null;
+  listeningTo?: string | null;
+  type: string;
 };
 
 export type ModelUserConditionInput = {
-  latestEvent?: ModelIntInput | null;
+  latestSongEvent?: ModelIntInput | null;
+  latestListenPing?: ModelIntInput | null;
+  listeningTo?: ModelStringInput | null;
+  type?: ModelStringInput | null;
   and?: Array<ModelUserConditionInput | null> | null;
   or?: Array<ModelUserConditionInput | null> | null;
   not?: ModelUserConditionInput | null;
@@ -39,35 +45,6 @@ export enum ModelAttributeTypes {
   _null = "_null",
 }
 
-export type UpdateUserInput = {
-  userID: string;
-  latestEvent?: number | null;
-};
-
-export type DeleteUserInput = {
-  userID: string;
-};
-
-export type CreateSongEventInput = {
-  id?: string | null;
-  spotifyURI: string;
-  timestamp: number;
-  position: number;
-  userID: string;
-  type: string;
-};
-
-export type ModelSongEventConditionInput = {
-  spotifyURI?: ModelStringInput | null;
-  timestamp?: ModelIntInput | null;
-  position?: ModelIntInput | null;
-  userID?: ModelStringInput | null;
-  type?: ModelStringInput | null;
-  and?: Array<ModelSongEventConditionInput | null> | null;
-  or?: Array<ModelSongEventConditionInput | null> | null;
-  not?: ModelSongEventConditionInput | null;
-};
-
 export type ModelStringInput = {
   ne?: string | null;
   eq?: string | null;
@@ -92,6 +69,38 @@ export type ModelSizeInput = {
   ge?: number | null;
   gt?: number | null;
   between?: Array<number | null> | null;
+};
+
+export type UpdateUserInput = {
+  userID: string;
+  latestSongEvent?: number | null;
+  latestListenPing?: number | null;
+  listeningTo?: string | null;
+  type?: string | null;
+};
+
+export type DeleteUserInput = {
+  userID: string;
+};
+
+export type CreateSongEventInput = {
+  id?: string | null;
+  spotifyURI: string;
+  timestamp: number;
+  position: number;
+  userID: string;
+  type: string;
+};
+
+export type ModelSongEventConditionInput = {
+  spotifyURI?: ModelStringInput | null;
+  timestamp?: ModelIntInput | null;
+  position?: ModelIntInput | null;
+  userID?: ModelStringInput | null;
+  type?: ModelStringInput | null;
+  and?: Array<ModelSongEventConditionInput | null> | null;
+  or?: Array<ModelSongEventConditionInput | null> | null;
+  not?: ModelSongEventConditionInput | null;
 };
 
 export type UpdateSongEventInput = {
@@ -145,7 +154,10 @@ export type DeleteTrackInput = {
 
 export type ModelUserFilterInput = {
   userID?: ModelStringInput | null;
-  latestEvent?: ModelIntInput | null;
+  latestSongEvent?: ModelIntInput | null;
+  latestListenPing?: ModelIntInput | null;
+  listeningTo?: ModelStringInput | null;
+  type?: ModelStringInput | null;
   and?: Array<ModelUserFilterInput | null> | null;
   or?: Array<ModelUserFilterInput | null> | null;
   not?: ModelUserFilterInput | null;
@@ -215,7 +227,9 @@ export type CreateUserMutation = {
   createUser: {
     __typename: "User";
     userID: string;
-    latestEvent: number | null;
+    latestSongEvent: number | null;
+    latestListenPing: number | null;
+    listeningTo: string | null;
     songEvents: {
       __typename: "ModelSongEventConnection";
       items: Array<{
@@ -238,12 +252,36 @@ export type CreateUserMutation = {
         user: {
           __typename: "User";
           userID: string;
-          latestEvent: number | null;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
         } | null;
         type: string;
       } | null> | null;
       nextToken: string | null;
     } | null;
+    listeners: {
+      __typename: "ModelUserConnection";
+      items: Array<{
+        __typename: "User";
+        userID: string;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
+        songEvents: {
+          __typename: "ModelSongEventConnection";
+          nextToken: string | null;
+        } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        type: string;
+      } | null> | null;
+      nextToken: string | null;
+    } | null;
+    type: string;
   } | null;
 };
 
@@ -256,7 +294,9 @@ export type UpdateUserMutation = {
   updateUser: {
     __typename: "User";
     userID: string;
-    latestEvent: number | null;
+    latestSongEvent: number | null;
+    latestListenPing: number | null;
+    listeningTo: string | null;
     songEvents: {
       __typename: "ModelSongEventConnection";
       items: Array<{
@@ -279,12 +319,36 @@ export type UpdateUserMutation = {
         user: {
           __typename: "User";
           userID: string;
-          latestEvent: number | null;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
         } | null;
         type: string;
       } | null> | null;
       nextToken: string | null;
     } | null;
+    listeners: {
+      __typename: "ModelUserConnection";
+      items: Array<{
+        __typename: "User";
+        userID: string;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
+        songEvents: {
+          __typename: "ModelSongEventConnection";
+          nextToken: string | null;
+        } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        type: string;
+      } | null> | null;
+      nextToken: string | null;
+    } | null;
+    type: string;
   } | null;
 };
 
@@ -297,7 +361,9 @@ export type DeleteUserMutation = {
   deleteUser: {
     __typename: "User";
     userID: string;
-    latestEvent: number | null;
+    latestSongEvent: number | null;
+    latestListenPing: number | null;
+    listeningTo: string | null;
     songEvents: {
       __typename: "ModelSongEventConnection";
       items: Array<{
@@ -320,12 +386,36 @@ export type DeleteUserMutation = {
         user: {
           __typename: "User";
           userID: string;
-          latestEvent: number | null;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
         } | null;
         type: string;
       } | null> | null;
       nextToken: string | null;
     } | null;
+    listeners: {
+      __typename: "ModelUserConnection";
+      items: Array<{
+        __typename: "User";
+        userID: string;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
+        songEvents: {
+          __typename: "ModelSongEventConnection";
+          nextToken: string | null;
+        } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        type: string;
+      } | null> | null;
+      nextToken: string | null;
+    } | null;
+    type: string;
   } | null;
 };
 
@@ -355,7 +445,9 @@ export type CreateSongEventMutation = {
     user: {
       __typename: "User";
       userID: string;
-      latestEvent: number | null;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
       songEvents: {
         __typename: "ModelSongEventConnection";
         items: Array<{
@@ -369,6 +461,19 @@ export type CreateSongEventMutation = {
         } | null> | null;
         nextToken: string | null;
       } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
     } | null;
     type: string;
   } | null;
@@ -400,7 +505,9 @@ export type UpdateSongEventMutation = {
     user: {
       __typename: "User";
       userID: string;
-      latestEvent: number | null;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
       songEvents: {
         __typename: "ModelSongEventConnection";
         items: Array<{
@@ -414,6 +521,19 @@ export type UpdateSongEventMutation = {
         } | null> | null;
         nextToken: string | null;
       } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
     } | null;
     type: string;
   } | null;
@@ -445,7 +565,9 @@ export type DeleteSongEventMutation = {
     user: {
       __typename: "User";
       userID: string;
-      latestEvent: number | null;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
       songEvents: {
         __typename: "ModelSongEventConnection";
         items: Array<{
@@ -459,6 +581,19 @@ export type DeleteSongEventMutation = {
         } | null> | null;
         nextToken: string | null;
       } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
     } | null;
     type: string;
   } | null;
@@ -526,7 +661,9 @@ export type GetUserQuery = {
   getUser: {
     __typename: "User";
     userID: string;
-    latestEvent: number | null;
+    latestSongEvent: number | null;
+    latestListenPing: number | null;
+    listeningTo: string | null;
     songEvents: {
       __typename: "ModelSongEventConnection";
       items: Array<{
@@ -549,12 +686,36 @@ export type GetUserQuery = {
         user: {
           __typename: "User";
           userID: string;
-          latestEvent: number | null;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
         } | null;
         type: string;
       } | null> | null;
       nextToken: string | null;
     } | null;
+    listeners: {
+      __typename: "ModelUserConnection";
+      items: Array<{
+        __typename: "User";
+        userID: string;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
+        songEvents: {
+          __typename: "ModelSongEventConnection";
+          nextToken: string | null;
+        } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        type: string;
+      } | null> | null;
+      nextToken: string | null;
+    } | null;
+    type: string;
   } | null;
 };
 
@@ -572,7 +733,9 @@ export type ListUsersQuery = {
     items: Array<{
       __typename: "User";
       userID: string;
-      latestEvent: number | null;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
       songEvents: {
         __typename: "ModelSongEventConnection";
         items: Array<{
@@ -586,6 +749,19 @@ export type ListUsersQuery = {
         } | null> | null;
         nextToken: string | null;
       } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
     } | null> | null;
     nextToken: string | null;
   } | null;
@@ -616,7 +792,9 @@ export type GetSongEventQuery = {
     user: {
       __typename: "User";
       userID: string;
-      latestEvent: number | null;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
       songEvents: {
         __typename: "ModelSongEventConnection";
         items: Array<{
@@ -630,6 +808,19 @@ export type GetSongEventQuery = {
         } | null> | null;
         nextToken: string | null;
       } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
     } | null;
     type: string;
   } | null;
@@ -664,11 +855,18 @@ export type ListSongEventsQuery = {
       user: {
         __typename: "User";
         userID: string;
-        latestEvent: number | null;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
         songEvents: {
           __typename: "ModelSongEventConnection";
           nextToken: string | null;
         } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        type: string;
       } | null;
       type: string;
     } | null> | null;
@@ -718,6 +916,104 @@ export type ListTracksQuery = {
   } | null;
 };
 
+export type UsersByLatestSongEventQueryVariables = {
+  type?: string | null;
+  latestSongEvent?: ModelIntKeyConditionInput | null;
+  sortDirection?: ModelSortDirection | null;
+  filter?: ModelUserFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+};
+
+export type UsersByLatestSongEventQuery = {
+  usersByLatestSongEvent: {
+    __typename: "ModelUserConnection";
+    items: Array<{
+      __typename: "User";
+      userID: string;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
+      songEvents: {
+        __typename: "ModelSongEventConnection";
+        items: Array<{
+          __typename: "SongEvent";
+          id: string;
+          spotifyURI: string;
+          timestamp: number;
+          position: number;
+          userID: string;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
+    } | null> | null;
+    nextToken: string | null;
+  } | null;
+};
+
+export type UsersByListeningToQueryVariables = {
+  listeningTo?: string | null;
+  latestListenPing?: ModelIntKeyConditionInput | null;
+  sortDirection?: ModelSortDirection | null;
+  filter?: ModelUserFilterInput | null;
+  limit?: number | null;
+  nextToken?: string | null;
+};
+
+export type UsersByListeningToQuery = {
+  usersByListeningTo: {
+    __typename: "ModelUserConnection";
+    items: Array<{
+      __typename: "User";
+      userID: string;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
+      songEvents: {
+        __typename: "ModelSongEventConnection";
+        items: Array<{
+          __typename: "SongEvent";
+          id: string;
+          spotifyURI: string;
+          timestamp: number;
+          position: number;
+          userID: string;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
+    } | null> | null;
+    nextToken: string | null;
+  } | null;
+};
+
 export type SongEventsByUserIdQueryVariables = {
   userID?: string | null;
   timestamp?: ModelIntKeyConditionInput | null;
@@ -750,11 +1046,18 @@ export type SongEventsByUserIdQuery = {
       user: {
         __typename: "User";
         userID: string;
-        latestEvent: number | null;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
         songEvents: {
           __typename: "ModelSongEventConnection";
           nextToken: string | null;
         } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        type: string;
       } | null;
       type: string;
     } | null> | null;
@@ -794,11 +1097,18 @@ export type SongEventsByTypeQuery = {
       user: {
         __typename: "User";
         userID: string;
-        latestEvent: number | null;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
         songEvents: {
           __typename: "ModelSongEventConnection";
           nextToken: string | null;
         } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        type: string;
       } | null;
       type: string;
     } | null> | null;
@@ -831,7 +1141,9 @@ export type OnCreateSongEventSubscription = {
     user: {
       __typename: "User";
       userID: string;
-      latestEvent: number | null;
+      latestSongEvent: number | null;
+      latestListenPing: number | null;
+      listeningTo: string | null;
       songEvents: {
         __typename: "ModelSongEventConnection";
         items: Array<{
@@ -845,52 +1157,36 @@ export type OnCreateSongEventSubscription = {
         } | null> | null;
         nextToken: string | null;
       } | null;
+      listeners: {
+        __typename: "ModelUserConnection";
+        items: Array<{
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
+        } | null> | null;
+        nextToken: string | null;
+      } | null;
+      type: string;
     } | null;
     type: string;
   } | null;
 };
 
-export type OnCreateUserSubscription = {
-  onCreateUser: {
-    __typename: "User";
-    userID: string;
-    latestEvent: number | null;
-    songEvents: {
-      __typename: "ModelSongEventConnection";
-      items: Array<{
-        __typename: "SongEvent";
-        id: string;
-        spotifyURI: string;
-        timestamp: number;
-        position: number;
-        track: {
-          __typename: "Track";
-          uri: string;
-          trackID: string | null;
-          name: string | null;
-          durationMs: number | null;
-          albumName: string | null;
-          artistName: string | null;
-          albumImg: string | null;
-        } | null;
-        userID: string;
-        user: {
-          __typename: "User";
-          userID: string;
-          latestEvent: number | null;
-        } | null;
-        type: string;
-      } | null> | null;
-      nextToken: string | null;
-    } | null;
-  } | null;
+export type OnUpdateUserSubscriptionVariables = {
+  listeningTo?: string | null;
+  userID?: string | null;
 };
 
 export type OnUpdateUserSubscription = {
   onUpdateUser: {
     __typename: "User";
     userID: string;
-    latestEvent: number | null;
+    latestSongEvent: number | null;
+    latestListenPing: number | null;
+    listeningTo: string | null;
     songEvents: {
       __typename: "ModelSongEventConnection";
       items: Array<{
@@ -913,48 +1209,36 @@ export type OnUpdateUserSubscription = {
         user: {
           __typename: "User";
           userID: string;
-          latestEvent: number | null;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          type: string;
         } | null;
         type: string;
       } | null> | null;
       nextToken: string | null;
     } | null;
-  } | null;
-};
-
-export type OnDeleteUserSubscription = {
-  onDeleteUser: {
-    __typename: "User";
-    userID: string;
-    latestEvent: number | null;
-    songEvents: {
-      __typename: "ModelSongEventConnection";
+    listeners: {
+      __typename: "ModelUserConnection";
       items: Array<{
-        __typename: "SongEvent";
-        id: string;
-        spotifyURI: string;
-        timestamp: number;
-        position: number;
-        track: {
-          __typename: "Track";
-          uri: string;
-          trackID: string | null;
-          name: string | null;
-          durationMs: number | null;
-          albumName: string | null;
-          artistName: string | null;
-          albumImg: string | null;
-        } | null;
+        __typename: "User";
         userID: string;
-        user: {
-          __typename: "User";
-          userID: string;
-          latestEvent: number | null;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
+        songEvents: {
+          __typename: "ModelSongEventConnection";
+          nextToken: string | null;
+        } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
         } | null;
         type: string;
       } | null> | null;
       nextToken: string | null;
     } | null;
+    type: string;
   } | null;
 };
 

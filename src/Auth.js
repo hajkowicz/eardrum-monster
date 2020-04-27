@@ -4,11 +4,12 @@ import SpotifyAPI from "./SpotifyAPI.js";
 import { useHistory, useLocation } from "react-router-dom";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
+import * as queries from "./graphql/queries";
 
 export const AuthContext = createContext();
 
 export function AuthRedirect() {
-  return null;
+  return <div style={{ textAlign: "center" }}>Logging in...</div>;
 }
 
 export function getAuthorizeURI(pathname) {
@@ -38,16 +39,32 @@ function handleAuthRedirect(setAuthInfo, history, location) {
     location.hash = "";
     new SpotifyAPI(accessToken).fetchUserInfo().then((user) => {
       const spotifyIdentifier = user.display_name.split(" ")[0];
-      setAuthInfo({ accessToken, username: spotifyIdentifier });
-      history.push(decodeURIComponent(params.state));
       // Ensure the user is created upon login
       API.graphql(
-        graphqlOperation(mutations.createUser, {
-          input: {
-            userID: spotifyIdentifier,
-          },
+        graphqlOperation(queries.getUser, {
+          userID: spotifyIdentifier,
         })
-      ).catch(() => console.error("user creation failed"));
+      )
+        .then((data) => {
+          if (data.data.getUser == null) {
+            return API.graphql(
+              graphqlOperation(mutations.createUser, {
+                input: {
+                  userID: spotifyIdentifier,
+                  type: "USER",
+                },
+              })
+            );
+          }
+        })
+        .then(() => {
+          setAuthInfo({ accessToken, username: spotifyIdentifier });
+          history.push(decodeURIComponent(params.state));
+        })
+        .catch(() => {
+          history.push("/");
+          console.error("user creation failed");
+        });
     });
   }
   return null;

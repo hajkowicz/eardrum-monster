@@ -21,7 +21,9 @@ export const onCreateSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        latestEvent
+        latestSongEvent
+        latestListenPing
+        listeningTo
         songEvents {
           items {
             id
@@ -33,48 +35,29 @@ export const onCreateSongEvent = /* GraphQL */ `
           }
           nextToken
         }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
       }
       type
     }
   }
 `;
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
-      userID
-      latestEvent
-      songEvents {
-        items {
-          id
-          spotifyURI
-          timestamp
-          position
-          track {
-            uri
-            trackID
-            name
-            durationMs
-            albumName
-            artistName
-            albumImg
-          }
-          userID
-          user {
-            userID
-            latestEvent
-          }
-          type
-        }
-        nextToken
-      }
-    }
-  }
-`;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+  subscription OnUpdateUser($listeningTo: String, $userID: String) {
+    onUpdateUser(listeningTo: $listeningTo, userID: $userID) {
       userID
-      latestEvent
+      latestSongEvent
+      latestListenPing
+      listeningTo
       songEvents {
         items {
           id
@@ -93,44 +76,32 @@ export const onUpdateUser = /* GraphQL */ `
           userID
           user {
             userID
-            latestEvent
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
           }
           type
         }
         nextToken
       }
-    }
-  }
-`;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
-      userID
-      latestEvent
-      songEvents {
+      listeners {
         items {
-          id
-          spotifyURI
-          timestamp
-          position
-          track {
-            uri
-            trackID
-            name
-            durationMs
-            albumName
-            artistName
-            albumImg
-          }
           userID
-          user {
-            userID
-            latestEvent
+          latestSongEvent
+          latestListenPing
+          listeningTo
+          songEvents {
+            nextToken
+          }
+          listeners {
+            nextToken
           }
           type
         }
         nextToken
       }
+      type
     }
   }
 `;

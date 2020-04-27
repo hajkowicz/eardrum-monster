@@ -6,7 +6,9 @@ export const getUser = /* GraphQL */ `
   query GetUser($userID: String!) {
     getUser(userID: $userID) {
       userID
-      latestEvent
+      latestSongEvent
+      latestListenPing
+      listeningTo
       songEvents {
         items {
           id
@@ -25,12 +27,32 @@ export const getUser = /* GraphQL */ `
           userID
           user {
             userID
-            latestEvent
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
           }
           type
         }
         nextToken
       }
+      listeners {
+        items {
+          userID
+          latestSongEvent
+          latestListenPing
+          listeningTo
+          songEvents {
+            nextToken
+          }
+          listeners {
+            nextToken
+          }
+          type
+        }
+        nextToken
+      }
+      type
     }
   }
 `;
@@ -51,7 +73,9 @@ export const listUsers = /* GraphQL */ `
     ) {
       items {
         userID
-        latestEvent
+        latestSongEvent
+        latestListenPing
+        listeningTo
         songEvents {
           items {
             id
@@ -63,6 +87,17 @@ export const listUsers = /* GraphQL */ `
           }
           nextToken
         }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
       }
       nextToken
     }
@@ -87,7 +122,9 @@ export const getSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        latestEvent
+        latestSongEvent
+        latestListenPing
+        listeningTo
         songEvents {
           items {
             id
@@ -99,6 +136,17 @@ export const getSongEvent = /* GraphQL */ `
           }
           nextToken
         }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
       }
       type
     }
@@ -128,10 +176,16 @@ export const listSongEvents = /* GraphQL */ `
         userID
         user {
           userID
-          latestEvent
+          latestSongEvent
+          latestListenPing
+          listeningTo
           songEvents {
             nextToken
           }
+          listeners {
+            nextToken
+          }
+          type
         }
         type
       }
@@ -180,6 +234,104 @@ export const listTracks = /* GraphQL */ `
     }
   }
 `;
+export const usersByLatestSongEvent = /* GraphQL */ `
+  query UsersByLatestSongEvent(
+    $type: String
+    $latestSongEvent: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByLatestSongEvent(
+      type: $type
+      latestSongEvent: $latestSongEvent
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        userID
+        latestSongEvent
+        latestListenPing
+        listeningTo
+        songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
+          nextToken
+        }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
+      }
+      nextToken
+    }
+  }
+`;
+export const usersByListeningTo = /* GraphQL */ `
+  query UsersByListeningTo(
+    $listeningTo: String
+    $latestListenPing: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByListeningTo(
+      listeningTo: $listeningTo
+      latestListenPing: $latestListenPing
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        userID
+        latestSongEvent
+        latestListenPing
+        listeningTo
+        songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
+          nextToken
+        }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
+      }
+      nextToken
+    }
+  }
+`;
 export const songEventsByUserId = /* GraphQL */ `
   query SongEventsByUserId(
     $userID: String
@@ -214,10 +366,16 @@ export const songEventsByUserId = /* GraphQL */ `
         userID
         user {
           userID
-          latestEvent
+          latestSongEvent
+          latestListenPing
+          listeningTo
           songEvents {
             nextToken
           }
+          listeners {
+            nextToken
+          }
+          type
         }
         type
       }
@@ -259,10 +417,16 @@ export const songEventsByType = /* GraphQL */ `
         userID
         user {
           userID
-          latestEvent
+          latestSongEvent
+          latestListenPing
+          listeningTo
           songEvents {
             nextToken
           }
+          listeners {
+            nextToken
+          }
+          type
         }
         type
       }

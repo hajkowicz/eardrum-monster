@@ -15,7 +15,15 @@ export type BroadcastPublisherProps = {
   onSongEvent: (songEvent: SongEvent) => void;
 };
 
-function publishSongEvent(songEvent: CreateSongEventInput) {
+function publishSongEvent(username: string, songEvent: CreateSongEventInput) {
+  API.graphql(
+    graphqlOperation(mutations.updateUser, {
+      input: {
+        userID: username,
+        latestSongEvent: songEvent.timestamp,
+      },
+    })
+  );
   return API.graphql(
     graphqlOperation(mutations.createSongEvent, {
       input: songEvent,
@@ -78,31 +86,17 @@ export default function BroadcastPublisher({
     const localSongEvent = {
       ...songEvent,
       __typename: "SongEvent" as "SongEvent",
-      _version: 0,
-      _deleted: null,
-      _lastChangedAt: 0,
       track: {
         __typename: "Track" as "Track",
-        _version: 0,
-        _deleted: null,
-        _lastChangedAt: 0,
         ...track,
       },
       id: Math.random().toString(),
-      user: {
-        __typename: "User" as "User",
-        _version: 0,
-        _deleted: null,
-        _lastChangedAt: 0,
-        userID: authInfo.username,
-        latestEvent: Math.floor(Date.now() / 1000),
-        songEvents: null,
-      },
+      user: null,
     };
     currentSongEventRef.current = localSongEvent;
     onSongEvent(localSongEvent);
     publishTrack(track).then(() => {
-      publishSongEvent(songEvent);
+      publishSongEvent(authInfo.username, songEvent);
     });
   };
   handlePlayerStateChangedRef.current = handlePlayerStateChanged;

@@ -1,10 +1,16 @@
 type User
-  @model
+  @model(subscriptions: null)
   @key(fields: ["userID"])
+  @key(name: "byLatestSongEvent", fields: ["type", "latestSongEvent"], queryField: "usersByLatestSongEvent")
+  @key(name: "byListeningTo", fields: ["listeningTo", "latestListenPing"], queryField: "usersByListeningTo")
 {
   userID: String!
-  latestEvent: AWSTimestamp
+  latestSongEvent: AWSTimestamp
+  latestListenPing: AWSTimestamp
+  listeningTo: String
   songEvents: [SongEvent] @connection(keyName: "byUser", fields: ["userID"])
+  listeners: [User] @connection(keyName: "byListeningTo", fields: ["userID"])
+  type: String!
 }
 
 type SongEvent
@@ -35,4 +41,5 @@ type Track
 
 type Subscription {
   onCreateSongEvent(userID: String!): SongEvent @aws_subscribe(mutations: ["createSongEvent"])
+  onUpdateUser(listeningTo: String, userID: String): User @aws_subscribe(mutations: ["updateUser"])
 }

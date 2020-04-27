@@ -9,7 +9,9 @@ export const createUser = /* GraphQL */ `
   ) {
     createUser(input: $input, condition: $condition) {
       userID
-      latestEvent
+      latestSongEvent
+      latestListenPing
+      listeningTo
       songEvents {
         items {
           id
@@ -28,12 +30,32 @@ export const createUser = /* GraphQL */ `
           userID
           user {
             userID
-            latestEvent
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
           }
           type
         }
         nextToken
       }
+      listeners {
+        items {
+          userID
+          latestSongEvent
+          latestListenPing
+          listeningTo
+          songEvents {
+            nextToken
+          }
+          listeners {
+            nextToken
+          }
+          type
+        }
+        nextToken
+      }
+      type
     }
   }
 `;
@@ -44,7 +66,9 @@ export const updateUser = /* GraphQL */ `
   ) {
     updateUser(input: $input, condition: $condition) {
       userID
-      latestEvent
+      latestSongEvent
+      latestListenPing
+      listeningTo
       songEvents {
         items {
           id
@@ -63,12 +87,32 @@ export const updateUser = /* GraphQL */ `
           userID
           user {
             userID
-            latestEvent
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
           }
           type
         }
         nextToken
       }
+      listeners {
+        items {
+          userID
+          latestSongEvent
+          latestListenPing
+          listeningTo
+          songEvents {
+            nextToken
+          }
+          listeners {
+            nextToken
+          }
+          type
+        }
+        nextToken
+      }
+      type
     }
   }
 `;
@@ -79,7 +123,9 @@ export const deleteUser = /* GraphQL */ `
   ) {
     deleteUser(input: $input, condition: $condition) {
       userID
-      latestEvent
+      latestSongEvent
+      latestListenPing
+      listeningTo
       songEvents {
         items {
           id
@@ -98,12 +144,32 @@ export const deleteUser = /* GraphQL */ `
           userID
           user {
             userID
-            latestEvent
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
           }
           type
         }
         nextToken
       }
+      listeners {
+        items {
+          userID
+          latestSongEvent
+          latestListenPing
+          listeningTo
+          songEvents {
+            nextToken
+          }
+          listeners {
+            nextToken
+          }
+          type
+        }
+        nextToken
+      }
+      type
     }
   }
 `;
@@ -129,7 +195,9 @@ export const createSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        latestEvent
+        latestSongEvent
+        latestListenPing
+        listeningTo
         songEvents {
           items {
             id
@@ -141,6 +209,17 @@ export const createSongEvent = /* GraphQL */ `
           }
           nextToken
         }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
       }
       type
     }
@@ -168,7 +247,9 @@ export const updateSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        latestEvent
+        latestSongEvent
+        latestListenPing
+        listeningTo
         songEvents {
           items {
             id
@@ -180,6 +261,17 @@ export const updateSongEvent = /* GraphQL */ `
           }
           nextToken
         }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
       }
       type
     }
@@ -207,7 +299,9 @@ export const deleteSongEvent = /* GraphQL */ `
       userID
       user {
         userID
-        latestEvent
+        latestSongEvent
+        latestListenPing
+        listeningTo
         songEvents {
           items {
             id
@@ -219,6 +313,17 @@ export const deleteSongEvent = /* GraphQL */ `
           }
           nextToken
         }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            type
+          }
+          nextToken
+        }
+        type
       }
       type
     }

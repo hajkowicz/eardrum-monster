@@ -6,6 +6,7 @@ import Home from "./Home.js";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider, AuthRedirect } from "./Auth.js";
 import { SpotifyProvider } from "./SpotifyContext.js";
+import RedirectToLoginOrBroadcast from "./RedirectToLoginOrBroadcast";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
                 </Route>
                 <Route path="/u/:id">
                   <Channel />
+                </Route>
+                <Route path="/broadcast">
+                  <RedirectToLoginOrBroadcast />
                 </Route>
               </Switch>
             </div>

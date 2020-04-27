@@ -1,14 +1,33 @@
 .Home {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: top;
+  align-items: start;
 }
 
 @media only screen and (max-width: 600px) {
   .Home {
-    flex-direction: column;
   }
+}
+
+.Home-user {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  border: 1px solid #282c34;
+  border-radius: 1em;
+  padding: 1em;
+}
+
+.Home-userTitle {
+  font-size: 1.5em;
+}
+
+.Home-userSubtitle {
+  font-style: italic;
 }
 
 .Home-userList {
@@ -17,10 +36,14 @@
   list-style-type: none;
 }
 
+.Home-userImg {
+  width: 8em;
+  height: 8em;
+  margin-bottom: 0.5em;
+}
+
 .Home-link {
-  text-decoration: none;
   font-size: 1.5em;
-  margin-bottom: 10px;
   display: block;
   color: #282c34;
 }
@@ -32,14 +55,12 @@
 .Home-content {
   margin-left: 1em;
   margin-right: 1em;
-  flex-basis: 60%;
   margin-bottom: 20px;
 }
 
 .Home-list {
   margin-left: 1em;
   margin-right: 1em;
-  flex-basis: 40%;
   margin-bottom: 20px;
 }
 

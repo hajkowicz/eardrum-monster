@@ -11,6 +11,7 @@
     "@types/node": "^13.13.2",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
+    "@types/react-router-dom": "^5.1.5",
     "aws-amplify": "^3.0.7",
     "aws-amplify-react": "^4.1.6",
     "husky": "^4.2.5",
