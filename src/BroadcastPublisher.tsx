@@ -16,17 +16,20 @@ export type BroadcastPublisherProps = {
 };
 
 function publishSongEvent(username: string, songEvent: CreateSongEventInput) {
+  return API.graphql(
+    graphqlOperation(mutations.createSongEvent, {
+      input: songEvent,
+    })
+  );
+}
+
+function publishBroadcastPing(username: string) {
   API.graphql(
     graphqlOperation(mutations.updateUser, {
       input: {
         userID: username,
-        latestSongEvent: songEvent.timestamp,
+        latestSongEvent: Math.floor(Date.now() / 1000),
       },
-    })
-  );
-  return API.graphql(
-    graphqlOperation(mutations.createSongEvent, {
-      input: songEvent,
     })
   );
 }
@@ -47,6 +50,16 @@ export default function BroadcastPublisher({
     () => {}
   );
   const currentSongEventRef = React.useRef<SongEvent>(currentSongEvent);
+
+  React.useEffect(() => {
+    if (authInfo) {
+      publishBroadcastPing(authInfo.username);
+      const intervalID = setInterval(() => {
+        publishBroadcastPing(authInfo.username);
+      }, 10000);
+      return () => clearInterval(intervalID);
+    }
+  }, [authInfo]);
 
   const handlePlayerStateChanged = (newState: SpotifyWebPlayerState) => {
     const newTrack = SpotifyWebPlayer.getTrackFromState(newState);

@@ -12,8 +12,8 @@ export function getActiveListeners(users: User[]): User[] {
 }
 
 export function isUserOnline(user: User): boolean {
-  const songEvents = user.songEvents?.items ?? [];
-  return isOnline(songEvents as SongEvent[]);
+  const latestSongEvent = user.latestSongEvent ?? 0;
+  return Math.floor(Date.now() / 1000) - latestSongEvent < 30;
 }
 
 export function isOnline(songEvents: SongEvent[]): boolean {
