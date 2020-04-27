@@ -19,6 +19,7 @@
 .Track-albumImg {
   height: 100px;
   width: 100px;
+  flex-shrink: 0;
 }
 
 .Track-details {

@@ -124,6 +124,7 @@ export default function BroadcastPublisher({
             spotifyWebPlayer.fetchState().then((newState: any) => {
               handlePlayerStateChangedRef.current(newState);
             });
+            spotifyWebPlayer.resume();
           } else {
             // Transfer playback to the web player
             spotifyWebPlayer.transferPlayback();
@@ -142,6 +143,7 @@ export default function BroadcastPublisher({
       return () => {
         spotifyWebPlayer.removeStateChangeListener(changeListener);
         initFunc.current = () => {};
+        spotifyWebPlayer.pause();
       };
     }
   }, [spotifyWebPlayer, handlePlayerStateChangedRef]);

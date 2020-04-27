@@ -12,6 +12,10 @@ export default class SpotifyWebPlayer {
     return this.player.pause();
   }
 
+  resume() {
+    return this.player.resume();
+  }
+
   seek(ms) {
     return this.player.seek(ms);
   }
