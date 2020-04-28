@@ -81,16 +81,17 @@ export default class SpotifyWebPlayer {
       });
 
       // Update volume on change
-      player.addListener("player_state_changed", () => {
+      setInterval(() => {
         player.getVolume().then((newVolume) => {
           if (typeof newVolume === "number") {
             const newVol = newVolume.toFixed(2);
             if (newVol > 0 && volumeRef.current !== newVol) {
+              volumeRef.current = newVol;
               window.localStorage.setItem("EMPlayerVolume", newVol);
             }
           }
         });
-      });
+      }, 5000);
 
       player.on("initialization_error", ({ message }) => {
         console.error("Failed to initialize", message);
