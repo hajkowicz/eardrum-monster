@@ -9,7 +9,15 @@ import "./Listeners.css";
 import type { OnUpdateUserSubscription, UsersByListeningToQuery } from "./API";
 import type { User } from "./Types";
 
-export default function Listeners({ hostID }: { hostID: string }) {
+export default function Listeners({
+  hostUserID,
+  hostDisplayName,
+  hostUserImg,
+}: {
+  hostUserID: string;
+  hostDisplayName: string;
+  hostUserImg: string;
+}) {
   const [rerender, setRerender] = React.useState(false);
 
   // Re-render every 10s to update listeners
@@ -28,12 +36,12 @@ export default function Listeners({ hostID }: { hostID: string }) {
       <div className="Listeners-list">
         <Connect
           query={graphqlOperation(queries.usersByListeningTo, {
-            listeningTo: hostID,
+            listeningTo: hostUserID,
             sortDirection: "DESC",
             limit: 50,
           })}
           subscription={graphqlOperation(subscriptions.onUpdateUser, {
-            listeningTo: hostID,
+            listeningTo: hostUserID,
           })}
           // @ts-ignore
           onSubscriptionMsg={(
@@ -72,13 +80,33 @@ export default function Listeners({ hostID }: { hostID: string }) {
             const onlineUsers = getActiveListeners(users);
             return (
               <>
-                {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-                <div>{hostID} ⭐</div>
+                <div className="Listeners-item">
+                  {hostUserImg && (
+                    <img
+                      className="Listeners-userImg"
+                      src={hostUserImg}
+                      alt={`Profile Pic`}
+                    />
+                  )}
+                  {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+                  <div>{hostDisplayName} ⭐</div>
+                </div>
                 {onlineUsers.map((user) => {
                   if (user == null) {
                     return null;
                   }
-                  return <div key={user.userID}>{user.userID}</div>;
+                  return (
+                    <div className="Listeners-item" key={user.userID}>
+                      {user?.userImg && (
+                        <img
+                          className="Listeners-userImg"
+                          src={user?.userImg}
+                          alt={`Profile Pic`}
+                        />
+                      )}
+                      <span>{user.displayName || user.userID}</span>
+                    </div>
+                  );
                 })}
               </>
             );

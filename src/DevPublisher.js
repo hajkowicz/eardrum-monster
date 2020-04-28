@@ -2,7 +2,7 @@ import React from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 
-export default function DevPublisher({ hostUsername }) {
+export default function DevPublisher({ hostUserID }) {
   React.useEffect(() => {
     const timeoutID = setInterval(() => {
       const tracks = [
@@ -18,7 +18,7 @@ export default function DevPublisher({ hostUsername }) {
         "spotify:track:4PPrsYpzuRqe4QoCDGAG4b",
       ];
       const songEvent = {
-        userID: hostUsername,
+        userID: hostUserID,
         timestamp: Math.floor(Date.now() / 1000),
         position: 0,
         spotifyURI: tracks[(Math.random() * 100).toString()[0]],
@@ -32,7 +32,7 @@ export default function DevPublisher({ hostUsername }) {
     return () => {
       clearInterval(timeoutID);
     };
-  }, [hostUsername]);
+  }, [hostUserID]);
 
   return <h1>DevPublisher enabled</h1>;
 }

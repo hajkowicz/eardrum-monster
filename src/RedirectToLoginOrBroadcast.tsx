@@ -7,7 +7,7 @@ export default function RedirectToLoginOrBroadcast() {
   const location = useLocation();
   const authInfo = useAuth();
   if (authInfo) {
-    return <Redirect to={`/u/${authInfo.username}`} />;
+    return <Redirect to={`/u/${authInfo.displayName}`} />;
   }
   window.location.href = getAuthorizeURI(location.pathname);
   return null;

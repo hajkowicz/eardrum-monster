@@ -33,6 +33,8 @@ export const createUser = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           type
@@ -51,10 +53,14 @@ export const createUser = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         nextToken
       }
+      displayName
+      userImg
       type
     }
   }
@@ -90,6 +96,8 @@ export const updateUser = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           type
@@ -108,10 +116,14 @@ export const updateUser = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         nextToken
       }
+      displayName
+      userImg
       type
     }
   }
@@ -147,6 +159,8 @@ export const deleteUser = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           type
@@ -165,10 +179,14 @@ export const deleteUser = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         nextToken
       }
+      displayName
+      userImg
       type
     }
   }
@@ -215,10 +233,14 @@ export const createSongEvent = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
         type
       }
       type
@@ -267,10 +289,14 @@ export const updateSongEvent = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
         type
       }
       type
@@ -319,10 +345,14 @@ export const deleteSongEvent = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
         type
       }
       type

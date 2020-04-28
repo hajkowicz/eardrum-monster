@@ -72,15 +72,14 @@ export default function ChannelList() {
                   <Channel
                     key={user.userID}
                     img={img}
-                    title={user.userID}
+                    title={user.displayName || user.userID}
                     subtitle={`${numListeners} ${
                       numListeners === 1 ? "listener" : "listeners"
                     }`}
                     cta={
                       <Link
-                        key={user.userID}
                         className="Home-link"
-                        to={`/u/${user.userID}`}
+                        to={`/u/${user.displayName || user.userID}`}
                       >
                         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
                         Join ▶️

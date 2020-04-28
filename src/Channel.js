@@ -8,11 +8,11 @@ function Channel() {
   const authInfo = React.useContext(AuthContext);
   const { id } = useParams();
 
-  if (authInfo?.username === id) {
+  if (authInfo?.displayName === id) {
     return <Broadcast />;
   }
 
-  return <Listen hostUsername={id} />;
+  return <Listen hostDisplayName={id} />;
 }
 
 export default Channel;

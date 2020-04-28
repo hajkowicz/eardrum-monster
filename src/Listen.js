@@ -46,25 +46,37 @@ function StartListening({ children, isListening, onClick }) {
   );
 }
 
-function publishListenPing(userID, hostUsername) {
+function publishListenPing(userID, hostUserID) {
   return API.graphql(
     graphqlOperation(mutations.updateUser, {
       input: {
         userID,
         latestListenPing: Math.floor(Date.now() / 1000),
-        listeningTo: hostUsername,
+        listeningTo: hostUserID,
       },
     })
   );
 }
 
-function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
+function fetchHostByDisplayName(hostDisplayName) {
+  return API.graphql(
+    graphqlOperation(queries.usersByDisplayName, {
+      displayName: hostDisplayName,
+      sortDirection: "DESC",
+      limit: 1,
+    })
+  ).then((data) => {
+    return data?.data?.usersByDisplayName?.items?.[0];
+  });
+}
+
+function ListenPlayer({ isCurrentlyLive, songs, hostUserID, hostDisplayName }) {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
   const [isListeningUsername, setIsListeningUsername] = useLocalStorage(
     "EMisListeningUsername"
   );
-  const isListening = authInfo && hostUsername === isListeningUsername;
+  const isListening = authInfo && hostUserID === isListeningUsername;
   const NoSleep = window.NoSleep;
 
   React.useEffect(() => {
@@ -77,23 +89,23 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
 
   React.useEffect(() => {
     if (isListening && authInfo) {
-      publishListenPing(authInfo.username, hostUsername);
+      publishListenPing(authInfo.username, hostUserID);
       const intervalID = setInterval(() => {
-        publishListenPing(authInfo.username, hostUsername);
+        publishListenPing(authInfo.username, hostUserID);
       }, 10000);
       return () => clearInterval(intervalID);
     }
-  }, [isListening, authInfo, hostUsername]);
+  }, [isListening, authInfo, hostUserID]);
 
   const handleJoin = React.useCallback(
     (e) => {
       e.preventDefault();
-      setIsListeningUsername(hostUsername);
+      setIsListeningUsername(hostUserID);
       if (authInfo == null) {
         window.location.href = getAuthorizeURI(location.pathname);
       }
     },
-    [setIsListeningUsername, authInfo, location, hostUsername]
+    [setIsListeningUsername, authInfo, location, hostUserID]
   );
 
   if (!isCurrentlyLive) {
@@ -102,7 +114,7 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
 
   return (
     <StartListening isListening={isListening} onClick={handleJoin}>
-      {isListening && <p>Listening to {hostUsername}'s channel!</p>}
+      {isListening && <p>Listening to {hostDisplayName}'s channel!</p>}
       {isListening && <SongPlayerWithControls song={songs[0]} />}
       <div>Now Playing:</div>
       <Track track={songs[0].track} />
@@ -110,20 +122,46 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUsername }) {
   );
 }
 
-function Listen({ hostUsername }) {
+function Listen({ hostDisplayName }) {
   const location = useLocation();
   const devPublisherEnabled = location.search.includes("DEV=1");
+  const [hostUserID, setHostUserID] = React.useState(null);
+  const [hostUserImg, setHostUserImg] = React.useState(null);
+  const [failedLookup, setFailedLookup] = React.useState(false);
+
+  //Resolve host username
+  React.useEffect(() => {
+    fetchHostByDisplayName(hostDisplayName)
+      .then((host) => {
+        if (host == null) {
+          throw new Error("Could not locate user");
+        }
+        setHostUserID(host?.userID);
+        setHostUserImg(host?.userImg);
+      })
+      .catch(() => {
+        setFailedLookup(true);
+      });
+  }, [hostDisplayName]);
+
+  if (failedLookup) {
+    return <div className="Listen">User not found</div>;
+  }
+
+  if (hostUserID == null) {
+    return <div className="Listen"></div>;
+  }
 
   return (
     <div className="Listen">
       <Connect
         query={graphqlOperation(queries.songEventsByUserId, {
-          userID: hostUsername,
+          userID: hostUserID,
           sortDirection: "DESC",
           limit: 50,
         })}
         subscription={graphqlOperation(subscriptions.onCreateSongEvent, {
-          userID: hostUsername,
+          userID: hostUserID,
         })}
         onSubscriptionMsg={(prev, { onCreateSongEvent }) => {
           if (prev?.songEventsByUserID?.items == null) {
@@ -143,7 +181,7 @@ function Listen({ hostUsername }) {
           const songs =
             (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
           if (songs.length === 0) {
-            return <div>No track history for {hostUsername}</div>;
+            return <div>No track history for {hostDisplayName}</div>;
           }
           const online = songs.length > 0 && isUserOnline(songs[0].user);
 
@@ -151,21 +189,26 @@ function Listen({ hostUsername }) {
             <>
               {online && (
                 <div className="Listen-listeners">
-                  <Listeners hostID={hostUsername} />
+                  <Listeners
+                    hostUserID={hostUserID}
+                    hostDisplayName={hostDisplayName}
+                    hostUserImg={hostUserImg}
+                  />
                 </div>
               )}
               <div className="Listen-trackList">
                 <div className="Listen-header">
-                  {hostUsername}'s Channel
+                  {hostDisplayName}'s Channel
                   {devPublisherEnabled && (
-                    <DevPublisher hostUsername={hostUsername} />
+                    <DevPublisher hostUserID={hostUserID} />
                   )}
                 </div>
                 <>
                   <ListenPlayer
                     isCurrentlyLive={online}
                     songs={songs}
-                    hostUsername={hostUsername}
+                    hostDisplayName={hostDisplayName}
+                    hostUserID={hostUserID}
                   />
                   <TrackList songs={online ? songs.slice(1) : songs} />
                 </>

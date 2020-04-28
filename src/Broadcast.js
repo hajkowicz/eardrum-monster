@@ -59,14 +59,14 @@ function Broadcast() {
       </div>
     );
 
-  const shareURI = `https://eardrum.monster/u/${authInfo.username}`;
+  const shareURI = `https://eardrum.monster/u/${authInfo.displayName}`;
 
   const player =
     spotifyWebPlayer == null || songHistory == null ? (
       <div>Initializing Spotify web player...</div>
     ) : (
       <>
-        <div className="Broadcast-title">{authInfo.username}'s channel</div>
+        <div className="Broadcast-title">{authInfo.displayName}'s channel</div>
         <div className="Broadcast-text">You are the DJ.</div>
         <div className="Broadcast-text">
           <div>1. Control your spotify like normal to change the music</div>
@@ -77,7 +77,7 @@ function Broadcast() {
           <input value={shareURI} disabled size={shareURI.length} />
           <button>
             <CopyToClipboard
-              text={`https://eardrum.monster/u/${authInfo.username}`}
+              text={`https://eardrum.monster/u/${authInfo.displayName}`}
               onCopy={() => {
                 setCopied(true);
               }}
@@ -102,7 +102,11 @@ function Broadcast() {
   return (
     <div className="Broadcast">
       <div className="Broadcast-listeners">
-        <Listeners hostID={authInfo.username} />
+        <Listeners
+          hostUserID={authInfo.username}
+          hostDisplayName={authInfo.displayName}
+          hostUserImg={authInfo.userImg}
+        />
       </div>
       <div className="Broadcast-player">
         {player}

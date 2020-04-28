@@ -1,5 +1,5 @@
 export const usersByLatestSongEventCustom = /* GraphQL */ `
-  query UsersByLatestSongEvent(
+  query UsersByLatestSongEventCustom(
     $type: String
     $latestSongEvent: ModelIntKeyConditionInput
     $sortDirection: ModelSortDirection
@@ -17,6 +17,8 @@ export const usersByLatestSongEventCustom = /* GraphQL */ `
     ) {
       items {
         userID
+        displayName
+        userImg
         latestSongEvent
         latestListenPing
         listeningTo

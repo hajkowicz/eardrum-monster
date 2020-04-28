@@ -1,22 +1,44 @@
 type User
   @model(subscriptions: null)
   @key(fields: ["userID"])
-  @key(name: "byLatestSongEvent", fields: ["type", "latestSongEvent"], queryField: "usersByLatestSongEvent")
-  @key(name: "byListeningTo", fields: ["listeningTo", "latestListenPing"], queryField: "usersByListeningTo")
-{
+  @key(
+    name: "byLatestSongEvent"
+    fields: ["type", "latestSongEvent"]
+    queryField: "usersByLatestSongEvent"
+  )
+  @key(
+    name: "byListeningTo"
+    fields: ["listeningTo", "latestListenPing"]
+    queryField: "usersByListeningTo"
+  )
+  @key(
+    name: "byDisplayName"
+    fields: ["displayName", "latestSongEvent"]
+    queryField: "usersByDisplayName"
+  ) {
   userID: String!
   latestSongEvent: AWSTimestamp
   latestListenPing: AWSTimestamp
   listeningTo: String
   songEvents: [SongEvent] @connection(keyName: "byUser", fields: ["userID"])
   listeners: [User] @connection(keyName: "byListeningTo", fields: ["userID"])
+  displayName: String
+  userImg: String
   type: String!
 }
 
 type SongEvent
   @model(subscriptions: null)
-  @key(name: "byUser", fields: ["userID", "timestamp"], queryField: "songEventsByUserID")
-  @key(name: "byType", fields: ["type", "timestamp"], queryField: "songEventsByType") {
+  @key(
+    name: "byUser"
+    fields: ["userID", "timestamp"]
+    queryField: "songEventsByUserID"
+  )
+  @key(
+    name: "byType"
+    fields: ["type", "timestamp"]
+    queryField: "songEventsByType"
+  ) {
   id: ID!
   spotifyURI: String!
   timestamp: AWSTimestamp!
@@ -27,9 +49,7 @@ type SongEvent
   type: String!
 }
 
-type Track
-  @model
-  @key(fields: ["uri"]) {
+type Track @model @key(fields: ["uri"]) {
   uri: String!
   trackID: String
   name: String
@@ -40,6 +60,8 @@ type Track
 }
 
 type Subscription {
-  onCreateSongEvent(userID: String!): SongEvent @aws_subscribe(mutations: ["createSongEvent"])
-  onUpdateUser(listeningTo: String): User @aws_subscribe(mutations: ["updateUser"])
+  onCreateSongEvent(userID: String!): SongEvent
+    @aws_subscribe(mutations: ["createSongEvent"])
+  onUpdateUser(listeningTo: String): User
+    @aws_subscribe(mutations: ["updateUser"])
 }

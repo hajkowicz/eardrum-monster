@@ -42,7 +42,8 @@ function handleAuthRedirect(setAuthInfo, history, location) {
         history.replace("/premium_required");
         return;
       }
-      const spotifyIdentifier = user.display_name.split(" ")[0];
+      const spotifyIdentifier = user.id;
+      const userImg = user.images?.[0]?.url ?? null;
       // Ensure the user is created upon login
       API.graphql(
         graphqlOperation(queries.getUser, {
@@ -55,14 +56,37 @@ function handleAuthRedirect(setAuthInfo, history, location) {
               graphqlOperation(mutations.createUser, {
                 input: {
                   userID: spotifyIdentifier,
+                  displayName: spotifyIdentifier,
+                  userImg: userImg,
                   type: "USER",
                 },
               })
-            );
+            ).then((data) => {
+              return data.data.createUser.dislayName;
+            });
+          } else {
+            console.log();
+            const oldImg = data?.data?.getUser?.userImg;
+            if (userImg != null && userImg !== oldImg) {
+              API.graphql(
+                graphqlOperation(mutations.updateUser, {
+                  input: {
+                    userID: spotifyIdentifier,
+                    userImg: userImg,
+                  },
+                })
+              );
+            }
           }
+          return data.data.getUser.displayName;
         })
-        .then(() => {
-          setAuthInfo({ accessToken, username: spotifyIdentifier });
+        .then((displayName) => {
+          setAuthInfo({
+            accessToken,
+            username: spotifyIdentifier,
+            displayName,
+            userImg,
+          });
           history.push(decodeURIComponent(params.state));
         })
         .catch(() => {
@@ -80,6 +104,8 @@ export function AuthProvider({ children }) {
   const history = useHistory();
   const username = authInfo?.username;
   const accessToken = authInfo?.accessToken;
+  const userImg = authInfo?.userImg;
+  const displayName = authInfo?.displayName || username;
 
   React.useEffect(() => {
     handleAuthRedirect(setAuthInfo, history, location);
@@ -90,14 +116,17 @@ export function AuthProvider({ children }) {
       ? {
           accessToken: accessToken,
           username: username,
+          userImg: userImg,
+          displayName: displayName,
           logout: () => setAuthInfo(null),
           retryAuth: () => {
             setAuthInfo(null);
             window.location.href = getAuthorizeURI(window.location.pathname);
           },
+          setAuthInfo: setAuthInfo,
         }
       : null;
-  }, [username, accessToken, setAuthInfo]);
+  }, [username, accessToken, setAuthInfo, userImg, displayName]);
 
   return (
     <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>

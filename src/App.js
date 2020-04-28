@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider, AuthRedirect } from "./Auth.js";
 import { SpotifyProvider } from "./SpotifyContext.js";
 import RedirectToLoginOrBroadcast from "./RedirectToLoginOrBroadcast";
+import ChangeUsername from "./ChangeUsername";
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
                     Error: Spotify premium required for syncing with
                     eardrum.monster 😞
                   </div>
+                </Route>
+                <Route path="/change_username">
+                  <ChangeUsername />
                 </Route>
               </Switch>
             </div>

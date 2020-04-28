@@ -41,10 +41,14 @@ export const onCreateSongEvent = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
         type
       }
       type
@@ -79,6 +83,8 @@ export const onUpdateUser = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           type
@@ -97,10 +103,14 @@ export const onUpdateUser = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         nextToken
       }
+      displayName
+      userImg
       type
     }
   }

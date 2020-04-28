@@ -15,7 +15,7 @@ export type BroadcastPublisherProps = {
   onSongEvent: (songEvent: SongEvent) => void;
 };
 
-function publishSongEvent(username: string, songEvent: CreateSongEventInput) {
+function publishSongEvent(songEvent: CreateSongEventInput) {
   return API.graphql(
     graphqlOperation(mutations.createSongEvent, {
       input: songEvent,
@@ -108,7 +108,7 @@ export default function BroadcastPublisher({
     currentSongEventRef.current = localSongEvent;
     onSongEvent(localSongEvent);
     publishTrack(track).then(() => {
-      publishSongEvent(authInfo.username, songEvent);
+      publishSongEvent(songEvent);
     });
   };
   handlePlayerStateChangedRef.current = handlePlayerStateChanged;

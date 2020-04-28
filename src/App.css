@@ -24,8 +24,23 @@
   color: white;
 }
 
+.App-headerImg {
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  margin-right: 0.5em;
+}
+
 .App-link {
   color: #b863ca;
+  margin-right: 1em;
+  text-decoration: none;
+  text-align: right;
+}
+
+.App-smallLink {
+  color: #b863ca;
+  font-size: 0.5em;
   margin-right: 1em;
   text-decoration: none;
 }
@@ -42,8 +57,24 @@
   font-size: 2em;
 }
 
+.App-container {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
 .App-titleText {
 }
 
 .App-subtitleText {
+}
+
+.App-headerPhoto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }

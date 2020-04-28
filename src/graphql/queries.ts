@@ -30,6 +30,8 @@ export const getUser = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           type
@@ -48,10 +50,14 @@ export const getUser = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         nextToken
       }
+      displayName
+      userImg
       type
     }
   }
@@ -93,10 +99,14 @@ export const listUsers = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
         type
       }
       nextToken
@@ -142,10 +152,14 @@ export const getSongEvent = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
         type
       }
       type
@@ -185,6 +199,8 @@ export const listSongEvents = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         type
@@ -273,10 +289,14 @@ export const usersByLatestSongEvent = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
         type
       }
       nextToken
@@ -322,10 +342,67 @@ export const usersByListeningTo = /* GraphQL */ `
             latestSongEvent
             latestListenPing
             listeningTo
+            displayName
+            userImg
             type
           }
           nextToken
         }
+        displayName
+        userImg
+        type
+      }
+      nextToken
+    }
+  }
+`;
+export const usersByDisplayName = /* GraphQL */ `
+  query UsersByDisplayName(
+    $displayName: String
+    $latestSongEvent: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    usersByDisplayName(
+      displayName: $displayName
+      latestSongEvent: $latestSongEvent
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        userID
+        latestSongEvent
+        latestListenPing
+        listeningTo
+        songEvents {
+          items {
+            id
+            spotifyURI
+            timestamp
+            position
+            userID
+            type
+          }
+          nextToken
+        }
+        listeners {
+          items {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            displayName
+            userImg
+            type
+          }
+          nextToken
+        }
+        displayName
+        userImg
         type
       }
       nextToken
@@ -375,6 +452,8 @@ export const songEventsByUserId = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         type
@@ -426,6 +505,8 @@ export const songEventsByType = /* GraphQL */ `
           listeners {
             nextToken
           }
+          displayName
+          userImg
           type
         }
         type
