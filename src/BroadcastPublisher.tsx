@@ -69,14 +69,14 @@ export default function BroadcastPublisher({
     }
     const isSameTrack =
       newTrack.uri === currentSongEventRef.current?.spotifyURI;
-    const trackInProgress =
-      currentSongEventRef.current != null &&
-      currentSongEventRef.current.track != null &&
-      currentSongEventRef.current.track.durationMs != null &&
-      Math.floor(Date.now() / 1000) - currentSongEventRef.current.timestamp <
-        currentSongEventRef.current.track.durationMs / 1000 + 60;
+    // const trackInProgress =
+    //   currentSongEventRef.current != null &&
+    //   currentSongEventRef.current.track != null &&
+    //   currentSongEventRef.current.track.durationMs != null &&
+    //   Math.floor(Date.now() / 1000) - currentSongEventRef.current.timestamp <
+    //     currentSongEventRef.current.track.durationMs / 1000 + 60;
     // Avoid updating if track is the same
-    if (isSameTrack && trackInProgress) {
+    if (isSameTrack) {
       return;
     }
     const track = {
