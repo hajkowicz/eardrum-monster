@@ -62,6 +62,8 @@ type Track @model @key(fields: ["uri"]) {
 type Subscription {
   onCreateSongEvent(userID: String!): SongEvent
     @aws_subscribe(mutations: ["createSongEvent"])
-  onUpdateUser(listeningTo: String): User
+  onUpdateUserByListeningTo(listeningTo: String): User
+    @aws_subscribe(mutations: ["updateUser"])
+  onUpdateUserByUserID(userID: String): User
     @aws_subscribe(mutations: ["updateUser"])
 }

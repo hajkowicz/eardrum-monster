@@ -43,9 +43,6 @@ function Header() {
             ) : (
               authInfo.displayName
             )}
-            <Link className="App-smallLink" to={`/change_username`}>
-              Change username
-            </Link>
           </div>
         </>
       ) : (

@@ -46,8 +46,20 @@
 }
 
 .Broadcast-title {
-  font-size: 2em;
   margin-bottom: 0.5em;
+}
+
+.Broadcast-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin-bottom: 0.5em;
+}
+
+.Broadcast-headingTitle {
+  font-size: 2em;
+  margin-right: 0.5em;
 }
 
 .Broadcast-text {

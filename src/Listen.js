@@ -8,7 +8,7 @@ import SongPlayerWithControls from "./SongPlayerWithControls.js";
 import TrackList from "./TrackList.js";
 import Track from "./Track.js";
 import EQBars from "./EQBars.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useLocalStorage } from "@rehooks/local-storage";
 import Listeners from "./Listeners";
 import { isUserOnline } from "./Utils";
@@ -16,6 +16,14 @@ import { isUserOnline } from "./Utils";
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
 import * as mutations from "./graphql/mutations";
+
+function createUserObservable(hostUserID) {
+  return API.graphql(
+    graphqlOperation(subscriptions.onUpdateUserByUserId, {
+      userID: hostUserID,
+    })
+  );
+}
 
 function StartListening({ children, isListening, onClick }) {
   const location = useLocation();
@@ -56,18 +64,6 @@ function publishListenPing(userID, hostUserID) {
       },
     })
   );
-}
-
-function fetchHostByDisplayName(hostDisplayName) {
-  return API.graphql(
-    graphqlOperation(queries.usersByDisplayName, {
-      displayName: hostDisplayName,
-      sortDirection: "DESC",
-      limit: 1,
-    })
-  ).then((data) => {
-    return data?.data?.usersByDisplayName?.items?.[0];
-  });
 }
 
 function ListenPlayer({ isCurrentlyLive, songs, hostUserID, hostDisplayName }) {
@@ -122,35 +118,32 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUserID, hostDisplayName }) {
   );
 }
 
-function Listen({ hostDisplayName }) {
+function Listen({ hostDisplayName, hostUserID, hostUserImg }) {
   const location = useLocation();
+  const history = useHistory();
   const devPublisherEnabled = location.search.includes("DEV=1");
-  const [hostUserID, setHostUserID] = React.useState(null);
-  const [hostUserImg, setHostUserImg] = React.useState(null);
-  const [failedLookup, setFailedLookup] = React.useState(false);
 
-  //Resolve host username
+  // Setup host subscription
   React.useEffect(() => {
-    fetchHostByDisplayName(hostDisplayName)
-      .then((host) => {
-        if (host == null) {
-          throw new Error("Could not locate user");
+    const obs = createUserObservable(hostUserID);
+    const sub = obs.subscribe({
+      next: (event) => {
+        if (event) {
+          const newHostDisplayName =
+            event.value.data.onUpdateUserByUserID?.displayName;
+          if (
+            newHostDisplayName != null &&
+            newHostDisplayName !== hostDisplayName
+          ) {
+            history.replace(`/u/${newHostDisplayName}`);
+          }
         }
-        setHostUserID(host?.userID);
-        setHostUserImg(host?.userImg);
-      })
-      .catch(() => {
-        setFailedLookup(true);
-      });
-  }, [hostDisplayName]);
-
-  if (failedLookup) {
-    return <div className="Listen">User not found</div>;
-  }
-
-  if (hostUserID == null) {
-    return <div className="Listen"></div>;
-  }
+      },
+    });
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [hostUserID, hostDisplayName, history]);
 
   return (
     <div className="Listen">
@@ -180,9 +173,9 @@ function Listen({ hostDisplayName }) {
           if (loading || !data) return <h3>Loading...</h3>;
           const songs =
             (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
-          if (songs.length === 0) {
-            return <div>No track history for {hostDisplayName}</div>;
-          }
+          // if (songs.length === 0) {
+          //   return <div>No track history for {hostDisplayName}</div>;
+          // }
           const online = songs.length > 0 && isUserOnline(songs[0].user);
 
           return (

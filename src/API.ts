@@ -241,6 +241,8 @@ export type UsersByLatestSongEventCustomQuery = {
     items: Array<{
       __typename: "User";
       userID: string;
+      displayName: string | null;
+      userImg: string | null;
       latestSongEvent: number | null;
       latestListenPing: number | null;
       listeningTo: string | null;
@@ -1354,12 +1356,84 @@ export type OnCreateSongEventSubscription = {
   } | null;
 };
 
-export type OnUpdateUserSubscriptionVariables = {
+export type OnUpdateUserByListeningToSubscriptionVariables = {
   listeningTo?: string | null;
 };
 
-export type OnUpdateUserSubscription = {
-  onUpdateUser: {
+export type OnUpdateUserByListeningToSubscription = {
+  onUpdateUserByListeningTo: {
+    __typename: "User";
+    userID: string;
+    latestSongEvent: number | null;
+    latestListenPing: number | null;
+    listeningTo: string | null;
+    songEvents: {
+      __typename: "ModelSongEventConnection";
+      items: Array<{
+        __typename: "SongEvent";
+        id: string;
+        spotifyURI: string;
+        timestamp: number;
+        position: number;
+        track: {
+          __typename: "Track";
+          uri: string;
+          trackID: string | null;
+          name: string | null;
+          durationMs: number | null;
+          albumName: string | null;
+          artistName: string | null;
+          albumImg: string | null;
+        } | null;
+        userID: string;
+        user: {
+          __typename: "User";
+          userID: string;
+          latestSongEvent: number | null;
+          latestListenPing: number | null;
+          listeningTo: string | null;
+          displayName: string | null;
+          userImg: string | null;
+          type: string;
+        } | null;
+        type: string;
+      } | null> | null;
+      nextToken: string | null;
+    } | null;
+    listeners: {
+      __typename: "ModelUserConnection";
+      items: Array<{
+        __typename: "User";
+        userID: string;
+        latestSongEvent: number | null;
+        latestListenPing: number | null;
+        listeningTo: string | null;
+        songEvents: {
+          __typename: "ModelSongEventConnection";
+          nextToken: string | null;
+        } | null;
+        listeners: {
+          __typename: "ModelUserConnection";
+          nextToken: string | null;
+        } | null;
+        displayName: string | null;
+        userImg: string | null;
+        type: string;
+      } | null> | null;
+      nextToken: string | null;
+    } | null;
+    displayName: string | null;
+    userImg: string | null;
+    type: string;
+  } | null;
+};
+
+export type OnUpdateUserByUserIdSubscriptionVariables = {
+  userID?: string | null;
+};
+
+export type OnUpdateUserByUserIdSubscription = {
+  onUpdateUserByUserID: {
     __typename: "User";
     userID: string;
     latestSongEvent: number | null;

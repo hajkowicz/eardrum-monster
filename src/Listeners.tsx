@@ -6,7 +6,10 @@ import { graphqlOperation } from "aws-amplify";
 import { getActiveListeners, isUserListening } from "./Utils";
 import "./Listeners.css";
 
-import type { OnUpdateUserSubscription, UsersByListeningToQuery } from "./API";
+import type {
+  OnUpdateUserByListeningToSubscription,
+  UsersByListeningToQuery,
+} from "./API";
 import type { User } from "./Types";
 
 export default function Listeners({
@@ -40,29 +43,32 @@ export default function Listeners({
             sortDirection: "DESC",
             limit: 50,
           })}
-          subscription={graphqlOperation(subscriptions.onUpdateUser, {
-            listeningTo: hostUserID,
-          })}
+          subscription={graphqlOperation(
+            subscriptions.onUpdateUserByListeningTo,
+            {
+              listeningTo: hostUserID,
+            }
+          )}
           // @ts-ignore
           onSubscriptionMsg={(
             prev: UsersByListeningToQuery,
-            data: OnUpdateUserSubscription
+            data: OnUpdateUserByListeningToSubscription
           ) => {
-            const { onUpdateUser } = data;
+            const { onUpdateUserByListeningTo } = data;
             const items = prev.usersByListeningTo?.items;
-            if (items == null || onUpdateUser == null) {
+            if (items == null || onUpdateUserByListeningTo == null) {
               console.error("unexpected null Listeners", prev);
               return prev;
             }
             const index = items.findIndex(
-              (user) => user && user.userID === onUpdateUser.userID
+              (user) => user && user.userID === onUpdateUserByListeningTo.userID
             );
-            const isListening = isUserListening(onUpdateUser);
+            const isListening = isUserListening(onUpdateUserByListeningTo);
             let wasListening = isUserListening(items[index] as User);
             if (index >= 0) {
-              items[index] = onUpdateUser;
+              items[index] = onUpdateUserByListeningTo;
             } else {
-              items.push(onUpdateUser);
+              items.push(onUpdateUserByListeningTo);
             }
             if (isListening && !wasListening) {
               const audio = new Audio(process.env.PUBLIC_URL + "/notif.wav");

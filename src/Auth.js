@@ -65,7 +65,6 @@ function handleAuthRedirect(setAuthInfo, history, location) {
               return data.data.createUser.dislayName;
             });
           } else {
-            console.log();
             const oldImg = data?.data?.getUser?.userImg;
             if (userImg != null && userImg !== oldImg) {
               API.graphql(

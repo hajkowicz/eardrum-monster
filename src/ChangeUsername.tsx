@@ -4,7 +4,6 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 import * as queries from "./graphql/queries";
-import { useHistory } from "react-router-dom";
 
 function updateDisplayName(userID: string, displayName: string) {
   return (API.graphql(
@@ -30,11 +29,18 @@ function updateDisplayName(userID: string, displayName: string) {
     }) as Promise<GraphQLResult>;
 }
 
-export default function RedirectToLoginOrBroadcast() {
-  const [val, setVal] = React.useState("");
+export default function ChangeUsername({
+  initialVal,
+  className,
+  onSuccess,
+}: {
+  initialVal: string;
+  className?: string;
+  onSuccess: (name: string) => void;
+}) {
+  const [val, setVal] = React.useState(initialVal);
   const [success, setSuccess] = React.useState<boolean | null>(null);
   const authInfo = useAuth();
-  const history = useHistory();
 
   const handleUpdate = (e: any) => {
     setVal(e.target.value);
@@ -48,8 +54,8 @@ export default function RedirectToLoginOrBroadcast() {
     updateDisplayName(authInfo.username, val)
       .then(() => {
         setSuccess(true);
+        onSuccess(val);
         authInfo.setAuthInfo({ ...authInfo, displayName: val });
-        history.replace(`/u/${val}`);
       })
       .catch(() => {
         setSuccess(false);
@@ -57,9 +63,9 @@ export default function RedirectToLoginOrBroadcast() {
   };
 
   return (
-    <div className="App-container">
+    <div className={className}>
       <form onSubmit={updateName}>
-        <label>New Username:</label>
+        <label>New name:</label>
         <input value={val} onChange={handleUpdate} />
         <input type="submit" value="Submit" />
       </form>

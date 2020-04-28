@@ -55,9 +55,69 @@ export const onCreateSongEvent = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($listeningTo: String) {
-    onUpdateUser(listeningTo: $listeningTo) {
+export const onUpdateUserByListeningTo = /* GraphQL */ `
+  subscription OnUpdateUserByListeningTo($listeningTo: String) {
+    onUpdateUserByListeningTo(listeningTo: $listeningTo) {
+      userID
+      latestSongEvent
+      latestListenPing
+      listeningTo
+      songEvents {
+        items {
+          id
+          spotifyURI
+          timestamp
+          position
+          track {
+            uri
+            trackID
+            name
+            durationMs
+            albumName
+            artistName
+            albumImg
+          }
+          userID
+          user {
+            userID
+            latestSongEvent
+            latestListenPing
+            listeningTo
+            displayName
+            userImg
+            type
+          }
+          type
+        }
+        nextToken
+      }
+      listeners {
+        items {
+          userID
+          latestSongEvent
+          latestListenPing
+          listeningTo
+          songEvents {
+            nextToken
+          }
+          listeners {
+            nextToken
+          }
+          displayName
+          userImg
+          type
+        }
+        nextToken
+      }
+      displayName
+      userImg
+      type
+    }
+  }
+`;
+export const onUpdateUserByUserId = /* GraphQL */ `
+  subscription OnUpdateUserByUserId($userID: String) {
+    onUpdateUserByUserID(userID: $userID) {
       userID
       latestSongEvent
       latestListenPing

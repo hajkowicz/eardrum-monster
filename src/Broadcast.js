@@ -11,6 +11,7 @@ import PowerHourControl from "./PowerHourControl.js";
 import EQBars from "./EQBars.js";
 import Listeners from "./Listeners";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import BroadcastHeading from "./BroadcastHeading";
 
 function Broadcast() {
   const authInfo = React.useContext(AuthContext);
@@ -66,7 +67,9 @@ function Broadcast() {
       <div>Initializing Spotify web player...</div>
     ) : (
       <>
-        <div className="Broadcast-title">{authInfo.displayName}'s channel</div>
+        <div className="Broadcast-title">
+          <BroadcastHeading hostDisplayName={authInfo.displayName} />
+        </div>
         <div className="Broadcast-text">You are the DJ.</div>
         <div className="Broadcast-text">
           <div>1. Control your spotify like normal to change the music</div>
