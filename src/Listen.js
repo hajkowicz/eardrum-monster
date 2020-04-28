@@ -11,7 +11,7 @@ import EQBars from "./EQBars.js";
 import { useLocation } from "react-router-dom";
 import { useLocalStorage } from "@rehooks/local-storage";
 import Listeners from "./Listeners";
-import { isOnline } from "./Utils";
+import { isUserOnline } from "./Utils";
 
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
@@ -145,7 +145,7 @@ function Listen({ hostUsername }) {
           if (songs.length === 0) {
             return <div>No track history for {hostUsername}</div>;
           }
-          const online = isOnline(songs);
+          const online = songs.length > 0 && isUserOnline(songs[0].user);
 
           return (
             <>
