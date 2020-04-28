@@ -28,7 +28,7 @@ function Channel() {
 
   //Resolve host username
   React.useEffect(() => {
-    if (authInfo?.displayName === hostDisplayName) {
+    if (authInfo != null && authInfo.displayName === hostDisplayName) {
       setHostUserID(authInfo?.displayName);
       return;
     }
