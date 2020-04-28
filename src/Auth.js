@@ -38,6 +38,10 @@ function handleAuthRedirect(setAuthInfo, history, location) {
     }
     location.hash = "";
     new SpotifyAPI(accessToken).fetchUserInfo().then((user) => {
+      if (user.product !== "premium") {
+        history.replace("/premium_required");
+        return;
+      }
       const spotifyIdentifier = user.display_name.split(" ")[0];
       // Ensure the user is created upon login
       API.graphql(
