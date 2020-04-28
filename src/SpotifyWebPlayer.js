@@ -67,13 +67,29 @@ export default class SpotifyWebPlayer {
         return;
       }
 
+      let volumeRef = {
+        current:
+          window.localStorage.getItem("EMPlayerVolume") ?? (0.1).toFixed(2),
+      };
       const player = new window.Spotify.Player({
         name: "eardrum.monster",
         getOAuthToken: (cb) => {
           cb(SpotifyWebPlayer.__accessToken);
           SpotifyWebPlayer.__spotifyAPI.fetchUserInfo();
         },
-        volume: 0.1,
+        volume: volumeRef.current,
+      });
+
+      // Update volume on change
+      player.addListener("player_state_changed", () => {
+        player.getVolume().then((newVolume) => {
+          if (typeof newVolume === "number") {
+            const newVol = newVolume.toFixed(2);
+            if (newVol > 0 && volumeRef.current !== newVol) {
+              window.localStorage.setItem("EMPlayerVolume", newVol);
+            }
+          }
+        });
       });
 
       player.on("initialization_error", ({ message }) => {
