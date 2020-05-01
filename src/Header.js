@@ -6,7 +6,7 @@ import ChangeUsername from "./ChangeUsername";
 function Header() {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
-  const authorizeURI = getAuthorizeURI(location.pathname);
+  const authorizeURI = getAuthorizeURI("/broadcast");
   const broadcastMatch = useRouteMatch("/u/" + authInfo?.displayName);
   const [editing, setEditing] = React.useState(false);
   const match = useRouteMatch("/u/:id");
