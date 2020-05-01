@@ -1,11 +1,10 @@
 import React from "react";
-import { Link, useLocation, useRouteMatch, useHistory } from "react-router-dom";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import { AuthContext, getAuthorizeURI } from "./Auth.js";
 import ChangeUsername from "./ChangeUsername";
 
 function Header() {
   const authInfo = React.useContext(AuthContext);
-  const location = useLocation();
   const authorizeURI = getAuthorizeURI("/broadcast");
   const broadcastMatch = useRouteMatch("/u/" + authInfo?.displayName);
   const [editing, setEditing] = React.useState(false);
