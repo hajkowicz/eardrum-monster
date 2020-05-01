@@ -110,4 +110,44 @@ export default class SpotifyAPI {
         return response.json();
       });
   }
+
+  fetchCurrentlyPlaying() {
+    return fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    })
+      .then(this.maybeHandle401)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("unable to currently playing");
+        }
+        if (response.status === 204) {
+          return;
+        }
+        return response.json();
+      });
+  }
+
+  nextTrack() {
+    return fetch("https://api.spotify.com/v1/me/player/next", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    })
+      .then(this.maybeHandle401)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("unable to currently playing");
+        }
+        if (response.status === 204) {
+          return;
+        }
+        return response.json();
+      });
+  }
 }

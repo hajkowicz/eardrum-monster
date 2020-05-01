@@ -1,7 +1,9 @@
 import React from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import * as queries from "./graphql/queries";
-import useSpotifyWebPlayer from "./useSpotifyWebPlayer.js";
+import useSpotifyWebPlayer, {
+  useSpotifyWebPlayerUnsupported,
+} from "./useSpotifyWebPlayer";
 import Track from "./Track.js";
 import TrackList from "./TrackList.js";
 import "./Broadcast.css";
@@ -17,6 +19,7 @@ function Broadcast() {
   const authInfo = React.useContext(AuthContext);
   const [songHistory, setSongHistory] = React.useState(null);
   const spotifyWebPlayer = useSpotifyWebPlayer();
+  const webPlayerUnsupported = useSpotifyWebPlayerUnsupported();
   const [copied, setCopied] = React.useState(false);
 
   const handleSongEvent = React.useCallback(
@@ -63,8 +66,9 @@ function Broadcast() {
   const shareURI = `https://eardrum.monster/u/${authInfo.displayName}`;
 
   const player =
-    spotifyWebPlayer == null || songHistory == null ? (
-      <div>Initializing Spotify web player...</div>
+    (spotifyWebPlayer == null && webPlayerUnsupported === false) ||
+    songHistory == null ? (
+      <div>Initializing Spotify...</div>
     ) : (
       <>
         <div className="Broadcast-title">

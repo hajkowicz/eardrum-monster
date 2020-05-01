@@ -1,5 +1,5 @@
 import React from "react";
-import { SpotifyContext } from "./SpotifyContext.js";
+import { SpotifyContext } from "./SpotifyContext";
 
 export default function useSpotifyAPI() {
   const spotifyContext = React.useContext(SpotifyContext);

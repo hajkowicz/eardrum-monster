@@ -61,7 +61,7 @@ export default class SpotifyWebPlayer {
     SpotifyWebPlayer.__onUnauthorized = onUnauthorized;
     SpotifyWebPlayer.__spotifyAPI = spotifyAPI;
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (window.EMglobalPlayerInstance) {
         resolve(window.EMGlobalPlayerInstance);
         return;
@@ -95,6 +95,7 @@ export default class SpotifyWebPlayer {
 
       player.on("initialization_error", ({ message }) => {
         console.error("Failed to initialize", message);
+        reject("initialization_error");
       });
       player.on("authentication_error", ({ message }) => {
         console.error("Failed to authenticate", message);
@@ -102,9 +103,11 @@ export default class SpotifyWebPlayer {
       });
       player.on("account_error", ({ message }) => {
         console.error("Spotify premium required", message);
+        reject("premium_required");
       });
       player.on("playback_error", ({ message }) => {
         console.error("Failed to perform playback", message);
+        reject("playback_error");
       });
       player.on("ready", ({ device_id: id }) => {
         player.deviceID = id;
@@ -112,11 +115,16 @@ export default class SpotifyWebPlayer {
         resolve(player);
       });
 
-      player.connect().then((success) => {
-        if (!success) {
-          console.error("Failed to connect to the web player");
-        }
-      });
+      player
+        .connect()
+        .then((success) => {
+          if (!success) {
+            console.error("Failed to connect to the web player");
+          }
+        })
+        .catch(() => {
+          reject();
+        });
     });
   }
 

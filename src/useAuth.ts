@@ -6,6 +6,7 @@ export type AuthInfo = {
   accessToken: string;
   userImg: string | null;
   displayName: string | null;
+  retryAuth: () => void;
   setAuthInfo: (authInfo: AuthInfo) => void;
 } | null;
 
