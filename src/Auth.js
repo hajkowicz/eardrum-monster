@@ -138,7 +138,7 @@ export function AuthProvider({ children }) {
         iframe.parentNode.removeChild(iframe);
       }
     };
-  }, [expiresAt]);
+  }, [expiresAt, location]);
 
   const authContext = React.useMemo(() => {
     return accessToken != null && username != null

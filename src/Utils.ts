@@ -57,3 +57,27 @@ export function inIframe() {
     return true;
   }
 }
+
+export function hasTouchScreen() {
+  let hasTouchScreen = false;
+  const nav = window.navigator as any;
+  if ("maxTouchPoints" in nav) {
+    hasTouchScreen = nav.maxTouchPoints > 0;
+  } else if ("msMaxTouchPoints" in nav) {
+    hasTouchScreen = nav.msMaxTouchPoints > 0;
+  } else {
+    var mQ = window.matchMedia && matchMedia("(pointer:coarse)");
+    if (mQ && mQ.media === "(pointer:coarse)") {
+      hasTouchScreen = !!mQ.matches;
+    } else if ("orientation" in window) {
+      hasTouchScreen = true; // deprecated, but good fallback
+    } else {
+      // Only as a last resort, fall back to user agent sniffing
+      var UA = nav.userAgent;
+      hasTouchScreen =
+        /\b(BlackBerry|webOS|iPhone|IEMobile)\b/i.test(UA) ||
+        /\b(Android|Windows Phone|iPad|iPod)\b/i.test(UA);
+    }
+  }
+  return hasTouchScreen;
+}

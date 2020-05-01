@@ -12,6 +12,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { useLocalStorage } from "@rehooks/local-storage";
 import Listeners from "./Listeners";
 import { isUserOnline } from "./Utils";
+import WakeLockControl from "./WakeLockControl";
 
 import * as queries from "./graphql/queries";
 import * as subscriptions from "./graphql/subscriptions";
@@ -112,6 +113,7 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUserID, hostDisplayName }) {
     <StartListening isListening={isListening} onClick={handleJoin}>
       {isListening && <p>Listening to {hostDisplayName}'s channel!</p>}
       {isListening && <SongPlayerWithControls song={songs[0]} />}
+      {isListening && <WakeLockControl />}
       <div>Now Playing:</div>
       <Track track={songs[0].track} />
     </StartListening>

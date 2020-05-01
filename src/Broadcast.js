@@ -14,6 +14,7 @@ import EQBars from "./EQBars.js";
 import Listeners from "./Listeners";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import BroadcastHeading from "./BroadcastHeading";
+import WakeLockControl from "./WakeLockControl";
 
 function Broadcast() {
   const authInfo = React.useContext(AuthContext);
@@ -93,6 +94,7 @@ function Broadcast() {
             </CopyToClipboard>
           </button>
         </div>
+        <WakeLockControl />
         <PowerHourControl />
         <EQBars className="Broadcast-streaming" />
         <p>Now playing:</p>
