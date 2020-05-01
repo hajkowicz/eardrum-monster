@@ -8,9 +8,17 @@ type SpotifyContextType = {
   webPlayer: SpotifyWebPlayer | null;
   webPlayerUnsupported: boolean;
   spotifyAPI: SpotifyAPI | null;
+  lastMutationTimestamp: number | null;
+  setLastMutationTimestamp: (time: number) => void;
 };
 
-export const SpotifyContext = createContext<SpotifyContextType | null>(null);
+export const SpotifyContext = createContext<SpotifyContextType>({
+  webPlayer: null,
+  webPlayerUnsupported: false,
+  spotifyAPI: null,
+  lastMutationTimestamp: null,
+  setLastMutationTimestamp: () => {},
+});
 
 export function SpotifyProvider({
   children,
@@ -24,6 +32,9 @@ export function SpotifyProvider({
   );
   const [webPlayerUnsupported, setWebPlayerUnsupported] = React.useState(false);
   const [spotifyAPI, setSpotifyAPI] = React.useState<null | SpotifyAPI>(null);
+  const [lastMutationTimestamp, setLastMutationTimestamp] = React.useState<
+    null | number
+  >(null);
 
   React.useEffect(() => {
     if (authInfo == null) {
@@ -62,8 +73,10 @@ export function SpotifyProvider({
       webPlayer,
       webPlayerUnsupported,
       spotifyAPI,
+      lastMutationTimestamp,
+      setLastMutationTimestamp,
     }),
-    [webPlayer, spotifyAPI, webPlayerUnsupported]
+    [webPlayer, spotifyAPI, lastMutationTimestamp, webPlayerUnsupported]
   );
 
   return (

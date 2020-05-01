@@ -1,6 +1,7 @@
 import React from "react";
 import useSpotifyAPI from "./useSpotifyAPI";
 import useAuth from "./useAuth";
+import useSpotifyContext from "./useSpotifyContext";
 
 import type { CreateSongEventInput, CreateTrackInput } from "./API";
 import type { CurrentlyPlayingResponse } from "./SpotifyAPITypes";
@@ -20,6 +21,7 @@ export default function BroadcastPollingPublisher({
   const handlePlayerStateChangedRef = React.useRef<
     (currentlyPlaying: CurrentlyPlayingResponse) => void
   >(() => {});
+  const { lastMutationTimestamp } = useSpotifyContext();
 
   const handlePlayerStateChanged = (
     currentlyPlaying: CurrentlyPlayingResponse
@@ -48,8 +50,6 @@ export default function BroadcastPollingPublisher({
     onSongEvent(track, songEvent);
   };
   handlePlayerStateChangedRef.current = handlePlayerStateChanged;
-
-  React.useEffect(() => {});
 
   React.useEffect(() => {
     if (spotifyAPI) {
@@ -81,7 +81,7 @@ export default function BroadcastPollingPublisher({
         }
       };
     }
-  }, [spotifyAPI, handlePlayerStateChangedRef]);
+  }, [spotifyAPI, lastMutationTimestamp, handlePlayerStateChangedRef]);
 
   return null;
 }

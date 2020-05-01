@@ -2,17 +2,25 @@ import React from "react";
 import Switch from "react-switch";
 import useSpotifyAPI from "./useSpotifyAPI";
 import { useLocalStorage } from "@rehooks/local-storage";
+import useSpotifyContext from "./useSpotifyContext";
 
 export default function PowerHourControl() {
   const [phEnabled, setPhEnabled] = useLocalStorage("EMPhEnabled", false);
   const [phCount, setPhCount] = useLocalStorage("EMPhCount", 1);
   const spotifyAPI = useSpotifyAPI();
   const phCallbackRef = React.useRef();
+  const { setLastMutationTimestamp } = useSpotifyContext();
+
+  const nextTrack = () => {
+    spotifyAPI.nextTrack().then(() => {
+      setLastMutationTimestamp(Date.now());
+    });
+  };
 
   const phCallback = (timeoutID) => {
     if (phEnabled) {
-      spotifyAPI.nextTrack();
       setPhCount(phCount + 1);
+      nextTrack();
     } else {
       clearInterval(timeoutID);
     }
@@ -24,17 +32,19 @@ export default function PowerHourControl() {
       setPhEnabled(enabled);
       if (enabled) {
         setPhCount(1);
-        spotifyAPI && spotifyAPI.nextTrack();
+        if (spotifyAPI) {
+          nextTrack();
+        }
       }
     },
-    [setPhEnabled, setPhCount, spotifyAPI]
+    [setPhEnabled, setPhCount, setLastMutationTimestamp, spotifyAPI]
   );
 
   React.useEffect(() => {
     if (phEnabled) {
       const timeoutID = setInterval(() => {
         phCallbackRef.current(timeoutID);
-      }, 60000);
+      }, 10000);
       return () => {
         clearInterval(timeoutID);
       };
