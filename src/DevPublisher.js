@@ -25,6 +25,14 @@ export default function DevPublisher({ hostUserID }) {
         type: "NEW_SONG",
       };
       API.graphql(
+        graphqlOperation(mutations.updateUser, {
+          input: {
+            userID: hostUserID,
+            latestSongEvent: Math.floor(Date.now() / 1000),
+          },
+        })
+      );
+      API.graphql(
         graphqlOperation(mutations.createSongEvent, { input: songEvent })
       ).then((data) => console.log("Publishing: ", data));
     }, 5000);
