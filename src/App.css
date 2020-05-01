@@ -40,9 +40,8 @@
 
 .App-smallLink {
   color: #b863ca;
-  font-size: 0.5em;
+  font-size: 1rem;
   margin-right: 1em;
-  text-decoration: none;
 }
 
 .App-content {

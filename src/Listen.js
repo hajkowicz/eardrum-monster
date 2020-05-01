@@ -137,7 +137,7 @@ function Listen({ hostDisplayName, hostUserID, hostUserImg }) {
             newHostDisplayName != null &&
             newHostDisplayName !== hostDisplayName
           ) {
-            history.replace(`/u/${newHostDisplayName}`);
+            history.replace(`/u/${encodeURIComponent(newHostDisplayName)}`);
           }
         }
       },

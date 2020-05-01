@@ -1,17 +1,31 @@
 import React from "react";
-import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useRouteMatch, useHistory } from "react-router-dom";
 import { AuthContext, getAuthorizeURI } from "./Auth.js";
+import ChangeUsername from "./ChangeUsername";
 
 function Header() {
   const authInfo = React.useContext(AuthContext);
   const location = useLocation();
   const authorizeURI = getAuthorizeURI(location.pathname);
-  const match = useRouteMatch("/u/" + authInfo?.displayName);
+  const broadcastMatch = useRouteMatch("/u/" + authInfo?.displayName);
+  const [editing, setEditing] = React.useState(false);
+  const match = useRouteMatch("/u/:id");
+  const history = useHistory();
 
   function handleLogout(e) {
     e.preventDefault();
     authInfo.logout();
   }
+  const updateName = (name) => {
+    setEditing(false);
+    if (
+      match?.params &&
+      authInfo.displayName &&
+      decodeURIComponent(match.params.id).includes(authInfo.displayName)
+    ) {
+      history.replace(`/u/${encodeURIComponent(name)}`);
+    }
+  };
 
   return (
     <header className="App-header">
@@ -20,8 +34,11 @@ function Header() {
       </Link>
       {authInfo != null ? (
         <>
-          {match == null ? (
-            <Link className="App-link" to={`/u/${authInfo.displayName}`}>
+          {broadcastMatch == null ? (
+            <Link
+              className="App-link"
+              to={`/u/${encodeURIComponent(authInfo.displayName)}`}
+            >
               Host a channel
             </Link>
           ) : (
@@ -31,9 +48,24 @@ function Header() {
             </a>
           )}
           <div className="App-headerPhoto">
-            <Link className="App-smallLink" to={`/u/${authInfo.displayName}`}>
-              {authInfo.displayName}
-            </Link>
+            {editing ? (
+              <ChangeUsername
+                initialVal={authInfo.displayName}
+                onSuccess={(name) => updateName(name)}
+                onCancel={() => setEditing(false)}
+              />
+            ) : (
+              <span className="App-smallLink">
+                {authInfo.displayName}{" "}
+                <a
+                  className="App-smallLink"
+                  href="#"
+                  onClick={(e) => (e.preventDefault(), setEditing(true))}
+                >
+                  edit
+                </a>
+              </span>
+            )}
             {authInfo.userImg ? (
               <img
                 className="App-headerImg"

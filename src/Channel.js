@@ -24,7 +24,7 @@ function Channel() {
   const [hostUserID, setHostUserID] = React.useState(null);
   const [hostUserImg, setHostUserImg] = React.useState(null);
   const [failedLookup, setFailedLookup] = React.useState(false);
-  const hostDisplayName = id;
+  const hostDisplayName = decodeURIComponent(id);
 
   //Resolve host username
   React.useEffect(() => {

@@ -79,7 +79,9 @@ export default function ChannelList() {
                     cta={
                       <Link
                         className="Home-link"
-                        to={`/u/${user.displayName || user.userID}`}
+                        to={`/u/${encodeURIComponent(
+                          user.displayName || user.userID
+                        )}`}
                       >
                         {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
                         Join ▶️

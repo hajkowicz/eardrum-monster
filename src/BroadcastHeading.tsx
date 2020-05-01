@@ -18,7 +18,7 @@ export default function BroadcastHeading({
 
   const nameUpdated = (name: string) => {
     setEditing(false);
-    history.replace(`/u/${name}`);
+    history.replace(`/u/${encodeURIComponent(name)}`);
   };
 
   if (!editing) {
@@ -37,8 +37,8 @@ export default function BroadcastHeading({
       <ChangeUsername
         initialVal={hostDisplayName}
         onSuccess={(name) => nameUpdated(name)}
+        onCancel={() => setEditing(false)}
       />
-      <button onClick={() => setEditing(false)}>Cancel</button>
     </div>
   );
 }
