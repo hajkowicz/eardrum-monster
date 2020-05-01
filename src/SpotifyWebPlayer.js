@@ -62,7 +62,7 @@ export default class SpotifyWebPlayer {
     SpotifyWebPlayer.__spotifyAPI = spotifyAPI;
 
     return new Promise((resolve, reject) => {
-      if (window.EMglobalPlayerInstance) {
+      if (window.EMGlobalPlayerInstance != null) {
         resolve(window.EMGlobalPlayerInstance);
         return;
       }

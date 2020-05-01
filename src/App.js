@@ -13,15 +13,15 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
-          <SpotifyProvider>
-            <Header />
-            <div className="App-content">
-              <Switch>
+          <Header />
+          <Switch>
+            <Route path="/auth/">
+              <AuthRedirect />
+            </Route>
+            <SpotifyProvider>
+              <div className="App-content">
                 <Route exact path="/">
                   <Home />
-                </Route>
-                <Route path="/auth/">
-                  <AuthRedirect />
                 </Route>
                 <Route path="/u/:id">
                   <Channel />
@@ -36,9 +36,9 @@ function App() {
                     eardrum.monster 😞
                   </div>
                 </Route>
-              </Switch>
-            </div>
-          </SpotifyProvider>
+              </div>
+            </SpotifyProvider>
+          </Switch>
         </AuthProvider>
       </Router>
     </div>

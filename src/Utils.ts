@@ -49,3 +49,11 @@ export function getListenerCount(user: User) {
     }).length + 1
   );
 }
+
+export function inIframe() {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+}

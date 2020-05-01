@@ -142,7 +142,7 @@ export default class SpotifyAPI {
       .then(this.maybeHandle401)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("unable to currently playing");
+          throw new Error("unable to select next track");
         }
         if (response.status === 204) {
           return;

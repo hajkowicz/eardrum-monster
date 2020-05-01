@@ -173,9 +173,6 @@ function Listen({ hostDisplayName, hostUserID, hostUserImg }) {
           if (loading || !data) return <h3>Loading...</h3>;
           const songs =
             (data.songEventsByUserID && data.songEventsByUserID.items) ?? [];
-          // if (songs.length === 0) {
-          //   return <div>No track history for {hostDisplayName}</div>;
-          // }
           const online = songs.length > 0 && isUserOnline(songs[0].user);
 
           return (

@@ -55,7 +55,7 @@ export default function BroadcastWebPlayerPublisher({
         handlePlayerStateChangedRef.current(newState);
       const initFunc = {
         current: (id: any) => {
-          if (id === spotifyWebPlayer.getDeviceID()) {
+          if (id === spotifyWebPlayer.getDeviceID() || id == null) {
             // Request current state
             spotifyWebPlayer.fetchState().then((newState: any) => {
               handlePlayerStateChangedRef.current(newState);

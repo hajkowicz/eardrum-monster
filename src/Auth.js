@@ -5,6 +5,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 import * as queries from "./graphql/queries";
+import { inIframe } from "./Utils";
 
 export const AuthContext = createContext();
 
@@ -81,6 +82,7 @@ function handleAuthRedirect(setAuthInfo, history, location) {
             username: spotifyIdentifier,
             displayName,
             userImg,
+            expiresAt: Math.floor(Date.now() / 1000) + (3600 - 30),
           });
           history.push(decodeURIComponent(params.state));
         })
@@ -101,10 +103,42 @@ export function AuthProvider({ children }) {
   const accessToken = authInfo?.accessToken;
   const userImg = authInfo?.userImg;
   const displayName = authInfo?.displayName || username;
+  const expiresAt = authInfo?.expiresAt;
 
   React.useEffect(() => {
     handleAuthRedirect(setAuthInfo, history, location);
   }, [setAuthInfo, history, location]);
+
+  React.useEffect(() => {
+    if (expiresAt == null || inIframe()) {
+      return;
+    }
+
+    let iframe = null;
+    let timeoutID = null;
+    const refreshAuth = () => {
+      iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = getAuthorizeURI("/auth");
+      document.body.appendChild(iframe);
+    };
+    const timeUntilExpiry = (expiresAt ?? 0) - Math.floor(Date.now() / 1000);
+    if (timeUntilExpiry > 0) {
+      timeoutID = setTimeout(() => {
+        refreshAuth();
+      }, timeUntilExpiry * 1000);
+    } else {
+      refreshAuth();
+    }
+    return () => {
+      if (timeoutID != null) {
+        clearTimeout(timeoutID);
+      }
+      if (iframe != null) {
+        iframe.parentNode.removeChild(iframe);
+      }
+    };
+  }, [expiresAt]);
 
   const authContext = React.useMemo(() => {
     return accessToken != null && username != null

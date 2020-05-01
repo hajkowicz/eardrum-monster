@@ -11,11 +11,16 @@ export default function PowerHourControl() {
   const phCallbackRef = React.useRef();
   const { setLastMutationTimestamp } = useSpotifyContext();
 
-  const nextTrack = () => {
-    spotifyAPI.nextTrack().then(() => {
-      setLastMutationTimestamp(Date.now());
-    });
-  };
+  const nextTrack = React.useCallback(() => {
+    spotifyAPI
+      .nextTrack()
+      .then(() => {
+        setLastMutationTimestamp(Date.now());
+      })
+      .catch(() => {
+        console.error("error playing next track");
+      });
+  }, [spotifyAPI, setLastMutationTimestamp]);
 
   const phCallback = (timeoutID) => {
     if (phEnabled) {
@@ -37,14 +42,14 @@ export default function PowerHourControl() {
         }
       }
     },
-    [setPhEnabled, setPhCount, setLastMutationTimestamp, spotifyAPI]
+    [setPhEnabled, setPhCount, spotifyAPI, nextTrack]
   );
 
   React.useEffect(() => {
     if (phEnabled) {
       const timeoutID = setInterval(() => {
         phCallbackRef.current(timeoutID);
-      }, 10000);
+      }, 60000);
       return () => {
         clearInterval(timeoutID);
       };
