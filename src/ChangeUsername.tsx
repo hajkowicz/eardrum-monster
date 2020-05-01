@@ -40,7 +40,7 @@ export default function ChangeUsername({
   onSuccess: (name: string) => void;
   onCancel: () => void;
 }) {
-  const [val, setVal] = React.useState(initialVal);
+  const [val, setVal] = React.useState<string>(initialVal);
   const [success, setSuccess] = React.useState<boolean | null>(null);
   const authInfo = useAuth();
 
@@ -53,11 +53,12 @@ export default function ChangeUsername({
       return;
     }
     event.preventDefault();
-    updateDisplayName(authInfo.username, val)
+    const value = String(val).trim();
+    updateDisplayName(authInfo.username, value)
       .then(() => {
         setSuccess(true);
-        onSuccess(val);
-        authInfo.setAuthInfo({ ...authInfo, displayName: val });
+        onSuccess(value);
+        authInfo.setAuthInfo({ ...authInfo, displayName: value });
       })
       .catch(() => {
         setSuccess(false);
