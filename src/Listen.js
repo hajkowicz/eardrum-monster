@@ -73,7 +73,7 @@ function ListenPlayer({ isCurrentlyLive, songs, hostUserID, hostDisplayName }) {
   const [isListeningUsername, setIsListeningUsername] = useLocalStorage(
     "EMisListeningUsername"
   );
-  const isListening = authInfo && hostUserID === isListeningUsername;
+  const isListening = authInfo && hostUserID === String(isListeningUsername);
   const NoSleep = window.NoSleep;
 
   React.useEffect(() => {
