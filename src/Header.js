@@ -57,10 +57,14 @@ function Header() {
             ) : (
               <span className="App-smallLink">
                 {authInfo.displayName}{" "}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a
                   className="App-smallLink"
                   href="#"
-                  onClick={(e) => (e.preventDefault(), setEditing(true))}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setEditing(true);
+                  }}
                 >
                   edit
                 </a>

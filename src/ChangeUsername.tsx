@@ -4,7 +4,6 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 import * as queries from "./graphql/queries";
-import { useRouteMatch, useHistory } from "react-router-dom";
 
 function updateDisplayName(userID: string, displayName: string) {
   return (API.graphql(
