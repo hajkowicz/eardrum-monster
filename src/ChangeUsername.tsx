@@ -4,6 +4,7 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { API, graphqlOperation } from "aws-amplify";
 import * as mutations from "./graphql/mutations";
 import * as queries from "./graphql/queries";
+import "./ChangeUsername.css";
 
 function updateDisplayName(userID: string, displayName: string) {
   return (API.graphql(
@@ -68,12 +69,14 @@ export default function ChangeUsername({
   return (
     <div className={className}>
       <form onSubmit={updateName}>
-        <label>New name:</label>
+        <label className="ChangeUsername-label">New name: </label>
         <input value={val} onChange={handleUpdate} />
-        <input type="submit" value="Submit" />
-        <button type="button" onClick={() => onCancel()}>
-          Cancel
-        </button>
+        <div>
+          <input type="submit" value="Submit" />
+          <button type="button" onClick={() => onCancel()}>
+            Cancel
+          </button>
+        </div>
       </form>
       {success === null ? null : success === false ? "Error" : "Success!"}
     </div>

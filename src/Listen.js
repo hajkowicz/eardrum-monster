@@ -5,7 +5,7 @@ import "./Listen.css";
 import DevPublisher from "./DevPublisher.js";
 import { AuthContext, getAuthorizeURI } from "./Auth.js";
 import SongPlayerWithControls from "./SongPlayerWithControls.js";
-import TrackList from "./TrackList.js";
+import TrackList from "./TrackList";
 import Track from "./Track.js";
 import EQBars from "./EQBars.js";
 import { useLocation, useHistory } from "react-router-dom";

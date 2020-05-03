@@ -5,7 +5,7 @@ import useSpotifyWebPlayer, {
   useSpotifyWebPlayerUnsupported,
 } from "./useSpotifyWebPlayer";
 import Track from "./Track.js";
-import TrackList from "./TrackList.js";
+import TrackList from "./TrackList";
 import "./Broadcast.css";
 import { AuthContext } from "./Auth.js";
 import BroadcastPublisher from "./BroadcastPublisher";
