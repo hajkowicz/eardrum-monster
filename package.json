@@ -32,6 +32,8 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build --env=production",
     "deploy": "gh-pages -d build",
+    "predeployupstream": "npm run build --env=production",
+    "deployupstream": "gh-pages -d build -o upstream",
     "gql-codegen": "graphql-codegen --config codegen.yml"
   },
   "lint-staged": {
