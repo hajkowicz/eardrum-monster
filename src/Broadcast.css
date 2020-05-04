@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  margin: 0 1em 1em 1em;
+  padding: 0 1rem 1rem 1rem;
 }
 
 @media only screen and (max-width: 600px) {
@@ -22,6 +22,13 @@
 }
 
 .Broadcast-currentTrack {
+  width: 100%;
+}
+
+@media (min-width: 550px) {
+  .Broadcast-currentTrack {
+    width: 400px;
+  }
 }
 
 .Broadcast-switch {

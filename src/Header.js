@@ -29,10 +29,12 @@ function Header() {
 
   return (
     <header className="Header">
-      <Link className="Header-title" to="/">
-        <span className="Header-titlePrimary">eardrum</span>
-        <span className="Header-titleSecondary">monster</span>
-      </Link>
+      <div className="Header-titleContainer">
+        <Link className="Header-title" to="/">
+          <span className="Header-titlePrimary">eardrum</span>
+          <span className="Header-titleSecondary">monster</span>
+        </Link>
+      </div>
       <div className="Header-controls EMContainer">
         {authInfo != null ? (
           <>

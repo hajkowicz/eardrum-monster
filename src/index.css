@@ -1,10 +1,18 @@
 html {
   background-color: #fdfdfb;
   font-family: "Raleway", sans-serif;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
 }
 
 .EMContainer {
   position: relative;
+  padding: 1rem;
 }
 
 .EMContainer::before {
@@ -17,7 +25,7 @@ html {
   content: "";
   z-index: -1;
   border-radius: 4px;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .EMCard {
