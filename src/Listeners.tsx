@@ -34,7 +34,7 @@ export default function Listeners({
   }, [rerender]);
 
   return (
-    <div className="Listeners">
+    <div className="Listeners EMContainer">
       <div className="Listeners-title">Listeners</div>
       <div className="Listeners-list">
         <Connect

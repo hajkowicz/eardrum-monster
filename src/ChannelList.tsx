@@ -24,7 +24,7 @@ function Channel({
   cta: React.ReactNode;
 }) {
   return (
-    <div className="Home-user">
+    <div className="Home-user EMCard">
       <div className="Home-userTitle">{title}</div>
       <div className="Home-userSubtitle">{subtitle}</div>
       <img className="Home-userImg" src={img ?? logo} alt="Album art" />
@@ -36,10 +36,7 @@ function Channel({
 export default function ChannelList() {
   return (
     <div className="ChannelList">
-      <h2 className="Home-title">
-        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-        😈 Users currently streaming 😈
-      </h2>
+      <h2 className="Home-title">Currently streaming</h2>
       <Connect
         query={graphqlOperation(queries.usersByLatestSongEventCustom, {
           type: "USER",
@@ -78,13 +75,12 @@ export default function ChannelList() {
                     }`}
                     cta={
                       <Link
-                        className="Home-link"
+                        className="button"
                         to={`/u/${encodeURIComponent(
                           user.displayName || user.userID
                         )}`}
                       >
-                        {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-                        Join ▶️
+                        Join
                       </Link>
                     }
                   />
@@ -92,11 +88,11 @@ export default function ChannelList() {
               })}
               <Channel
                 img={null}
-                title="Start a channel"
-                subtitle=""
+                title="My channel"
+                subtitle="lets do this"
                 cta={
-                  <Link className="Home-link" to={`/broadcast`}>
-                    My channel
+                  <Link className="button" to={`/broadcast`}>
+                    Host a channel
                   </Link>
                 }
               />

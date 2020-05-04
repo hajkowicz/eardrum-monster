@@ -1,57 +1,35 @@
 .App {
+  margin: 1rem 1rem;
 }
 
-.App-logo {
-  height: 4em;
-  width: 4em;
-  pointer-events: none;
+.App::before {
+  position: absolute;
+  background-image: url(./images/splat1.png);
+  background-position: top -8rem left -16rem;
+  background-repeat: no-repeat;
+  background-size: 80rem 80rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  z-index: -2;
 }
 
-.App-title {
-  color: white;
-  text-decoration: none;
-  margin-right: 1em;
-  margin-left: 1em;
-  text-align: center;
-}
-
-.App-header {
-  background-color: #282c34;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-@media only screen and (max-width: 600px) {
-  .App-header {
-    flex-direction: column;
+@media only screen and (min-width: 600px) {
+  .App::after {
+    position: absolute;
+    background-image: url(./images/splat2.png);
+    background-position: bottom -20rem right -8rem;
+    background-repeat: no-repeat;
+    background-size: 80rem 80rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: "";
+    z-index: -2;
   }
-}
-
-.App-headerImg {
-  height: 2em;
-  width: 2em;
-  border-radius: 50%;
-  margin-right: 0.5em;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-}
-
-.App-link {
-  color: #b863ca;
-  margin-right: 1em;
-  text-decoration: none;
-  text-align: right;
-}
-
-.App-smallLink {
-  color: #b863ca;
-  font-size: 1rem;
-  margin-right: 1em;
 }
 
 .App-content {
@@ -71,19 +49,5 @@
   padding-bottom: 10px;
   max-width: 900px;
   margin: auto;
-  text-align: center;
-}
-
-.App-titleText {
-}
-
-.App-subtitleText {
-}
-
-.App-headerPhoto {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
 }

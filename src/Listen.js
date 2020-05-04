@@ -148,7 +148,7 @@ function Listen({ hostDisplayName, hostUserID, hostUserImg }) {
   }, [hostUserID, hostDisplayName, history]);
 
   return (
-    <div className="Listen">
+    <div className="Listen EMContainer">
       <Connect
         query={graphqlOperation(queries.songEventsByUserId, {
           userID: hostUserID,

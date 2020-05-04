@@ -17,7 +17,7 @@
   bottom: 0;
   height: 100%;
   transform: translate3d(0, 10%, 0);
-  background: #b863ca;
+  background: rgba(255, 35, 145, 1);
 }
 
 .EQBars-column {

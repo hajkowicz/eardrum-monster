@@ -109,7 +109,7 @@ function Broadcast() {
     );
 
   return (
-    <div className="Broadcast">
+    <div className="Broadcast EMContainer">
       <div className="Broadcast-listeners">
         <Listeners
           hostUserID={authInfo.username}

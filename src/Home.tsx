@@ -5,8 +5,8 @@ import ChannelList from "./ChannelList";
 function Home() {
   /* eslint-disable jsx-a11y/accessible-emoji */
   return (
-    <div className="Home">
-      <div>
+    <div className="Home EMContainer">
+      <div className="">
         <em>
           eardrum.monster allows you to sync your spotify client with friends
         </em>

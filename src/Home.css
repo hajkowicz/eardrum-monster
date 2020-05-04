@@ -17,9 +17,7 @@
   flex-direction: column;
   margin-right: 1em;
   margin-bottom: 1em;
-  border: 1px solid #282c34;
-  border-radius: 1em;
-  padding: 1em;
+  min-width: 150px;
 }
 
 .Home-userTitle {
@@ -61,9 +59,6 @@
 }
 
 .Home-list {
-  margin-left: 1em;
-  margin-right: 1em;
-  margin-bottom: 20px;
 }
 
 .Home-userOnlineIcon2 {
