@@ -16,6 +16,12 @@
   z-index: -2;
 }
 
+@media (min-width: 1600px) {
+  .App::before {
+    background-position: top -8rem left 5%;
+  }
+}
+
 @media only screen and (min-width: 600px) {
   .App::after {
     position: absolute;
