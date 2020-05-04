@@ -32,11 +32,12 @@
 
 .Header-titlePrimary {
   font-weight: 900;
-  font-size: 8rem;
+  font-size: 7.5rem;
+  margin-left: 2rem;
   text-shadow: 0px 0px 10px rgba(255, 35, 145, 0.8);
   color: rgba(255, 35, 145, 0.8);
   -webkit-text-stroke: 0.3rem black;
-  transform: rotate(7deg) translate3d(0, 4rem, 0);
+  transform: rotate(7deg) translate3d(0, 3.5rem, 0);
   /* z-index:1; */
   /* -webkit-mask-image: url(./images/grit.png);
     mask-image: url(./images/grit.png); */
@@ -44,9 +45,10 @@
 
 .Header-titleSecondary {
   font-weight: 900;
-  font-size: 7rem;
+  font-size: 7.5rem;
+  margin-right: 2rem;
   color: rgba(113, 255, 47, 0.87);
-  transform: translate3d(0, -4rem, 0);
+  transform: rotate(-2deg) translate3d(0, -3.5rem, 0);
   -webkit-text-stroke: 0.3rem black;
   text-shadow: 0px 0px 10px black;
 }
@@ -96,11 +98,13 @@
 @media (min-width: 700px) {
   .Header-titlePrimary {
     font-size: 12rem;
+    margin-left: 3rem;
     transform: rotate(7deg) translate3d(0, 6rem, 0);
   }
   .Header-titleSecondary {
-    font-size: 10rem;
-    transform: translate3d(0, -6rem, 0);
+    font-size: 12rem;
+    margin-right: 3rem;
+    transform: rotate(-2deg) translate3d(0, -6rem, 0);
   }
 }
 
@@ -112,10 +116,12 @@
   }
   .Header-titlePrimary {
     font-size: 15rem;
+    margin-left: 4rem;
     transform: rotate(7deg) translate3d(0, 7.5rem, 0);
   }
   .Header-titleSecondary {
-    font-size: 13rem;
-    transform: translate3d(0, -7.5rem, 0);
+    font-size: 15rem;
+    margin-right: 4rem;
+    transform: rotate(-2deg) translate3d(0, -7.5rem, 0);
   }
 }
