@@ -3,6 +3,7 @@ import Switch from "react-switch";
 import useSpotifyAPI from "./useSpotifyAPI";
 import { useLocalStorage } from "@rehooks/local-storage";
 import useSpotifyContext from "./useSpotifyContext";
+import PowerHourInfo from "./PowerHourInfo";
 
 export default function PowerHourControl() {
   const [phEnabled, setPhEnabled] = useLocalStorage("EMPhEnabled", false);
@@ -67,7 +68,7 @@ export default function PowerHourControl() {
           checked={phEnabled}
         />
       </div>
-      {phEnabled && <h1>{phCount}</h1>}
+      <PowerHourInfo count={phCount} isEnabled={phEnabled} />
     </>
   );
 }
